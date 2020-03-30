@@ -1,1 +1,17 @@
 #+TITLE: Gui
+* Overview
+Creating GUI for [[https:https://github.com/Photon-HDF5/phconvert][phconvert]] to make things more accessible to
+non-programmers/non-technical people who aren't familiar/comfortable with the
+way things are currently done with the command line and/or code.
+* Maya's Feature Suggestions/Requests
+** Convert files with gui
+Baseline behavior and reason for existence. The tool needs to allow the user to
+convert files with phconvert.
+** Batch conversion
+Maya mentioned allowing the user to convert multiple files at once, like
+converting all the files in a directory.
+** Generating metadata yaml file
+Maya mentioned allowing the user to specify that the yaml file accompanying each
+hdf5 file. Without some of the data from this file, the data is rather useless.
+Said there are a set number of fields allowed in the data file (now, will that
+change?). From phconvert's docs, certain fields are required.
