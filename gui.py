@@ -22,3 +22,9 @@ def run(width='300', hight='200'):
 # possible folding frame implementation starting point:
 # https://stackoverflow.com/questions/13141259/expandable-and-contracting-frame-in-tkinter
 # What is the license on StackOverflow postings?
+#
+# Creating your own widgets:
+# https://mail.python.org/pipermail/tkinter-discuss/2008-August/001602.html
+# https://stackoverflow.com/questions/30489308/creating-a-custom-widget-in-tkinter
+# https://effbot.org/zone/tkinter3000-wck.htm
+# https://effbot.org/zone/wck-1.htm
