@@ -18,3 +18,7 @@ def run(width='300', hight='200'):
     root = Tk()
     root.geometry(width + 'x' + hight)
     root.mainloop()
+
+# possible folding frame implementation starting point:
+# https://stackoverflow.com/questions/13141259/expandable-and-contracting-frame-in-tkinter
+# What is the license on StackOverflow postings?
