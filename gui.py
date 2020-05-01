@@ -27,4 +27,8 @@ def run(width='300', hight='200'):
 # https://mail.python.org/pipermail/tkinter-discuss/2008-August/001602.html
 # https://stackoverflow.com/questions/30489308/creating-a-custom-widget-in-tkinter
 # https://effbot.org/zone/tkinter3000-wck.htm
+# Widget creation kits:
 # https://effbot.org/zone/wck-1.htm
+# https://pypi.org/project/tkinter3000/
+# http://pmw.sourceforge.net/
+# https://sourceforge.net/projects/pmw/
