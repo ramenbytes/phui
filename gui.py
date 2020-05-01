@@ -33,3 +33,8 @@ def run(width='300', hight='200'):
 # https://pypi.org/project/tkinter3000/
 # http://pmw.sourceforge.net/
 # https://sourceforge.net/projects/pmw/
+
+# On second thought, I think it may make more sense to develop the logic and
+# then form the gui around that. This is opposed to the gui-first attitude I've
+# had so far. If I could somehow have convenient way of dealing with the idea of
+# commands as opposed to raw events, that seems like it would be lovely.
