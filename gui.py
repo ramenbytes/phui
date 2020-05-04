@@ -37,4 +37,9 @@ def run(width='300', hight='200'):
 # On second thought, I think it may make more sense to develop the logic and
 # then form the gui around that. This is opposed to the gui-first attitude I've
 # had so far. If I could somehow have convenient way of dealing with the idea of
-# commands as opposed to raw events, that seems like it would be lovely.
+# commands as opposed to raw events, that seems like it would be lovely. From
+# here on out, probably better to focus on core conversion logic and bootstrap
+# from there. As much as things can be bootstrapped in python...
+
+# Current goal: Point and shoot file conversion. i.e, convert(file) -> converted file
+# Current state: ?
