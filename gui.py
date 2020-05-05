@@ -6,8 +6,10 @@
 import yaml
 from pathlib import Path
 import matplotlib.pyplot as plt
-
 import phconvert as phc
+
+# debugging
+import pdb
 
 # Here's a thought: lets focus on getting a nice gui for editing the YAML
 # metadata. Link to the data groups:
@@ -49,3 +51,9 @@ import phconvert as phc
 # involving setup of all the metadata. At least from the look of things.
 data_file = Path('./data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
 meta_file = data_file.with_suffix('.yml')
+
+pdb.set_trace()
+phc.smreader.load_sm(str(data_file), return_labels=True)
+# Think file data should be acquired this way:
+# np.fromfile(fname, dtype=sm_dtype, offset=header_size, count=int(valid_size/sm_dtype.itemsize))
+# in load_sm(), from phconvert/smreader.py
