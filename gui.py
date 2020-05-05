@@ -45,3 +45,5 @@ import phconvert as phc
 
 # Current goal: Point and shoot file conversion. i.e, convert(file) -> converted file
 # Current state: ?
+# Answer: Not very nice. Inordinate amount of work just to convert a file,
+# involving setup of all the metadata. At least from the look of things.
