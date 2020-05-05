@@ -47,3 +47,5 @@ import phconvert as phc
 # Current state: ?
 # Answer: Not very nice. Inordinate amount of work just to convert a file,
 # involving setup of all the metadata. At least from the look of things.
+data_file = Path('./data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
+meta_file = data_file.with_suffix('.yml')
