@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-# For metadata file
-import yaml
 # For gui
 # from tkinter import *
 # from tkinter import ttk
+
+import yaml
+from pathlib import Path
+import matplotlib.pyplot as plt
+
+import phconvert as phc
 
 # Here's a thought: lets focus on getting a nice gui for editing the YAML
 # metadata. Link to the data groups:
