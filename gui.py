@@ -14,5 +14,13 @@ import pdb
 # Current state: ?
 # Answer: Not very nice. Inordinate amount of work just to convert a file,
 # involving setup of all the metadata. At least from the look of things.
+
+
+# Link to the data groups:
+# https://photon-hdf5.readthedocs.io/en/latest/phdata.html
 data_file = Path('./data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
 meta_file = data_file.with_suffix('.yml')
+
+# load metadata file
+with open(meta_file) as f:
+    metadata = yaml.load(f)
