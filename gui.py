@@ -51,14 +51,3 @@ import pdb
 # involving setup of all the metadata. At least from the look of things.
 data_file = Path('./data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
 meta_file = data_file.with_suffix('.yml')
-
-pdb.set_trace()
-phc.smreader.load_sm(str(data_file), return_labels=True)
-# Think file data should be acquired this way:
-# buffer = bytearray(os.path.getsize(file_name))
-# file.readinto(buffer)
-# in load_sm(), from phconvert/smreader.py
-# instead of fulldata = f.read()
-# some liberty has been taken with the suggested code's variable names, it
-# should not be hard to understand the correlation. Also, I wonder about the
-# efficiency of this. If it is done like lisp, it shouldn't be that bad.
