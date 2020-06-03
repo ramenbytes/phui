@@ -24,3 +24,6 @@ meta_file = data_file.with_suffix('.yml')
 # load metadata file
 with open(meta_file) as f:
     metadata = yaml.load(f)
+
+# looks like the way you create the photonHDF5 files is by loading all info into
+# nested dicts then passing that nest to the save function
