@@ -70,6 +70,11 @@ def run(width='300', hight='200'):
     root.geometry(width + 'x' + hight)
     root.mainloop()
 #+END_SRC
+** Data Format
+It would be real nice if all mandatory fields were coalesced into one spot, even
+better if they are programmatically introspectable. Right now, I need to hunt
+down what is and is not mandatory across all project docs and sources. Some
+stuff appears to conflict...
 * Direction
 On second thought, I think it may make more sense to develop the logic and then
 form the gui around that. This is opposed to the gui-first attitude I've had so
