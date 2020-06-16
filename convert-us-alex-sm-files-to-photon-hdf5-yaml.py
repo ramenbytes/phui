@@ -50,11 +50,13 @@ def_measurement_specs = dict(
 
 from pathlib import Path
 import matplotlib.pyplot as plt
+# interactive plots
+plt.ion()
 import yaml
 
 import phconvert as phc
 print('phconvert version: ' + phc.__version__)
-get_ipython().run_line_magic('matplotlib', 'inline')
+# get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 # # Resolve paths
@@ -68,7 +70,6 @@ assert input_filename.is_file(), 'Input SM file not found. Check the file name.'
 
 if output_path is None:
     output_path = input_filename.parent
-
 
 out_filename = Path(output_path, input_filename.stem + '.hdf5')
 out_filename
