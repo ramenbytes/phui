@@ -143,10 +143,22 @@ def fill_with_defaults(metadata, default_setup, default_identity):
 data = sm_load_photon_data(input_filename, metadata, def_measurement_specs)
 fill_with_defaults(data, default_setup, default_identity)
 
+## Dump now complete metadata to file, sans data file stuff. We do this for
+## testing and dev work. Definitely not generalized, just a hack for now.
+## Unironically stated on 06/18/20.
+
+import copy # for deep copies
+
+dump = copy.deepcopy(data)
+del(dump['photon_data']['timestamps'])
+del(dump['photon_data']['detectors'])
+
+with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='x') as f:
+    yaml.dump(dump, stream=f, Dumper=yaml.Dumper)
 
 phc.plotter.alternation_hist(data)
 
 
-# # Create Photon-HDF5
+### Create Photon-HDF5
 
 phc.hdf5.save_photon_hdf5(data, h5_fname=str(out_filename), overwrite=True, close=True)
