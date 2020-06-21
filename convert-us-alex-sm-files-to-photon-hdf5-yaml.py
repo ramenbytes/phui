@@ -180,7 +180,12 @@ def load_and_poke(file, yml_file=False):
         metadata['photon_data']['timestamps'] = timestamps
         metadata['photon_data']['detectors'] = detectors
 
-        return metadata
+    return metadata
+
+def convert(file, yaml_file=False):
+    data = load_and_poke(file, yaml_file)
+    phc.hdf5.save_photon_hdf5(data, h5_fname=Path(file).with_suffix('.yml'), overwrite=True, close=True)
+    return
 
 phc.plotter.alternation_hist(data)
 
