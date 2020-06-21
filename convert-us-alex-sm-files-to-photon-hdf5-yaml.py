@@ -153,7 +153,7 @@ dump = copy.deepcopy(data)
 del(dump['photon_data']['timestamps'])
 del(dump['photon_data']['detectors'])
 
-with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='x') as f:
+with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='w') as f:
     yaml.dump(dump, stream=f, Dumper=yaml.Dumper)
 
 phc.plotter.alternation_hist(data)
