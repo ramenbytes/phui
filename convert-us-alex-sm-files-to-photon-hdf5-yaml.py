@@ -162,6 +162,9 @@ with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='r') as f:
     snarf = yaml.unsafe_load(f)
 
 
+# poke photon data into file
+snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smreader.load_sm(input_filename)
+
 phc.plotter.alternation_hist(data)
 
 
