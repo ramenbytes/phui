@@ -165,6 +165,10 @@ with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='r') as f:
 # poke photon data into file
 snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smreader.load_sm(input_filename)
 
+### Now, I want to package the above into a function taking just a filename with
+### sane defaulting and optional specifications for defaults and added metadata keys.
+
+
 phc.plotter.alternation_hist(data)
 
 
