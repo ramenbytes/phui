@@ -167,7 +167,20 @@ snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smre
 
 ### Now, I want to package the above into a function taking just a filename with
 ### sane defaulting and optional specifications for defaults and added metadata keys.
+def load_and_poke(file, yml_file=False):
+    input_file = Path(file)
+    if yml_file is False:
+        metadata_file = input_file.with_suffix('.yml')
 
+
+    with open(yml_file) as meta_file:
+        metadata = yaml.unsafe_load(meta_file)
+
+        timestamps, detectors = phc.smreader.load_sm(input_filename)
+        metadata['photon_data']['timestamps'] = timestamps
+        metadata['photon_data']['detectors'] = detectors
+
+        return metadata
 
 phc.plotter.alternation_hist(data)
 
