@@ -153,10 +153,10 @@ dump = copy.deepcopy(data)
 del(dump['photon_data']['timestamps'])
 del(dump['photon_data']['detectors'])
 
-with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='w') as f:
+with open(os.path.expanduser('~/weisslab/gui/dumped.yml'), mode='w') as f:
     yaml.dump(dump, stream=f, Dumper=yaml.Dumper)
 
-with open(os.path.expanduser('~/weisslab/gui/dumped.yaml'), mode='r') as f:
+with open(os.path.expanduser('~/weisslab/gui/dumped.yml'), mode='r') as f:
     # unsafe allows arbitrary code execution, meaning creation of numpy types
     # can happen. Since we save a numpy float, this is desired here. Still, a hack.
     snarf = yaml.unsafe_load(f)
