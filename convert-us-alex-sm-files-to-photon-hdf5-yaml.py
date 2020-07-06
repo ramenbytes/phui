@@ -182,12 +182,16 @@ def load_and_poke(file, yml_file=False):
 
     return metadata
 
-def convert(file, output_file=False, yaml_file=False):
-    if not output_file:
-        output_file = Path(file).with_suffix('.hdf5')
+def convert(input, output=False, yaml_file=False):
+    '''Takes input file and converts it to Photon-HDF5, outputting to output.
+    yaml_file is a file containing all the necessary metadata as required or
+    allowed by phconvert. Both output and yaml_file default to input's value
+    with the appropiate file type suffix.'''
+    if not output:
+        output = Path(input).with_suffix('.hdf5')
 
-        data = load_and_poke(file, yaml_file)
-        phc.hdf5.save_photon_hdf5(data, h5_fname=output_file, overwrite=True, close=True)
+        data = load_and_poke(input, yaml_file)
+        phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
         return
 
 phc.plotter.alternation_hist(data)
