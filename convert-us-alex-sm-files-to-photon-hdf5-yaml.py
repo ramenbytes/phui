@@ -187,6 +187,10 @@ def load_and_poke(file, yml_file=False):
 
     return metadata
 
+### Want to have argument for metadata dictionary fragement that gets merged
+### with file data. Need to be able to merge dictionaries...
+### Looks promising:
+### https://stackoverflow.com/questions/7204805/how-to-merge-dictionaries-of-dictionaries/25270947#25270947
 def convert(input, output=False, yaml_file=False):
     '''Takes input file and converts it to Photon-HDF5, outputting to output.
     yaml_file is a file containing all the necessary metadata as required or
