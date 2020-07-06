@@ -182,10 +182,13 @@ def load_and_poke(file, yml_file=False):
 
     return metadata
 
-def convert(file, yaml_file=False):
-    data = load_and_poke(file, yaml_file)
-    phc.hdf5.save_photon_hdf5(data, h5_fname=Path(file).with_suffix('.hdf5'), overwrite=True, close=True)
-    return
+def convert(file, output_file=False, yaml_file=False):
+    if not output_file:
+        output_file = Path(file).with_suffix('.hdf5')
+
+        data = load_and_poke(file, yaml_file)
+        phc.hdf5.save_photon_hdf5(data, h5_fname=output_file, overwrite=True, close=True)
+        return
 
 phc.plotter.alternation_hist(data)
 
