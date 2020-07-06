@@ -169,10 +169,13 @@ snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smre
 ### sane defaulting and optional specifications for defaults and added metadata keys.
 def load_and_poke(file, yml_file=False):
     input_file = Path(file)
+
     if yml_file is False:
         yml_file = input_file.with_suffix('.yml')
 
+    yml_file = Path(yml_file)
 
+    assert yml_file.is_file()
     with open(yml_file) as meta_file:
         metadata = yaml.unsafe_load(meta_file)
 
