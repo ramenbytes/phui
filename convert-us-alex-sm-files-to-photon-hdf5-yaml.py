@@ -180,6 +180,8 @@ def load_and_poke(file, yml_file=False):
         metadata = yaml.unsafe_load(meta_file)
 
         timestamps, detectors = phc.smreader.load_sm(input_filename)
+        # FIXME This part seems rather brittle. Also, apparently if the parent
+        # key doesn't exist you can't create the subkey. Nice.
         metadata['photon_data']['timestamps'] = timestamps
         metadata['photon_data']['detectors'] = detectors
 
