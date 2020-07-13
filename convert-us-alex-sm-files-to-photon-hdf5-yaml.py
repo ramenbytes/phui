@@ -203,6 +203,31 @@ def convert(input, output=False, yaml_file=False):
         phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
         return
 
+#### ok, dictionary merging
+### What is wanted? For the user to be able to pass fragments of the final
+### dictionary file structure to override the options loaded from the metadata
+### file or supplement missing ones. Don't think it makes sense to require
+### metadata to be in file, whether placed there before conversion or not.
+### Because, it will be plainly available in the hdf5 file. It's not like
+### compile options which (to my knowledge) are hard to recover after the fact.
+### There may be issues though if the user expects the yml files to be the sole
+### sources of truth, since they could be out of sync with the hdf5. Never the
+### less, I think it would be better to not place this restriction until a
+### better reason than 'users may not be organized' comes up.
+
+## ok, need a way to merge two non-colliding dictionaries. Can be accomplished
+## with update():
+test = dict()
+test.update({3: 4, 5: 6})
+## this will overwrite the colliding keys in test though, so there must not be any.
+
+## What about for collision cases?
+## Well, we only want to override leaves and not nodes for our use case. So if
+## nodes collide and their subnodes/leaves don't, add the subnodes/leaves of one to
+## the other. If there is a collision with subnodes/leaves, repeat the process
+## until leaves (which terminate the nesting) are reached, in which case replace
+## the leave of the yielding dicitonary with that of the master.
+
 phc.plotter.alternation_hist(data)
 
 
