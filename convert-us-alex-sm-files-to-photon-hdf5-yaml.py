@@ -230,13 +230,7 @@ test.update({3: 4, 5: 6})
 
 def collisions(collection1, collection2):
     "Returns a list of the keys/items in collection1 and collection2 which collide."
-    collisions = []
-
-    for key in collection1:
-        if key in collection2:
-            collisions.append(key)
-
-    return collisions
+    return [x for x in collection1 if x in collection2]
 
 phc.plotter.alternation_hist(data)
 
