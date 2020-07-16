@@ -228,6 +228,16 @@ test.update({3: 4, 5: 6})
 ## until leaves (which terminate the nesting) are reached, in which case replace
 ## the leave of the yielding dicitonary with that of the master.
 
+def collisions(collection1, collection2):
+    "Returns a list of the keys/items in collection1 and collection2 which collide."
+    collisions = []
+
+    for key in collection1:
+        if key in collection2:
+            collisions.append(key)
+
+    return collisions
+
 phc.plotter.alternation_hist(data)
 
 
