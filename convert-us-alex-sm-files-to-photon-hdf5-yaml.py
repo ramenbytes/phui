@@ -248,7 +248,7 @@ def recursive_merge(dom,sub):
     for key in dom:
         ## Unless there are colliding nested dictionaries, use dom's value.
         if (key in sub) and (type(dom[key]) is type(sub[key]) is dict):
-            recursive_merge(dom[key], sub[key])
+            recursive_merge(dom[key], sub[key]) # horrid memory performance implications
         else:
             sub[key] = dom[key]
     return sub
