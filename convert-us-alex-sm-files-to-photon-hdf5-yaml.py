@@ -232,6 +232,18 @@ def collisions(collection1, collection2):
     "Returns a list of the keys/items in collection1 and collection2 which collide."
     return [x for x in collection1 if x in collection2]
 
+## Thinking I'll first write the recursive version, then transform to iterative.
+## Maybe, first transform to tail recursive? If possible?
+##
+## Another note, apparently you shouldn't mutate dictionary while modifying it?
+## Does this mean I need to return a copy? Setting nodes doesn't cause problems,
+## but adding and removing nodes might! Our merge will both set nodes and add
+## nodes, copy it is. Note: A possible optimization at a later date is minimal
+## copying, possibly only when adding keys?
+##
+## Think I may need to emulate a stack via pushing stuff onto lists for later...
+## How could I make all the calls tail recursive?
+
 phc.plotter.alternation_hist(data)
 
 
