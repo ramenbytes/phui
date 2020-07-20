@@ -246,13 +246,15 @@ def collisions(collection1, collection2):
 
 def recursive_merge(dom,sub):
     '''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
-    dictionaries, merge those too. Otherwise use dom's value.'''
+    dictionaries, merge those too. Otherwise use dom's value. Order is NOT preserved.'''
 
-    if not collisions(dom,sub):
-        sub.update(dom)
-    else:
-      raise Exception("Dictionaries have key collisions.")
+    ## We modify sub, but iterate over dom. Sidesteps issues with mutating iterators?
+    for key in dom:
+        ## Unless there are colliding nested dictionaries, use dom's value.
+        if (key in sub) and (type(dom[key]) is type(sub[key]) is dict):
+            raise Exception("Colliding keys hold dictionaries.")
 
+        sub[key] = dom[key]
     return sub
 
 phc.plotter.alternation_hist(data)
