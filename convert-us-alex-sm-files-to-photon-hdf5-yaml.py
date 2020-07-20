@@ -252,9 +252,9 @@ def recursive_merge(dom,sub):
     for key in dom:
         ## Unless there are colliding nested dictionaries, use dom's value.
         if (key in sub) and (type(dom[key]) is type(sub[key]) is dict):
-            raise Exception("Colliding keys hold dictionaries.")
-
-        sub[key] = dom[key]
+            recursive_merge(dom[key], sub[key])
+        else:
+            sub[key] = dom[key]
     return sub
 
 phc.plotter.alternation_hist(data)
