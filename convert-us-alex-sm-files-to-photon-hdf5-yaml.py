@@ -244,6 +244,17 @@ def collisions(collection1, collection2):
 ## Think I may need to emulate a stack via pushing stuff onto lists for later...
 ## How could I make all the calls tail recursive?
 
+def recursive_merge(dom,sub):
+    '''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
+    dictionaries, merge those too. Otherwise use dom's value.'''
+
+    if not collisions(dom,sub):
+        sub.update(dom)
+    else:
+      raise Exception("Dictionaries have key collisions.")
+
+    return sub
+
 phc.plotter.alternation_hist(data)
 
 
