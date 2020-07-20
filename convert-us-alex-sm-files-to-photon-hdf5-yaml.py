@@ -227,11 +227,7 @@ test.update({3: 4, 5: 6})
 ## the other. If there is a collision with subnodes/leaves, repeat the process
 ## until leaves (which terminate the nesting) are reached, in which case replace
 ## the leave of the yielding dicitonary with that of the master.
-
-def collisions(collection1, collection2):
-    "Returns a list of the keys/items in collection1 and collection2 which collide."
-    return [x for x in collection1 if x in collection2]
-
+##
 ## Thinking I'll first write the recursive version, then transform to iterative.
 ## Maybe, first transform to tail recursive? If possible?
 ##
