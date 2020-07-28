@@ -258,7 +258,7 @@ def _recursive_merge(dom, sub):
     dictionaries, merge those too. Otherwise use dom's value. Order is NOT
     preserved. Also, circular dictionaries unlock hidden fun stuff.'''
 
-    ## conveniences
+    ## conveniences (if I'm spoofing a recursive stack, I might as well do it comfortably)
     def push (item, sequence):
         '''Insert item at the beginning of sequence.'''
         sequence.insert(0,item)
