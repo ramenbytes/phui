@@ -253,6 +253,49 @@ def recursive_merge(dom,sub):
             sub[key] = dom[key]
     return sub
 
+def _recursive_merge(dom, sub):
+    ''''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
+    dictionaries, merge those too. Otherwise use dom's value. Order is NOT
+    preserved. Also, circular dictionaries unlock hidden fun stuff.'''
+
+    ## conveniences
+    def push (item, sequence):
+        '''Insert item at the beginning of sequence.'''
+        sequence.insert(0,item)
+        return item
+
+    def pop (sequence):
+        '''Pop and return 0th element of sequence.'''
+        return sequence.pop(0)
+
+    # list of pairs to be merged
+    to_merge = [(dom, sub)]
+    # source and sink are analagous to dom and sub, and will hold the current
+    # dictionaries being merged in a pass through the loop
+    source = dom
+    sink = sub
+
+    while to_merge:
+        # add source's keys to sink, pushing any collisions of nested
+        # dictionaries onto a list to merge later.
+        for key in source:
+            ## possibly nested dictionaries
+            stomper = source[key] # will replace/merge into ("stomp") sink[key]
+            stompee = sink.get(key, False)  # get value or missing indicator
+
+            # now that punning above comes in handy. False is not a dict.
+            if (dict is type(stomper) is type(stompee)):
+                # "recursive" case, add to our list of dictionaries to merge (grow the "stack")
+                push((stomper, stompee), to_merge)
+            else:
+                # "base" case, override sink's value
+                sink[key] = stomper
+
+
+                # push loop forward
+        source, sink = pop(to_merge)
+    return sub
+
 phc.plotter.alternation_hist(data)
 
 
