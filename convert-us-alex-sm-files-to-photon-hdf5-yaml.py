@@ -268,14 +268,14 @@ def _recursive_merge(dom, sub):
         '''Pop and return 0th element of sequence.'''
         return sequence.pop(0)
 
-    # list of pairs to be merged
+    # queue up intitial dictionaries on our "stack"
     to_merge = [(dom, sub)]
-    # source and sink are analagous to dom and sub, and will hold the current
-    # dictionaries being merged in a pass through the loop
-    source = dom
-    sink = sub
 
     while to_merge:
+        # source and sink are analagous to dom and sub, and will hold the current
+        # dictionaries being merged in a pass through the loop
+        source, sink = pop(to_merge)
+
         # add source's keys to sink, pushing any collisions of nested
         # dictionaries onto a list to merge later.
         for key in source:
@@ -285,15 +285,13 @@ def _recursive_merge(dom, sub):
 
             # now that punning above comes in handy. False is not a dict.
             if (dict is type(stomper) is type(stompee)):
-                # "recursive" case, add to our list of dictionaries to merge (grow the "stack")
+                # "recursive" case, grow the "stack".
                 push((stomper, stompee), to_merge)
             else:
                 # "base" case, override sink's value
                 sink[key] = stomper
 
 
-                # push loop forward
-        source, sink = pop(to_merge)
     return sub
 
 phc.plotter.alternation_hist(data)
