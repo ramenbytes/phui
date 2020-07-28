@@ -240,7 +240,7 @@ test.update({3: 4, 5: 6})
 ## Think I may need to emulate a stack via pushing stuff onto lists for later...
 ## How could I make all the calls tail recursive?
 
-def recursive_merge(dom,sub):
+def _recursive_merge(dom,sub):
     '''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
     dictionaries, merge those too. Otherwise use dom's value. Order is NOT preserved.'''
 
@@ -253,7 +253,7 @@ def recursive_merge(dom,sub):
             sub[key] = dom[key]
     return sub
 
-def _recursive_merge(dom, sub):
+def recursive_merge(dom, sub):
     ''''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
     dictionaries, merge those too. Otherwise use dom's value. Order is NOT
     preserved. Also, circular dictionaries unlock hidden fun stuff.'''
@@ -290,7 +290,6 @@ def _recursive_merge(dom, sub):
             else:
                 # "base" case, override sink's value
                 sink[key] = stomper
-
 
     return sub
 
