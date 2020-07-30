@@ -268,11 +268,11 @@ def recursive_merge(dom, sub):
         '''Pop and return 0th element of sequence.'''
         return sequence.pop(0)
 
-    # queue up intitial dictionaries on our "stack"
+    # queue up initial dictionaries on our "stack"
     to_merge = [(dom, sub)]
 
     while to_merge:
-        # source and sink are analagous to dom and sub, and will hold the current
+        # source and sink are analogous to dom and sub, and will hold the current
         # dictionaries being merged in a pass through the loop
         source, sink = pop(to_merge)
 
