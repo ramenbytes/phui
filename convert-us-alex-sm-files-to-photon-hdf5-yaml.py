@@ -253,12 +253,16 @@ def _recursive_merge(dom,sub):
             sub[key] = dom[key]
     return sub
 
-def recursive_merge(dom, sub):
-    ''''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
-    dictionaries, merge those too. Otherwise use dom's value. Order is NOT
-    preserved. Also, circular dictionaries unlock hidden fun stuff.'''
+def recursive_merge(source_dict, destination_dict):
+    '''Destructively merge source_dict into destination_dict. When there is a key
+    collision, destination_dict's value will be overwritten with
+    source_dict's with one exception. If the values associated with the shared
+    key are both dictionaries themselves, then the one from source_dict is
+    destructively merged into the one from destination_dict in the same manner
+    as before. All nested dictionaries with a mutual keypath (the chain of keys
+    used to access them) are merged in this manner.'''
 
-    ## conveniences (if I'm spoofing a recursive stack, I might as well do it comfortably)
+    ## some convenience functions
     def push (item, sequence):
         '''Insert item at the beginning of sequence.'''
         sequence.insert(0,item)
@@ -268,30 +272,33 @@ def recursive_merge(dom, sub):
         '''Pop and return 0th element of sequence.'''
         return sequence.pop(0)
 
-    # queue up initial dictionaries on our "stack"
-    to_merge = [(dom, sub)]
+    # This will hold the dictionaries that need to be merged. As we come accross
+    # nested dictionaries with mutual keypaths we push them onto this list to be
+    # merged later.
+    dict_pairs_to_merge = [(source_dict, destination_dict)]
 
-    while to_merge:
-        # source and sink are analogous to dom and sub, and will hold the current
-        # dictionaries being merged in a pass through the loop
-        source, sink = pop(to_merge)
+    while dict_pairs_to_merge:
+        # Grab the two dictionaries being merged on this pass through the loop.
+        # Any nested dicts with colliding keys will themselves be merged in
+        # another pass.
+        current_source, current_destination = pop(dict_pairs_to_merge)
 
-        # add source's keys to sink, pushing any collisions of nested
+        # add current_source's keys to current_destination, pushing any collisions of nested
         # dictionaries onto a list to merge later.
-        for key in source:
+        for key in current_source:
             ## possibly nested dictionaries
-            stomper = source[key] # will replace/merge into ("stomp") sink[key]
-            stompee = sink.get(key, False)  # get value or missing indicator
+            source_val = current_source[key]
+            destination_val = current_destination.get(key)  # get value or None.
 
-            # now that punning above comes in handy. False is not a dict.
-            if (dict is type(stomper) is type(stompee)):
-                # "recursive" case, grow the "stack".
-                push((stomper, stompee), to_merge)
+            if (dict is type(source_val) is type(destination_val)):
+                # We have a key collision with nested dicts for values.
+                push((source_val, destination_val), dict_pairs_to_merge)
             else:
-                # "base" case, override sink's value
-                sink[key] = stomper
+                # Either the values weren't both dicts or the key wasn't in
+                # destination_dict. Use source_dict's value.
+                current_destination[key] = source_val
 
-    return sub
+    return destination_dict
 
 phc.plotter.alternation_hist(data)
 
