@@ -84,3 +84,6 @@ probably better to focus on core conversion logic and bootstrap from there. As
 much as things can be bootstrapped in python...
 ** Goal(s)
 *** Find Minimal Working Conversion Requirements
+* Inbox
+** PROJ Point 'n Shoot Conversion
+Pass data file and possibly metadata file to function and BLAM, it's converted.
