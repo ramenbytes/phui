@@ -155,3 +155,10 @@ del(dump['photon_data']['detectors'])
 
 with open(os.path.expanduser('~/weisslab/gui/dumped.yml'), mode='w') as f:
     yaml.dump(dump, stream=f, Dumper=yaml.Dumper)
+
+
+phc.plotter.alternation_hist(data)
+
+### Create Photon-HDF5
+
+phc.hdf5.save_photon_hdf5(data, h5_fname=str(out_filename), overwrite=True, close=True)

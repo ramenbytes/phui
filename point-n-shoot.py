@@ -144,10 +144,3 @@ def recursive_merge(source_dict, destination_dict):
                 current_destination[key] = source_val
 
     return destination_dict
-
-phc.plotter.alternation_hist(data)
-
-
-### Create Photon-HDF5
-
-phc.hdf5.save_photon_hdf5(data, h5_fname=str(out_filename), overwrite=True, close=True)
