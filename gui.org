@@ -87,3 +87,4 @@ much as things can be bootstrapped in python...
 * Inbox
 ** PROJ Point 'n Shoot Conversion
 Pass data file and possibly metadata file to function and BLAM, it's converted.
+* Notes
