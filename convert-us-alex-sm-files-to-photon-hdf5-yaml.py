@@ -288,10 +288,10 @@ def recursive_merge(source_dict, destination_dict):
         for key in current_source:
             ## possibly nested dictionaries
             source_val = current_source[key]
-            destination_val = current_destination.get(key)  # get value or None.
+            destination_val = current_destination.get(key)  # guard against missing key
 
             if (dict is type(source_val) is type(destination_val)):
-                # We have a key collision with nested dicts for values.
+                # We have a key collision with nested dicts for values. We'll merge them later.
                 push((source_val, destination_val), dict_pairs_to_merge)
             else:
                 # Either the values weren't both dicts or the key wasn't in
