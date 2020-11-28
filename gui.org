@@ -87,4 +87,10 @@ much as things can be bootstrapped in python...
 * Inbox
 ** PROJ Point 'n Shoot Conversion
 Pass data file and possibly metadata file to function and BLAM, it's converted.
+*** TODO Extract My Code from Example File
+Up 'till now I've been working from the example conversion notebook file,
+converted to a python file. Rather cumbersome. I see two things to do. One,
+separate my conversion code from theirs. I already have the test data setup,
+which is what I needed their examples for. Two, generalize the generation of
+test data. May not be necessary, depending on how things go.
 * Notes
