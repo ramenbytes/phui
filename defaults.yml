@@ -1,6 +1,6 @@
 sm_defaults:
-  _filename: data/0023uLRpitc_NTP_20dT_0.5GndCl.sm
-  acquisition_duration: 600
+  # This is calculated from the timestamps
+  # acquisition_duration: 600
   description: 'us-ALEX measurement of a doubly-labeled ssDNA sample.
 
     '
@@ -27,9 +27,9 @@ sm_defaults:
       measurement_type: smFRET-usALEX
     timestamps_specs:
       timestamps_unit: 1.25e-08
-  provenance:
-    filename: data/0023uLRpitc_NTP_20dT_0.5GndCl.sm
-    software: LabVIEW Data Acquisition usALEX
+#  provenance:
+    # not a default?
+    # software: LabVIEW Data Acquisition usALEX
   sample:
     buffer_name: TE50 + 0.5M GndCl
     dye_names: Cy3B, ATTO647N
