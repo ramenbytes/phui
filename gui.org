@@ -95,4 +95,8 @@ examples for.
 *** HOLD Generalize the generation of test data.
 May not be necessary, depending on how things go. /May/ end up playing a part in
 the main user-facing conversion. We'll see.
+*** TODO Encode Required Fields w/defaults in yml
+I figure that we can slurp the defaults up into memory, then add data from the
+file and user supplied data. Perhaps we could provide the option for users to
+keep their own defaults files.
 * Notes
