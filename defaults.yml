@@ -1,0 +1,56 @@
+_filename: data/0023uLRpitc_NTP_20dT_0.5GndCl.sm
+acquisition_duration: 600
+description: 'us-ALEX measurement of a doubly-labeled ssDNA sample.
+
+  '
+identity:
+  author: Weiss Lab
+  author_affiliation: UCLA
+  creator: Antonino Ingargiola
+  creator_affiliation: UCLA
+photon_data:
+  measurement_specs:
+    alex_excitation_period1: !!python/tuple
+    - 2180
+    - 3900
+    alex_excitation_period2: !!python/tuple
+    - 200
+    - 1800
+    alex_offset: 700
+    alex_period: 4000
+    detectors_specs:
+      spectral_ch1:
+      - 0
+      spectral_ch2:
+      - 1
+    measurement_type: smFRET-usALEX
+  timestamps_specs:
+    timestamps_unit: 1.25e-08
+provenance:
+  filename: data/0023uLRpitc_NTP_20dT_0.5GndCl.sm
+  software: LabVIEW Data Acquisition usALEX
+sample:
+  buffer_name: TE50 + 0.5M GndCl
+  dye_names: Cy3B, ATTO647N
+  num_dyes: 2
+  sample_name: 20dt ssDNA oligo doubly labeled with Cy3B and Atto647N
+setup:
+  detection_wavelengths:
+  - 5.8e-07
+  - 6.6e-07
+  excitation_alternated:
+  - true
+  - true
+  excitation_cw:
+  - true
+  - true
+  excitation_wavelengths:
+  - 5.32e-07
+  - 6.35e-07
+  lifetime: false
+  modulated_excitation: true
+  num_pixels: 2
+  num_polarization_ch: 1
+  num_spectral_ch: 2
+  num_split_ch: 1
+  num_spots: 1
