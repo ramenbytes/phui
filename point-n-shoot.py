@@ -18,6 +18,15 @@ snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smre
 
 ### Now, I want to package the above into a function taking just a filename with
 ### sane defaulting and optional specifications for defaults and added metadata keys.
+
+## This var is more or less a dispatch table... Is there a better way?
+##
+## Note: .phu files aren't here because the loader doesn't have the same return
+## type as the other loaders. Do those get converted too?
+loaders = {'.sm' : phc.smreader.load_sm, '.ht3' : phc.pqreader.load_ht3,
+           '.ptu' : phc.pqreader.load_ptu, '.pt3' : phc.pqreader.load_pt3,
+           '.t3r' : phc.pqreader.load_t3r}
+
 def load_and_poke(file, yml_file=False):
     input_file = Path(file)
 
@@ -30,7 +39,8 @@ def load_and_poke(file, yml_file=False):
     with open(yml_file) as meta_file:
         metadata = yaml.unsafe_load(meta_file)
 
-        timestamps, detectors = phc.smreader.load_sm(input_filename)
+        ## Call the function associated with the file's type to load the data
+        timestamps, detectors = loaders[input_file.suffix](input_file)
         # FIXME This part seems rather brittle. Also, apparently if the parent
         # key doesn't exist you can't create the subkey. Nice.
         metadata['photon_data']['timestamps'] = timestamps
