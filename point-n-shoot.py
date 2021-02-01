@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 import phconvert as phc
 
-with open(os.path.expanduser('~/weisslab/gui/dumped.yml'), mode='r') as f:
+with open(os.path.expanduser('~/weisslab/phui/dumped.yml'), mode='r') as f:
     # unsafe allows arbitrary code execution, meaning creation of numpy types
     # can happen. Since we save a numpy float, this is desired here. Still, a hack.
     snarf = yaml.unsafe_load(f)
