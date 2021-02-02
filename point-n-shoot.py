@@ -27,6 +27,12 @@ loaders = {'.sm' : phc.smreader.load_sm, '.ht3' : phc.pqreader.load_ht3,
            '.ptu' : phc.pqreader.load_ptu, '.pt3' : phc.pqreader.load_pt3,
            '.t3r' : phc.pqreader.load_t3r}
 
+def load (file):
+    '''General interface for loading data files that return a tuple of
+    timestamps, detectors, and optionally something else.'''
+    file = Path(file)
+    return loaders[file.suffix](file)
+
 def load_and_poke(file, yml_file=False):
     input_file = Path(file)
 
@@ -40,7 +46,7 @@ def load_and_poke(file, yml_file=False):
         metadata = yaml.unsafe_load(meta_file)
 
         ## Call the function associated with the file's type to load the data
-        timestamps, detectors = loaders[input_file.suffix](input_file)
+        timestamps, detectors = load(input_file)
         # FIXME This part seems rather brittle. Also, apparently if the parent
         # key doesn't exist you can't create the subkey. Nice.
         metadata['photon_data']['timestamps'] = timestamps
