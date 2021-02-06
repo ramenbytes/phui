@@ -53,6 +53,13 @@ https://effbot.org/zone/wck-1.htm
 https://pypi.org/project/tkinter3000/
 http://pmw.sourceforge.net/
 https://sourceforge.net/projects/pmw/
+** GUI for Prototyping
+https://github.com/rabbibotton/clog
+A relatively new GUI for Common Lisp that looks like it might be rather easy to
+get up an running with. Obviously, since phui is supposed to be delivered in
+python I couldn't use it for the official GUI, but it may be a nicer, more
+efficient platform upon which to experiment and design the interface. After, I'd
+just need to translate the code into python that uses tkinter.
 * Notes
 ** Metadata
 Would want ways to selectively show groups, possibly more granular options too
