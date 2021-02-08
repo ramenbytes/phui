@@ -25,7 +25,8 @@ snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smre
 ## type as the other loaders. Do those get converted too?
 loaders = {'.sm' : phc.smreader.load_sm, '.ht3' : phc.pqreader.load_ht3,
            '.ptu' : phc.pqreader.load_ptu, '.pt3' : phc.pqreader.load_pt3,
-           '.t3r' : phc.pqreader.load_t3r}
+           '.t3r' : phc.pqreader.load_t3r, '.set' : phc.bhreader.load_set,
+           '.spc' : phc.bhreader.load_spc}
 
 def load (file):
     '''General interface for loading data files that return a tuple of
