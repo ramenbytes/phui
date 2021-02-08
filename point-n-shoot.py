@@ -46,7 +46,7 @@ def load_and_poke(file, yml_file=False):
         metadata = yaml.unsafe_load(meta_file)
 
         ## Call the function associated with the file's type to load the data
-        timestamps, detectors = load(input_file)
+        timestamps, detectors, dummy, dummy2 = load(input_file)
         # FIXME This part seems rather brittle. Also, apparently if the parent
         # key doesn't exist you can't create the subkey. Nice.
         metadata['photon_data']['timestamps'] = timestamps
