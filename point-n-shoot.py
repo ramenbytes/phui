@@ -34,27 +34,6 @@ def load (file):
     file = Path(file)
     return loaders[file.suffix](file)
 
-def load_and_poke(file, yml_file=False):
-    input_file = Path(file)
-
-    if yml_file is False:
-        yml_file = input_file.with_suffix('.yml')
-
-    yml_file = Path(yml_file)
-
-    assert yml_file.is_file()
-    with open(yml_file) as meta_file:
-        metadata = yaml.unsafe_load(meta_file)
-
-        ## Call the function associated with the file's type to load the data
-        timestamps, detectors, dummy, dummy2 = load(input_file)
-        # FIXME This part seems rather brittle. Also, apparently if the parent
-        # key doesn't exist you can't create the subkey. Nice.
-        metadata['photon_data']['timestamps'] = timestamps
-        metadata['photon_data']['detectors'] = detectors
-
-    return metadata
-
 ### Want to have argument for metadata dictionary fragement that gets merged
 ### with file data. Need to be able to merge dictionaries...
 ### Looks promising:
