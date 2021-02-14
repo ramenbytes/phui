@@ -23,8 +23,12 @@ snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smre
 ##
 ## Note: .phu files aren't here because the loader doesn't have the same return
 ## type as the other loaders. Do those get converted too?
-loaders = {'.sm' : phc.loader.usalex_sm, '.ht3' : phc.loader.nsalex_pq,
-           '.ptu' : phc.loader.nsalex_pq, '.pt3' : phc.loader.nsalex_pq,
+loaders = {'.sm' : phc.loader.usalex_sm,
+           # TODO: Deal with (and expose?) the second, unmentioned dict that is
+           # returned for picoquant files
+           '.ht3' : lambda file: phc.loader.nsalex_pq(file)[0],
+           '.ptu' : lambda file: phc.loader.nsalex_pq(file)[0],
+           '.pt3' : lambda file: phc.loader.nsalex_pq(file)[0],
            '.t3r' : phc.loader.nsalex_t3r,
            # TODO: Expose an interface for including the .set file. Could it be
            # done generally, for files that have extra data? HOFs?
@@ -40,10 +44,9 @@ def load (file):
     # TODO: Expose a nice interface for extended and format-specific load options
     return loaders[Path(file).suffix](file)
 
-### Want to have argument for metadata dictionary fragement that gets merged
-### with file data. Need to be able to merge dictionaries...
-### Looks promising:
-### https://stackoverflow.com/questions/7204805/how-to-merge-dictionaries-of-dictionaries/25270947#25270947
+# for some reason, the "trace" test file does not successfully load with the
+# high-level loaders. Says there is is a missing laser repetition rate in the
+# metadata. Edge case to deal with later?
 def convert(input, *args, output=False, yaml_file=False, description):
     '''Takes input file and converts it to Photon-HDF5, outputting to output.
     yaml_file is a file containing all the necessary metadata as required or
