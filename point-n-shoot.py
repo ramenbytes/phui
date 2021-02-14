@@ -51,9 +51,10 @@ def convert(input, output=False, yaml_file=False):
     if not output:
         output = Path(input).with_suffix('.hdf5')
 
-        data = load(input)
-        phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
-        return
+    data = load(input)
+    data['description'] = 'blah'
+    phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
+    return
 
 #### ok, dictionary merging
 ### What is wanted? For the user to be able to pass fragments of the final
