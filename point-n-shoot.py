@@ -34,6 +34,9 @@ loaders = {'.sm' : phc.loader.usalex_sm, '.ht3' : phc.loader.nsalex_pq,
 def load (file):
     '''General interface for loading data files that return a tuple of
     timestamps, detectors, and optionally something else.'''
+    # HACK: At least the bh loader needs the filename as something
+    # subscriptable, I think it does some filetype extraction. Is there either a
+    # better way for me to get the suffix here, or for the loader to do the manipulations?
     return loaders[Path(file).suffix](file)
 
 ### Want to have argument for metadata dictionary fragement that gets merged
