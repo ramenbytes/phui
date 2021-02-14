@@ -37,13 +37,14 @@ def load (file):
     # HACK: At least the bh loader needs the filename as something
     # subscriptable, I think it does some filetype extraction. Is there either a
     # better way for me to get the suffix here, or for the loader to do the manipulations?
+    # TODO: Expose a nice interface for extended and format-specific load options
     return loaders[Path(file).suffix](file)
 
 ### Want to have argument for metadata dictionary fragement that gets merged
 ### with file data. Need to be able to merge dictionaries...
 ### Looks promising:
 ### https://stackoverflow.com/questions/7204805/how-to-merge-dictionaries-of-dictionaries/25270947#25270947
-def convert(input, output=False, yaml_file=False):
+def convert(input, output=False, yaml_file=False, description=''):
     '''Takes input file and converts it to Photon-HDF5, outputting to output.
     yaml_file is a file containing all the necessary metadata as required or
     allowed by phconvert. Both output and yaml_file default to input's value
@@ -51,8 +52,10 @@ def convert(input, output=False, yaml_file=False):
     if not output:
         output = Path(input).with_suffix('.hdf5')
 
+
     data = load(input)
-    data['description'] = 'blah'
+    # FIXME: expose a better interface for including a description
+    data['description'] = description
     phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
     return
 
