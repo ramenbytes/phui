@@ -31,8 +31,7 @@ loaders = {'.sm' : phc.smreader.load_sm, '.ht3' : phc.pqreader.load_ht3,
 def load (file):
     '''General interface for loading data files that return a tuple of
     timestamps, detectors, and optionally something else.'''
-    file = Path(file)
-    return loaders[file.suffix](file)
+    return loaders[Path(file).suffix](file)
 
 ### Want to have argument for metadata dictionary fragement that gets merged
 ### with file data. Need to be able to merge dictionaries...
