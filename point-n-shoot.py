@@ -44,14 +44,13 @@ def load (file):
 ### with file data. Need to be able to merge dictionaries...
 ### Looks promising:
 ### https://stackoverflow.com/questions/7204805/how-to-merge-dictionaries-of-dictionaries/25270947#25270947
-def convert(input, output=False, yaml_file=False, description=''):
+def convert(input, *args, output=False, yaml_file=False, description):
     '''Takes input file and converts it to Photon-HDF5, outputting to output.
     yaml_file is a file containing all the necessary metadata as required or
     allowed by phconvert. Both output and yaml_file default to input's value
     with the appropiate file type suffix.'''
     if not output:
         output = Path(input).with_suffix('.hdf5')
-
 
     data = load(input)
     # FIXME: expose a better interface for including a description
