@@ -25,8 +25,11 @@ snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smre
 ## type as the other loaders. Do those get converted too?
 loaders = {'.sm' : phc.loader.usalex_sm, '.ht3' : phc.loader.nsalex_pq,
            '.ptu' : phc.loader.nsalex_pq, '.pt3' : phc.loader.nsalex_pq,
-           '.t3r' : phc.loader.nsalex_t3r, '.set' : phc.loader.nsalex_bh,
-           '.spc' : phc.loader.nsalex_bh}
+           '.t3r' : phc.loader.nsalex_t3r,
+           # TODO: Expose an interface for including the .set file. Could it be
+           # done generally, for files that have extra data? HOFs?
+           '.set' : lambda file: phc.loader.nsalex_bh(file)[0],
+           '.spc' : lambda file: phc.loader.nsalex_bh(file)[0]}
 
 def load (file):
     '''General interface for loading data files that return a tuple of
