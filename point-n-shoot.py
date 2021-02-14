@@ -46,7 +46,7 @@ def convert(input, output=False, yaml_file=False):
     if not output:
         output = Path(input).with_suffix('.hdf5')
 
-        data = load_and_poke(input, yaml_file)
+        data = load(input)
         phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
         return
 
