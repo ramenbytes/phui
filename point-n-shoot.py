@@ -122,7 +122,7 @@ def recursive_merge(source_dict, destination_dict):
 
     ## some convenience functions
     def push (item, sequence):
-        '''Insert item at the beginning of sequence.'''
+        '''Insert item at the beginning of sequence, returning the added item.'''
         sequence.insert(0,item)
         return item
 
