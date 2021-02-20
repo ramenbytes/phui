@@ -50,8 +50,8 @@ loaders = {'.sm' : phc.loader.usalex_sm,
            '.spc' : lambda file: phc.loader.nsalex_bh(file)[0]}
 
 def load (file):
-    '''General interface for loading data files that return a tuple of
-    timestamps, detectors, and optionally something else.'''
+    '''General interface for loading the data from supported filetypes. Returns
+    a dictionary suitable to pass to phconvert.hdf5.save_photon_hdf5.'''
     # HACK: At least the bh loader needs the filename as something
     # subscriptable, I think it does some filetype extraction. Is there either a
     # better way for me to get the suffix here, or for the loader to do the manipulations?
