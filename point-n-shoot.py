@@ -1,20 +1,20 @@
 ''' A module for painless datafile conversion with phconvert.'''
 
-import os
+# import os
 from pathlib import Path
-import yaml
+# import yaml
 import phconvert as phc
 
-with open(os.path.expanduser('~/weisslab/phui/dumped.yml'), mode='r') as f:
-    # unsafe allows arbitrary code execution, meaning creation of numpy types
-    # can happen. Since we save a numpy float, this is desired here. Still, a hack.
-    snarf = yaml.unsafe_load(f)
+# with open(os.path.expanduser('~/weisslab/phui/dumped.yml'), mode='r') as f:
+#     # unsafe allows arbitrary code execution, meaning creation of numpy types
+#     # can happen. Since we save a numpy float, this is desired here. Still, a hack.
+#     snarf = yaml.unsafe_load(f)
 
 # test data
-input_filename = Path('data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
+# input_filename = Path('data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
 
 # poke photon data into file
-snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smreader.load_sm(input_filename)
+# snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smreader.load_sm(input_filename)
 
 ### Now, I want to package the above into a function taking just a filename with
 ### sane defaulting and optional specifications for defaults and added metadata keys.
@@ -75,8 +75,8 @@ def convert(input, *args, output=False, yaml_file=False, description):
 
 ## ok, need a way to merge two non-colliding dictionaries. Can be accomplished
 ## with update():
-test = dict()
-test.update({3: 4, 5: 6})
+# test = dict()
+# test.update({3: 4, 5: 6})
 ## this will overwrite the colliding keys in test though, so there must not be any.
 
 ## What about for collision cases?
