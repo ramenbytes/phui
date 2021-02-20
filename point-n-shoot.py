@@ -141,8 +141,8 @@ def recursive_merge(source_dict, destination_dict):
         # another pass.
         current_source, current_destination = pop(dict_pairs_to_merge)
 
-        # add current_source's keys to current_destination, pushing any collisions of nested
-        # dictionaries onto a list to merge later.
+        # Destructivley add current_source's entries to current_destination. If there are
+        # nested dictionaries with colliding keys, push them onto a list to merge later.
         for key in current_source:
             ## possibly nested dictionaries
             source_val = current_source[key]
