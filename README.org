@@ -2,4 +2,5 @@
 
 * Hi!
 Everything is still in flux right now. Checkout [[gui.org]] for an overview of my
-current focuses and thoughts.
+current focuses and thoughts. It's more of a scratchpad than proper
+documentation though.
