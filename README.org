@@ -1,4 +1,4 @@
-#+TITLE: Readme
+#+TITLE: README
 
 * Hi!
 Everything is still in flux right now. Checkout [[gui.org]] for an overview of my
