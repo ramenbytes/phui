@@ -56,7 +56,7 @@ https://sourceforge.net/projects/pmw/
 ** GUI for Prototyping
 https://github.com/rabbibotton/clog
 A relatively new GUI for Common Lisp that looks like it might be rather easy to
-get up an running with. Obviously, since phui is supposed to be delivered in
+get up and running with. Obviously, since phui is supposed to be delivered in
 python I couldn't use it for the official GUI, but it may be a nicer, more
 efficient platform upon which to experiment and design the interface. After, I'd
 just need to translate the code into python that uses tkinter.
@@ -99,13 +99,14 @@ Pass data file and possibly metadata file to function and BLAM, it's converted.
 **** [2021-02-08 Mon 09:07] Don't Re-invent the wheel!
 You know how I've been trying to create a generalized interface for converting
 files? I've been using the load_<whatever> functions based on the example for
-the .sm conversion, possibly other example files. It turns out that those are
-not uniform in their return values. *But* a generalized interface already exists
-in near-completeness! Enter, /phconvert.loader/! The functions is there return a
+the .sm conversion with yaml metadata file. It turns out that those are not
+uniform in their return values. *But* a generalized interface already exists in
+near-completeness! Enter, /phconvert.loader/! The functions in there return a
 dictionary for passing to the hdf5 conversion function! The only thing missing
 is dispatching off of file types, and perhaps splicing in of arbitrary yaml
 after the fact. We'll see, I still need to explore it some more. But, this means
-that I've likely working towards something that someone else already did. Doh!
+that I've likely been working towards something that someone else already did.
+Doh!
 *** DONE Extract My Conversion Code from Example File
 Up 'till now I've been working from the example conversion notebook file,
 converted to a python file. Rather cumbersome. Separate my conversion code from
@@ -114,8 +115,11 @@ examples for.
 *** HOLD Generalize the generation of test data.
 May not be necessary, depending on how things go. /May/ end up playing a part in
 the main user-facing conversion. We'll see.
-*** TODO Encode Required Fields w/defaults in yml
+*** HOLD Encode Required Fields w/defaults in yml
 I figure that we can slurp the defaults up into memory, then add data from the
 file and user supplied data. Perhaps we could provide the option for users to
 keep their own defaults files.
+[2021-02-19 Fri 18:46] Doesn't seem necessary anymore, since the high-level
+interface phconvert.loader + the save function takes care of this. I could be
+wrong though.
 * Notes
