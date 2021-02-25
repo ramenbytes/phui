@@ -49,6 +49,7 @@ loaders = {'.sm' : phc.loader.usalex_sm,
            '.set' : lambda file: phc.loader.nsalex_bh(file)[0],
            '.spc' : lambda file: phc.loader.nsalex_bh(file)[0]}
 
+# TODO: confirm which files didn't successfully convert without adding a description
 def load (file):
     '''General interface for loading the data from supported filetypes. Returns
     a dictionary containing the file data which may be passed to
@@ -68,7 +69,7 @@ def convert(input, *args, output=False, yaml_file=False, description):
     '''Takes input file and converts it to Photon-HDF5, outputting to output.
     yaml_file is a file containing all the necessary metadata as required or
     allowed by phconvert. Both output and yaml_file default to input's value
-    with the appropiate file type suffix.'''
+    with the appropiate file type suffix. The description kwarg is required.'''
     if not output:
         output = Path(input).with_suffix('.hdf5')
 
