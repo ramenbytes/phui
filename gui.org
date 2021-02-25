@@ -26,6 +26,7 @@ Code examples in Tcl as well as python, ruby, and perl.
 https://tkdocs.com/index.html
 *** Styles and Themes
 Should help with making the ui not horrid looking.
+
 https://tkdocs.com/tutorial/styles.html
 ** Pygubu
 Gui design tool for python. Don't think it allows interactive development of
@@ -36,6 +37,7 @@ Then, at runtime you load up the XML and everything gets hooked up then. I want
 to be able to iterate over both code and ui rapidly, without gui regeneration
 loops beyond just editing a snippet of code. I want the Lisp experience across
 the board. I'll have to weigh the pros and cons of different approaches.
+
 https://github.com/alejandroautalan/pygubu
 ** Widget Creation
 possible folding frame implementation starting point:
@@ -45,14 +47,15 @@ What is the license on StackOverflow postings?
 Creative Commons type: https://stackoverflow.com/help/licensing
 
 Creating your own widgets:
-https://mail.python.org/pipermail/tkinter-discuss/2008-August/001602.html
-https://stackoverflow.com/questions/30489308/creating-a-custom-widget-in-tkinter
-https://effbot.org/zone/tkinter3000-wck.htm
+- https://mail.python.org/pipermail/tkinter-discuss/2008-August/001602.html
+- https://stackoverflow.com/questions/30489308/creating-a-custom-widget-in-tkinter
+- https://effbot.org/zone/tkinter3000-wck.htm
+
 Widget creation kits:
-https://effbot.org/zone/wck-1.htm
-https://pypi.org/project/tkinter3000/
-http://pmw.sourceforge.net/
-https://sourceforge.net/projects/pmw/
+- https://effbot.org/zone/wck-1.htm
+- https://pypi.org/project/tkinter3000/
+- http://pmw.sourceforge.net/
+- https://sourceforge.net/projects/pmw/
 ** GUI for Prototyping
 https://github.com/rabbibotton/clog
 A relatively new GUI for Common Lisp that looks like it might be rather easy to
@@ -119,6 +122,7 @@ the main user-facing conversion. We'll see.
 I figure that we can slurp the defaults up into memory, then add data from the
 file and user supplied data. Perhaps we could provide the option for users to
 keep their own defaults files.
+
 [2021-02-19 Fri 18:46] Doesn't seem necessary anymore, since the high-level
 interface phconvert.loader + the save function takes care of this. I could be
 wrong though.
