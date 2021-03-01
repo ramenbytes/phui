@@ -37,17 +37,35 @@ import phconvert as phc
 ##
 ## Note: .phu files aren't here because the loader doesn't have the same return
 ## type as the other loaders. Do those get converted too?
+
+def compose(g, f):
+    "Simple composition of monadic functions."
+    return lambda x: g(f(x))
+
+def first(indexable):
+    "Returns the first element of indexable."
+    return indexable[0]
+
+def first_only(loader_function):
+    "Returns a new function that will only return the first value of the tuple that loader_function returns"
+    return compose(first,loader_function)
+
+# these functions don't return a single dictionary, and for now we only want the
+# first item of the returned tuple
+pq_loader = first_only(phc.loader.nsalex_pq)
+bh_loader = first_only(phc.loader.nsalex_bh)
+
 loaders = {'.sm' : phc.loader.usalex_sm,
            # TODO: Deal with (and expose?) the second, unmentioned dict that is
            # returned for picoquant files
-           '.ht3' : lambda file: phc.loader.nsalex_pq(file)[0],
-           '.ptu' : lambda file: phc.loader.nsalex_pq(file)[0],
-           '.pt3' : lambda file: phc.loader.nsalex_pq(file)[0],
+           '.ht3' : pq_loader,
+           '.ptu' : pq_loader,
+           '.pt3' : pq_loader,
            '.t3r' : phc.loader.nsalex_t3r,
            # TODO: Expose an interface for including the .set file. Could it be
            # done generally, for files that have extra data? HOFs?
-           '.set' : lambda file: phc.loader.nsalex_bh(file)[0],
-           '.spc' : lambda file: phc.loader.nsalex_bh(file)[0]}
+           '.set' : bh_loader,
+           '.spc' : bh_loader}
 
 # TODO: confirm which files didn't successfully convert without adding a description
 def load (file):
