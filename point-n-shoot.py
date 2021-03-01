@@ -14,7 +14,7 @@ phconvert.hdf5.save_photon_hdf5() The suffix must include the '.', so for
 example '.sm' for the data file format in use at Weiss Lab.
 '''
 
-# import os
+import os
 from pathlib import Path
 # import yaml
 import phconvert as phc
@@ -42,13 +42,21 @@ def compose(g, f):
     "Simple composition of monadic functions."
     return lambda x: g(f(x))
 
-def first(indexable):
-    "Returns the first element of indexable."
-    return indexable[0]
+def nth(n):
+    "Returns a function that will return the nth element of it's argument"
+    return lambda indexable: indexable[n]
 
 def first_only(loader_function):
     "Returns a new function that will only return the first value of the tuple that loader_function returns"
-    return compose(first,loader_function)
+    return compose(nth(0),loader_function)
+
+def extension(file):
+    "Returns the extension of a file path"
+    return os.path.splitext(file)[1]
+
+def filename(file):
+    "Returns the filename of a file path"
+    return os.path.splitext(file)[0]
 
 # these functions don't return a single dictionary, and for now we only want the
 # first item of the returned tuple
@@ -74,11 +82,7 @@ def load (file):
     phconvert.hdf5.save_photon_hdf5(). It may be incomplete, for example it may
     not have a description if the file didn't, but it will not be malformed.'''
 
-    # HACK: At least the bh loader needs the filename as something
-    # subscriptable, I think it does some filetype extraction. Is there either a
-    # better way for me to get the suffix here, or for the loader to do the manipulations?
-    # TODO: Expose a nice interface for extended and format-specific load options
-    return loaders[Path(file).suffix](file)
+    return loaders[extension(file)](file)
 
 # for some reason, the "trace" test file does not successfully load with the
 # high-level loaders. Says there is is a missing laser repetition rate in the
@@ -89,7 +93,7 @@ def convert(input, *args, output=False, yaml_file=False, description):
     allowed by phconvert. Both output and yaml_file default to input's value
     with the appropiate file type suffix. The description kwarg is required.'''
     if not output:
-        output = Path(input).with_suffix('.hdf5')
+        output = filename(input) + '.hdf5'
 
     data = load(input)
     # FIXME: expose a better interface for including a description
