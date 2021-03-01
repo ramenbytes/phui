@@ -42,21 +42,9 @@ def compose(g, f):
     "Simple composition of monadic functions."
     return lambda x: g(f(x))
 
-def nth(n):
-    "Returns a function that will return the nth element of it's argument"
-    return lambda indexable: indexable[n]
-
 def first_only(loader_function):
     "Returns a new function that will only return the first value of the tuple that loader_function returns"
-    return compose(nth(0),loader_function)
-
-def extension(file):
-    "Returns the extension of a file path"
-    return os.path.splitext(file)[1]
-
-def filename(file):
-    "Returns the filename of a file path"
-    return os.path.splitext(file)[0]
+    return compose(lambda x: x[0] ,loader_function)
 
 # these functions don't return a single dictionary, and for now we only want the
 # first item of the returned tuple
@@ -75,14 +63,21 @@ loaders = {'.sm' : phc.loader.usalex_sm,
            '.set' : bh_loader,
            '.spc' : bh_loader}
 
+def extension(file):
+    "Returns the extension of a file path"
+    return os.path.splitext(file)[1]
+
 # TODO: confirm which files didn't successfully convert without adding a description
 def load (file):
     '''General interface for loading the data from supported filetypes. Returns
     a dictionary containing the file data which may be passed to
     phconvert.hdf5.save_photon_hdf5(). It may be incomplete, for example it may
     not have a description if the file didn't, but it will not be malformed.'''
-
     return loaders[extension(file)](file)
+
+def filename(file):
+    "Returns the filename of a file path"
+    return os.path.splitext(file)[0]
 
 # for some reason, the "trace" test file does not successfully load with the
 # high-level loaders. Says there is is a missing laser repetition rate in the
