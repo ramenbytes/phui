@@ -154,13 +154,29 @@ def _recursive_merge(dom,sub):
     return sub
 
 def recursive_merge(source_dict, destination_dict):
-    '''Destructively merge source_dict into destination_dict. When there is a key
+    '''
+    Destructively merge source_dict into destination_dict. When there is a key
     collision, destination_dict's value will be overwritten with
     source_dict's with one exception. If the values associated with the shared
     key are both dictionaries themselves, then the one from source_dict is
     destructively merged into the one from destination_dict in the same manner
     as before. All nested dictionaries with a mutual keypath (the chain of keys
-    used to access them) are merged in this manner.'''
+    used to access them) are merged in this manner.
+
+    Example:
+
+        In: recursive_merge({'inner':{3:'three'}}, # the source dictionary
+                            {'inner':{4:'four'}})  # the dictionary that will be modified
+
+        # the two inner dictionaries are merged!
+        Out: {'inner': {4: 'four', 3: 'three'}}
+
+        # without recursive merging it would have turned out like this:
+        Out: {'inner':{3:'three'}}
+        # since the entry for 'inner' in the dictionary would have been
+        # replaced with the entry for 'inner' in the source dictionary.
+    '''
+
 
     ## some convenience functions
     def push (item, sequence):
