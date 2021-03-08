@@ -16,7 +16,7 @@ example '.sm' for the data file format in use at Weiss Lab.
 '''
 
 import os
-from pathlib import Path
+# from pathlib import Path
 # import yaml
 import phconvert as phc
 
