@@ -89,9 +89,8 @@ def convert(input, *args, output=False, data_fragment=False):
     data_fragment is provided, it is interpreted as a piece of the Photon-HDF5
     data hierarchy, with top-level entries corresponding to top-level
     Photon-HDF5 fields. The values it provides will be spliced into the data
-    obtained from the photon data file. If a leaf value already exists, it will
-    be overwritten with the fragment's value.
-    '''
+    obtained from the photon data file, preserving any entries not explicitly
+    provided. See recursive_merge() for more details.'''
     if not output:
         output = filename(input) + '.hdf5'
 
