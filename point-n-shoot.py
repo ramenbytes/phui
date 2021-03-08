@@ -83,17 +83,23 @@ def filename(file):
 # for some reason, the "trace" test file does not successfully load with the
 # high-level loaders. Says there is is a missing laser repetition rate in the
 # metadata. Edge case to deal with later?
-def convert(input, *args, output=False, yaml_file=False, description):
-    '''Takes input file and converts it to Photon-HDF5, outputting to output.
-    yaml_file is a file containing all the necessary metadata as required or
-    allowed by phconvert. Both output and yaml_file default to input's value
-    with the appropiate file type suffix. The description kwarg is required.'''
+def convert(input, *args, output=False, data_fragment=False):
+    '''Takes input file and converts it to Photon-HDF5, outputting to output. output
+    defaults to input's value with the appropiate file type suffix. If
+    data_fragment is provided, it is interpreted as a piece of the Photon-HDF5
+    data hierarchy, with top-level entries corresponding to top-level
+    Photon-HDF5 fields. The values it provides will be spliced into the data
+    obtained from the photon data file. If a leaf value already exists, it will
+    be overwritten with the fragment's value.
+    '''
     if not output:
         output = filename(input) + '.hdf5'
 
     data = load(input)
-    # FIXME: expose a better interface for including a description
-    data['description'] = description
+    # use the provided fragment to overwrite/fill in fields
+    if data_fragment:
+        recursive_merge(data_fragment, data)
+
     phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
     return
 
