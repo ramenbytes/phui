@@ -1,4 +1,5 @@
-'''A module for painless datafile conversion with phconvert.
+'''
+A module for painless datafile conversion with phconvert.
 
 To convert a file, use the convert() function.
 
@@ -10,7 +11,7 @@ file, recursive_merge() might be handy.
 Finally, if you want to add support for a new file type, add a new entry to the
 'loaders' dictionary with the file suffix as the key and a function returning
 the file data in a dictionary suitable for passing to
-phconvert.hdf5.save_photon_hdf5() The suffix must include the '.', so for
+phconvert.hdf5.save_photon_hdf5(). The suffix must include the '.', so for
 example '.sm' for the data file format in use at Weiss Lab.
 '''
 
