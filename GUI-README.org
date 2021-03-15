@@ -6,7 +6,7 @@ current focuses and thoughts. It's more of a scratchpad than proper
 documentation though.
 
 * File Purposes
-[[point-n-shoot.py]] is responsible for providing a unified, streamlined conversion
+[[unified-conversion.py]] is responsible for providing a unified, streamlined conversion
 interface for files and is just a thin layer over phconvert. While it is being
 developed for use in the phconvert user interface, it may be useful for
 programmatic conversion as well.
