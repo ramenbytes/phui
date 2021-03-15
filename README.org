@@ -5,8 +5,40 @@ Everything is still in flux right now. Checkout [[gui.org]] for an overview of m
 current focuses and thoughts. It's more of a scratchpad than proper
 documentation though.
 
-* File Purposes
+* Basic Usage
 [[unified-conversion.py]] is responsible for providing a unified, streamlined conversion
 interface for files and is just a thin layer over phconvert. While it is being
-developed for use in the phconvert user interface, it may be useful for
+developed for use internal to the phconvert user interface, it may be useful for
 programmatic conversion as well.
+
+** Convert a file
+To convert a supported file type, just pass the file name to convert() along
+with a description:
+#+begin_src python
+convert('022rde11_T_minus15_acc__NT_plus10_don_1.sm', data_fragment={'description':'example'})
+
+# Output:
+#  - Loading '022rde11_T_minus15_acc__NT_plus10_don_1.sm' ...
+#  [DONE]
+
+# Saving: 022rde11_T_minus15_acc__NT_plus10_don_1.hdf5
+# Photon-HDF5 WARNING: Missing field "author" in "/identity".
+# Photon-HDF5 WARNING: Missing field "author_affiliation" in "/identity".
+#+end_src
+The 'data_fragment' argument lets you pass in a dictionary representing a
+fragment of the Photon-HDF5 file structure, and have its information applied on
+top of the info already available in the data file. For example, to silence the
+warnings above, we would pass in author information like this:
+#+begin_src python
+fragment = {'description': 'example',
+            'identity': {'author': "<author\'s name>",
+                         'author_affiliation': '<author\'s affiliation>'}}
+
+convert('022rde11_T_minus15_acc__NT_plus10_don_1.sm', data_fragment=fragment)
+
+# Output:
+#  - Loading '022rde11_T_minus15_acc__NT_plus10_don_1.sm' ...
+#  [DONE]
+
+# Saving: 022rde11_T_minus15_acc__NT_plus10_don_1.hdf5
+#+end_src
