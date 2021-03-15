@@ -85,6 +85,7 @@ def convert(input, *args, output=False, data_fragment=False):
     if data_fragment:
         recursive_merge(data_fragment, data)
 
+    ## FIXME: phconvert does not close hdf5 file on error! They aren't using a with-statement...
     phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
     return
 
