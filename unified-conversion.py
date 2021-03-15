@@ -1,5 +1,5 @@
 '''
-A module for painless datafile conversion with phconvert.
+A unified interface to phconvert's loading and conversion functionality.
 
 To convert a file, use the convert() function.
 
