@@ -25,20 +25,6 @@ import phconvert as phc
 #     # can happen. Since we save a numpy float, this is desired here. Still, a hack.
 #     snarf = yaml.unsafe_load(f)
 
-# test data
-# input_filename = Path('data/0023uLRpitc_NTP_20dT_0.5GndCl.sm')
-
-# poke photon data into file
-# snarf['photon_data']['timestamps'], snarf['photon_data']['detectors'] = phc.smreader.load_sm(input_filename)
-
-### Now, I want to package the above into a function taking just a filename with
-### sane defaulting and optional specifications for defaults and added metadata keys.
-
-## This var is more or less a dispatch table... Is there a better way?
-##
-## Note: .phu files aren't here because the loader doesn't have the same return
-## type as the other loaders. Do those get converted too?
-
 def compose(g, f):
     "Simple composition of monadic functions."
     return lambda x: g(f(x))
@@ -101,56 +87,6 @@ def convert(input, *args, output=False, data_fragment=False):
 
     phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
     return
-
-#### ok, dictionary merging
-### What is wanted? For the user to be able to pass fragments of the final
-### dictionary file structure to override the options loaded from the metadata
-### file or supplement missing ones. Don't think it makes sense to require
-### metadata to be in file, whether placed there before conversion or not.
-### Because, it will be plainly available in the hdf5 file. It's not like
-### compile options which (to my knowledge) are hard to recover after the fact.
-### There may be issues though if the user expects the yml files to be the sole
-### sources of truth, since they could be out of sync with the hdf5. Never the
-### less, I think it would be better to not place this restriction until a
-### better reason than 'users may not be organized' comes up.
-
-## ok, need a way to merge two non-colliding dictionaries. Can be accomplished
-## with update():
-# test = dict()
-# test.update({3: 4, 5: 6})
-## this will overwrite the colliding keys in test though, so there must not be any.
-
-## What about for collision cases?
-## Well, we only want to override leaves and not nodes for our use case. So if
-## nodes collide and their subnodes/leaves don't, add the subnodes/leaves of one to
-## the other. If there is a collision with subnodes/leaves, repeat the process
-## until leaves (which terminate the nesting) are reached, in which case replace
-## the leave of the yielding dicitonary with that of the master.
-##
-## Thinking I'll first write the recursive version, then transform to iterative.
-## Maybe, first transform to tail recursive? If possible?
-##
-## Another note, apparently you shouldn't mutate dictionary while modifying it?
-## Does this mean I need to return a copy? Setting nodes doesn't cause problems,
-## but adding and removing nodes might! Our merge will both set nodes and add
-## nodes, copy it is. Note: A possible optimization at a later date is minimal
-## copying, possibly only when adding keys?
-##
-## Think I may need to emulate a stack via pushing stuff onto lists for later...
-## How could I make all the calls tail recursive?
-
-def _recursive_merge(dom,sub):
-    '''WIP: Recursively merge dictionary dom into sub. If colliding keys are for
-    dictionaries, merge those too. Otherwise use dom's value. Order is NOT preserved.'''
-
-    ## We modify sub, but iterate over dom. Sidesteps issues with mutating iterators?
-    for key in dom:
-        ## Unless there are colliding nested dictionaries, use dom's value.
-        if (key in sub) and (type(dom[key]) is type(sub[key]) is dict):
-            recursive_merge(dom[key], sub[key]) # horrid memory performance implications
-        else:
-            sub[key] = dom[key]
-    return sub
 
 def recursive_merge(source_dict, destination_dict):
     '''
