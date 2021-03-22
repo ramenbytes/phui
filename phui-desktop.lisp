@@ -1,109 +1,59 @@
+;;;; Prototyping the gui. Nothing is meant to be taken as good coding style, or permanent.
+(ql:quickload :clog)
+
+;; One, use my prefered browser. Two, do it asynchronously.
+(setf trivial-open-browser:*browser-function* (lambda (url) (uiop:launch-program (format nil "qutebrowser ~a" url))))
+
 (defpackage #:clog-user
-  (:use #:cl #:clog #:clog-gui) ; For this tutorial we include clog-gui
+  (:use #:cl #:clog #:clog-gui)         ; For this tutorial we include clog-gui
   (:export start-tutorial))
 
 (in-package :clog-user)
 
-;; For web oriented apps consider using the :client-movement option.
-;; See clog-gui-initialize documentation.
+;;; copied from demo 3
+(defun read-file (infile)
+  (with-open-file (instream infile :direction :input :if-does-not-exist nil)
+    (when instream
+      (let ((string (make-string (file-length instream))))
+        (read-sequence string instream)
+        string))))
 
-(defun on-file-count (obj)
-  (let ((win (create-gui-window obj :title "Count")))
-    (dotimes (n 100)
-      ;; window-content is the root element for the clog-gui
-      ;; windows
-      (create-div (window-content win) :content n))))
+(defun do-ide-file-new (obj)
+  (let ((win (create-gui-window obj :title "New window"
+                                    :height 400
+                                    :width 650)))
+    (set-on-window-size win (lambda (obj)
+                              (js-execute obj (format nil "editor_~A.resize()" (html-id win)))))
+    (set-on-window-size-done win (lambda (obj)
+                                   (js-execute obj (format nil "editor_~A.resize()" (html-id win)))))
+    (create-child win
+                  (let ((id (html-id win)))
+                    (format nil
+                            "<script>
+                            var editor_~A = ace.edit('~A-body');
+                            editor_~A.setTheme('ace/theme/xcode');
+                            // editor_~A.session.setMode('ace/mode/lisp');
+                            editor_~A.session.setTabSize(3);
+                            editor_~A.focus();
+                           </script>"
+                            id id
+                            id id
+                            id id)))))
 
-(defun on-file-browse (obj)
-  (let ((win (create-gui-window obj :title "Browse")))
-    (create-child (window-content win)
-                  "<iframe style='width:100%;height:98%;' src='https://common-lisp.net/'></iframe>")))
+(defun do-ide-file-open (obj)
+  (server-file-dialog obj "Open..." "./"
+                      (lambda (fname)
+                        (when fname
+                          (do-ide-file-new obj)
+                          (setf (window-title (current-window obj)) fname)
+                          (js-execute obj
+                                      (format nil
+                                              "editor_~A.setValue('~A');editor_~A.moveCursorTo(0,0);"
+                                              (html-id (current-window obj))
+                                              (escape-string (read-file fname))
+                                              (html-id (current-window obj))))))))
 
-(defun on-file-drawing (obj)
-  (let* ((win (create-gui-window obj :title "Drawing"))
-         (canvas (create-canvas (window-content win) :width 600 :height 400))
-         (cx     (create-context2d canvas)))
-    (set-border canvas :thin :solid :black)    
-    (fill-style cx :green)
-    (fill-rect cx 10 10 150 100)
-    (fill-style cx :blue)
-    (font-style cx "bold 24px serif")
-    (fill-text cx "Hello World" 10 150)
-    (fill-style cx :red)
-    (begin-path cx)
-    (ellipse cx 200 200 50 7 0.78 0 6.29)
-    (path-stroke cx)
-    (path-fill cx)))
-
-(defun on-file-movies (obj)
-  (let* ((win  (create-gui-window obj :title "Movie"))
-         (movie (create-video (window-content win)
-                              :source "https://www.w3schools.com/html/mov_bbb.mp4")))
-    (setf (box-width movie) "100%")
-    (setf (box-height movie) "100%")))
-
-(defun on-file-pinned (obj)
-  (let ((win (create-gui-window obj :title "Pin me!"
-                                    :has-pinner t
-                                    :keep-on-top t
-                                    :top 200
-                                    :left 0
-                                    :width 200
-                                    :height 200)))
-    (create-div win :content "I can be pinned. Just click the pin on window bar.")))
-
-(defun on-dlg-alert (obj)
-  (alert-dialog obj "This is a modal alert box"))
-
-(defun on-dlg-confirm (obj)
-  (confirm-dialog obj "Shall we play a game?"		  
-                  (lambda (input)
-                    (if input
-                        (alert-dialog obj "How about Global Thermonuclear War.")
-                        (alert-dialog obj "You are no fun!")))
-                  :ok-text "Yes" :cancel-text "No"))
-
-(defun on-dlg-input (obj)
-  (input-dialog obj "Would you like to play a game?"
-                (lambda (input)
-                  (alert-dialog obj input))))
-
-(defun on-dlg-file (obj)
-  (server-file-dialog obj "Server files" "./" (lambda (fname)
-                                                (alert-dialog obj fname))))
-
-(defun on-dlg-form (obj)
-  (form-dialog obj "Please enter your information."
-               '(("Title" "title" :select (("Mr." "mr")
-                                           ("Mrs." "mrs" :selected)
-                                           ("Ms." "ms")
-                                           ("Other" "other")))
-                 ("Eye Color" "color" :radio (("Blue" "blue")
-                                              ("Brown" "brown")
-                                              ("Green" "green" :checked)
-                                              ("Other" "other")))
-                 ("Send Mail" "send-mail" :checkbox t)
-                 ("Name" "name" :text "Real Name")
-                 ("Address" "address")
-                 ("City" "city")
-                 ("State" "st")
-                 ("Zip" "zip")
-                 ("E-Mail" "email" :email))
-               (lambda (results)
-                 (alert-dialog obj results))
-               :height 550))
-
-(defun on-toast-alert (obj)
-  (alert-toast obj "Stop!" "To get rid of me, click the X. I have no time-out"))
-
-(defun on-toast-warn (obj)
-  (alert-toast obj "Warning!" "To get rid of me, click the X. I time-out in 5 seconds"
-               :color-class "w3-yellow" :time-out 5))
-
-(defun on-toast-success (obj)
-  (alert-toast obj "Success!" "To get rid of me, click the X. I time-out in 2 seconds"
-               :color-class "w3-green" :time-out 2))
-
+;;; copied from tutorial 22
 (defun on-help-about (obj)
   (let* ((about (create-gui-window obj
                                    :title   "About"
@@ -124,37 +74,26 @@
 (defun on-new-window (body)
   (setf (title (html-document body)) "Tutorial 22")  
   (clog-gui-initialize body)
+  ;; This is the Ace js code editor. This cdn works for most, if fails (getting
+  ;; New as a blank window,etc) you can cd clog/static-files/ and run
+  ;; git clone https://github.com/ajaxorg/ace-builds/
+  ;; and uncomment this line and comment out the next:
+  ;; (load-script (html-document body) "/ace-builds/src-noconflict/ace.js")
+  (load-script (html-document body) "https://pagecdn.io/lib/ace/1.4.12/ace.js")
   (add-class body "w3-cyan")  
   (let* ((menu  (create-gui-menu-bar body))
          (tmp   (create-gui-menu-icon menu :on-click #'on-help-about))
-         (file  (create-gui-menu-drop-down menu :content "File"))
-         (tmp   (create-gui-menu-item file :content "Count" :on-click #'on-file-count))
-         (tmp   (create-gui-menu-item file :content "Browse" :on-click #'on-file-browse))
-         (tmp   (create-gui-menu-item file :content "Drawing" :on-click #'on-file-drawing))
-         (tmp   (create-gui-menu-item file :content "Movie" :on-click #'on-file-movies))
-         (tmp   (create-gui-menu-item file :content "Pinned" :on-click #'on-file-pinned))
          (win   (create-gui-menu-drop-down menu :content "Window"))
          (tmp   (create-gui-menu-item win :content "Maximize All" :on-click #'maximize-all-windows))
          (tmp   (create-gui-menu-item win :content "Normalize All" :on-click #'normalize-all-windows))
          (tmp   (create-gui-menu-window-select win))
-         (dlg   (create-gui-menu-drop-down menu :content "Dialogs"))
-         (tmp   (create-gui-menu-item dlg :content "Alert Dialog Box" :on-click #'on-dlg-alert))
-         (tmp   (create-gui-menu-item dlg :content "Input Dialog Box" :on-click #'on-dlg-input))
-         (tmp   (create-gui-menu-item dlg :content "Confirm Dialog Box" :on-click #'on-dlg-confirm))
-         (tmp   (create-gui-menu-item dlg :content "Form Dialog Box" :on-click #'on-dlg-form))
-         (tmp   (create-gui-menu-item dlg :content "Server File Dialog Box" :on-click #'on-dlg-file))
-         (tst   (create-gui-menu-drop-down menu :content "Toasts"))
-         (tmp   (create-gui-menu-item tst :content "Alert Toast" :on-click #'on-toast-alert))
-         (tmp   (create-gui-menu-item tst :content "Warning Toast" :on-click #'on-toast-warn))
-         (tmp   (create-gui-menu-item tst :content "Success Toast" :on-click #'on-toast-success))
+         (dlg   (create-gui-menu-item menu :content "Edit File(s)" :on-click #'do-ide-file-open))
+         ;; (tmp   (create-gui-menu-item dlg :content "Server File Dialog Box" :on-click #'on-dlg-file))
          (help  (create-gui-menu-drop-down menu :content "Help"))
          (tmp   (create-gui-menu-item help :content "About" :on-click #'on-help-about))
          (tmp   (create-gui-menu-full-screen menu)))
     (declare (ignore tmp)))
-  (set-on-before-unload (window body) (lambda(obj)
-                                        (declare (ignore obj))
-                                        ;; return empty string to prevent nav off page
-                                        ""))
+  (set-on-before-unload (window body) (constantly ""))
   (run body))
 
 (defun start-tutorial ()
