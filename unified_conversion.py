@@ -17,7 +17,7 @@ example '.sm' for the data file format in use at Weiss Lab.
 
 import os
 # from pathlib import Path
-# import yaml
+import yaml
 import phconvert as phc
 
 # with open(os.path.expanduser('~/weisslab/phui/dumped.yml'), mode='r') as f:
@@ -29,9 +29,10 @@ def compose(g, f):
     "Simple composition of monadic functions."
     return lambda x: g(f(x))
 
-def first_only(loader_function):
-    "Returns a new function that will only return the first value of the tuple that loader_function returns"
-    return compose(lambda x: x[0] ,loader_function)
+def first_only(function):
+    '''Returns a new function that will index the returned value of the original
+function by 0, and return the result.'''
+    return compose(lambda x: x[0] ,function)
 
 # these functions don't return a single dictionary, and for now we only want the
 # first item of the returned tuple
@@ -69,7 +70,10 @@ def filename(file):
 # for some reason, the "trace" test file does not successfully load with the
 # high-level loaders. Says there is is a missing laser repetition rate in the
 # metadata. Edge case to deal with later?
-def convert(input, *args, output=False, data_fragment=False):
+
+# /home/vir/weisslab/phui/data/trace_T2_300s_1_coincidence.ptu failed with
+# missing laser repetition rate, and  nanodiamant_histo.phu failed because of a missing loader.
+def convert(input, *args, output=False, data_fragment=False, yml_file=False):
     '''Takes input file and converts it to Photon-HDF5, outputting to output. output
     defaults to input's value with the appropiate file type suffix. If
     data_fragment is provided, it is interpreted as a piece of the Photon-HDF5
@@ -81,6 +85,15 @@ def convert(input, *args, output=False, data_fragment=False):
         output = filename(input) + '.hdf5'
 
     data = load(input)
+    yml_data = dict()
+
+    if yml_file:
+        with open(yml_file, mode='r') as f:
+            # unsafe allows arbitrary code execution, meaning creation of numpy types
+            # can happen. Since we save a numpy float, this is desired here. Still, a hack.
+            yml_data = yaml.unsafe_load(f)
+            recursive_merge(yml_data, data)
+
     # use the provided fragment to overwrite/fill in fields
     if data_fragment:
         recursive_merge(data_fragment, data)
