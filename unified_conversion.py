@@ -80,20 +80,29 @@ yaml_loader = yaml.SafeLoader
 
 # /home/vir/weisslab/phui/data/trace_T2_300s_1_coincidence.ptu failed with
 # missing laser repetition rate, and  nanodiamant_histo.phu failed because of a missing loader.
+
+# TODO: Give better documentation for the yaml_loader variable. Make the
+# interface less brittle and don't expose that we use pyaml?
 def convert(input, *args, output=False, data_fragment=False, yml_file=False):
     '''Takes input file and converts it to Photon-HDF5, outputting to output. output
     defaults to input's value with the appropiate file type suffix.
 
     Two methods are available for augmenting the information provided by the
     experimental data in the input file.
+
     1) The yml_file arg:
+
         If yml_file is provided, it is assumed to be a file containing a
         fragment of the Photon-HDF5 data hierarchy in the form of yaml. The
         contents will be loader, and the resulting data destructively merged
         into the experimental data in the same manner that data_fragment is
-        handled.
+        handled. To mitigate the danger of arbitrary code execution, pyaml's
+        SafeLoader is used by default for loading the yaml file. If you wish to
+        use a different method set the variable yaml_loader to a valid loader as
+        specified by the pyaml docs.
 
     2) The data_fragment arg:
+
         If data_fragment is provided, it is interpreted as a piece of the
         Photon-HDF5 data hierarchy, with top-level entries corresponding to
         top-level Photon-HDF5 fields. The values it provides will be spliced
