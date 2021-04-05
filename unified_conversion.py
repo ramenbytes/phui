@@ -67,6 +67,13 @@ def filename(file):
     "Returns the filename of a file path"
     return os.path.splitext(file)[0]
 
+# To mitigate arbitrary code execution, we use the locked down loader by
+# default. If users want the unsafe loader, they can change the variable.
+#
+# See here for details on depreciation of yaml.load()
+# https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
+yaml_loader = yaml.SafeLoader
+
 # for some reason, the "trace" test file does not successfully load with the
 # high-level loaders. Says there is is a missing laser repetition rate in the
 # metadata. Edge case to deal with later?
@@ -89,9 +96,8 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
 
     if yml_file:
         with open(yml_file, mode='r') as f:
-            # unsafe allows arbitrary code execution, meaning creation of numpy types
-            # can happen. Since we save a numpy float, this is desired here. Still, a hack.
-            yml_data = yaml.unsafe_load(f)
+            yml_data = yaml.load(f, Loader=yaml_loader)
+            # use the yaml file data to augment/overwrite info in the experimental data
             recursive_merge(yml_data, data)
 
     # use the provided fragment to overwrite/fill in fields
