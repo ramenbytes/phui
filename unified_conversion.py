@@ -82,12 +82,31 @@ yaml_loader = yaml.SafeLoader
 # missing laser repetition rate, and  nanodiamant_histo.phu failed because of a missing loader.
 def convert(input, *args, output=False, data_fragment=False, yml_file=False):
     '''Takes input file and converts it to Photon-HDF5, outputting to output. output
-    defaults to input's value with the appropiate file type suffix. If
-    data_fragment is provided, it is interpreted as a piece of the Photon-HDF5
-    data hierarchy, with top-level entries corresponding to top-level
-    Photon-HDF5 fields. The values it provides will be spliced into the data
-    obtained from the photon data file, preserving any entries not explicitly
-    provided. See recursive_merge() for more details.'''
+    defaults to input's value with the appropiate file type suffix.
+
+    Two methods are available for augmenting the information provided by the
+    experimental data in the input file.
+    1) The yml_file arg:
+        If yml_file is provided, it is assumed to be a file containing a
+        fragment of the Photon-HDF5 data hierarchy in the form of yaml. The
+        contents will be loader, and the resulting data destructively merged
+        into the experimental data in the same manner that data_fragment is
+        handled.
+
+    2) The data_fragment arg:
+        If data_fragment is provided, it is interpreted as a piece of the
+        Photon-HDF5 data hierarchy, with top-level entries corresponding to
+        top-level Photon-HDF5 fields. The values it provides will be spliced
+        into the data obtained from the photon data file, preserving any entries
+        not explicitly provided. See recursive_merge() for more details.
+
+    If both methods are specified, then both of the above processes will take
+    place in the order they have been listed, so first the yaml file and then
+    the data fragment. Since all of these merges are destructively recursive, if
+    both the file and the fragment provide a value, then the fragment's value
+    takes precedence.
+
+    '''
     if not output:
         output = filename(input) + '.hdf5'
 
