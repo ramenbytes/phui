@@ -1,5 +1,9 @@
 ;;;; Prototyping the gui. Nothing is meant to be taken as good coding style, or permanent.
-(ql:quickload '(:py4cl2 :clog))
+(ql:quickload '(:py4cl2 :clog :parenscript :cl-who))
+
+(py4cl2:initialize)
+
+(py4cl2:defpymodule "phconvert" t :lisp-package "PH")
 
 ;; One, use my prefered browser. Two, do it asynchronously.
 (setf trivial-open-browser:*browser-function* (lambda (url) (uiop:launch-program (format nil "qutebrowser ~a" url))))
@@ -40,6 +44,15 @@
                             id id
                             id id)))))
 
+;; bang-on for the above code, minus the <script> tags and assuming id is 5
+(ps:ps*
+ (let* ((id 5)
+        (editor-name (alexandria:symbolicate 'editor_ (format nil "~a" id))))
+   `(progn (ps:var ,editor-name (ps:chain ace (edit ,(format nil "~a-body" id))))
+           (ps:chain ,editor-name (set-theme "ace/theme/xcode"))
+           (ps:chain ,editor-name session (set-tab-size 3))
+           (ps:chain ,editor-name (focus)))))
+
 (defun do-ide-file-open (obj)
   (server-file-dialog obj "Open..." "./"
                       (lambda (fname)
@@ -72,7 +85,7 @@
                                     (declare (ignore obj))()))))
 
 (defun on-new-window (body)
-  (setf (title (html-document body)) "Tutorial 22")  
+  (setf (title (html-document body)) "Phconvert User Interface")
   (clog-gui-initialize body)
   ;; This is the Ace js code editor. This cdn works for most, if fails (getting
   ;; New as a blank window,etc) you can cd clog/static-files/ and run
@@ -80,7 +93,7 @@
   ;; and uncomment this line and comment out the next:
   ;; (load-script (html-document body) "/ace-builds/src-noconflict/ace.js")
   (load-script (html-document body) "https://pagecdn.io/lib/ace/1.4.12/ace.js")
-  (add-class body "w3-cyan")  
+  (add-class body "w3-cyan")
   (let* ((menu  (create-gui-menu-bar body))
          (tmp   (create-gui-menu-icon menu :on-click #'on-help-about))
          (win   (create-gui-menu-drop-down menu :content "Window"))
