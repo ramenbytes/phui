@@ -1,5 +1,5 @@
 ;;;; Prototyping the gui. Nothing is meant to be taken as good coding style, or permanent.
-(ql:quickload :clog)
+(ql:quickload '(:py4cl2 :clog))
 
 ;; One, use my prefered browser. Two, do it asynchronously.
 (setf trivial-open-browser:*browser-function* (lambda (url) (uiop:launch-program (format nil "qutebrowser ~a" url))))
