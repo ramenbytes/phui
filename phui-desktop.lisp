@@ -4,11 +4,11 @@
 ;; One, use my prefered browser. Two, do it asynchronously.
 (setf trivial-open-browser:*browser-function* (lambda (url) (uiop:launch-program (format nil "qutebrowser ~a" url))))
 
-(defpackage #:clog-user
+(defpackage #:phui
   (:use #:cl #:clog #:clog-gui)         ; For this tutorial we include clog-gui
-  (:export start-tutorial))
+  (:export phui))
 
-(in-package :clog-user)
+(in-package :phui)
 
 ;;; copied from demo 3
 (defun read-file (infile)
@@ -96,7 +96,7 @@
   (set-on-before-unload (window body) (constantly ""))
   (run body))
 
-(defun start-tutorial ()
-  "Start turtorial."
+(defun phui ()
+  "Start phui."
   (initialize #'on-new-window)
   (open-browser))
