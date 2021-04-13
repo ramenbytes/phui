@@ -46,11 +46,9 @@
                           (do-ide-file-new obj)
                           (setf (window-title (current-window obj)) fname)
                           (js-execute obj
-                                      (format nil
-                                              "editor_~A.setValue('~A');editor_~A.moveCursorTo(0,0);"
-                                              (html-id (current-window obj))
-                                              (escape-string (read-file fname))
-                                              (html-id (current-window obj))))))))
+                                      (let ((editor-name (alexandria:symbolicate 'editor_ (princ-to-string (html-id (current-window obj))))))
+                                        (ps:ps* `(ps:chain ,editor-name (set-value ,(read-file fname)))
+                                                `(ps:chain ,editor-name (move-cursor-to 0 0)))))))))
 
 ;;; copied from tutorial 22
 (defun on-help-about (obj)
