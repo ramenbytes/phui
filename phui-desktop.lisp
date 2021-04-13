@@ -73,6 +73,13 @@
     (set-on-window-can-size about (lambda (obj)
                                     (declare (ignore obj))()))))
 
+(defmacro indirectly (function-name)
+  "Simple macro that wraps the named function in a lambda, so that we can deal
+with a function object (the lambda) while still being able to pick up
+redefinitions of the named function."
+  `(lambda (&rest args)
+     (apply #',function-name args)))
+
 (defun on-new-window (body)
   (setf (title (html-document body)) "Tutorial 22")  
   (clog-gui-initialize body)
@@ -84,15 +91,15 @@
   (load-script (html-document body) "https://pagecdn.io/lib/ace/1.4.12/ace.js")
   (add-class body "w3-cyan")  
   (let* ((menu  (create-gui-menu-bar body))
-         (tmp   (create-gui-menu-icon menu :on-click 'on-help-about))
+         (tmp   (create-gui-menu-icon menu :on-click (indirectly on-help-about)))
          (win   (create-gui-menu-drop-down menu :content "Window"))
-         (tmp   (create-gui-menu-item win :content "Maximize All" :on-click 'maximize-all-windows))
-         (tmp   (create-gui-menu-item win :content "Normalize All" :on-click 'normalize-all-windows))
+         (tmp   (create-gui-menu-item win :content "Maximize All" :on-click (indirectly maximize-all-windows)))
+         (tmp   (create-gui-menu-item win :content "Normalize All" :on-click (indirectly normalize-all-windows)))
          (tmp   (create-gui-menu-window-select win))
-         (dlg   (create-gui-menu-item menu :content "Edit File(s)" :on-click 'do-ide-file-open))
+         (dlg   (create-gui-menu-item menu :content "Edit File(s)" :on-click (indirectly do-ide-file-open)))
          ;; (tmp   (create-gui-menu-item dlg :content "Server File Dialog Box" :on-click 'on-dlg-file))
          (help  (create-gui-menu-drop-down menu :content "Help"))
-         (tmp   (create-gui-menu-item help :content "About" :on-click 'on-help-about))
+         (tmp   (create-gui-menu-item help :content "About" :on-click (indirectly on-help-about)))
          (tmp   (create-gui-menu-full-screen menu)))
     (declare (ignore tmp)))
   (set-on-before-unload (window body) (constantly ""))
