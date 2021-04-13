@@ -7,7 +7,7 @@
 
 (defpackage #:phui
   (:use #:cl #:clog #:clog-gui)         ; For this tutorial we include clog-gui
-  (:export phui))
+  (:export #:phui #:shutdown))
 
 (in-package :phui)
 
