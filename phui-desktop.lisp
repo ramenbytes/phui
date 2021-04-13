@@ -56,12 +56,14 @@
 (defun on-help-about (obj)
   (let* ((about (create-gui-window obj
                                    :title   "About"
-                                   :content "<div class='w3-black'>
-                                         <center><img src='/img/clogwicon.png'></center>
-                                     <center>CLOG</center>
-                                     <center>The Common Lisp Omnificent GUI</center></div>
-                             <div><p><center>Tutorial 22</center>
-                                         <center>(c) 2021 - David Botton</center></p></div>"
+                                   :content
+                                   (who:with-html-output-to-string (out)
+                                     (:div :class "w3-black"
+                                           (:center (:img :src "/img/clogwicon.png"))
+                                           (:center "CLOG")
+                                           (:center "The Common Lisp Omnificent GUI")
+                                           (:center "Tutorial 22")
+                                           (:center "2021 - David Botton")))
                                    :hidden  t
                                    :width   200
                                    :height  200)))
