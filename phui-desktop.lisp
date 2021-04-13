@@ -59,14 +59,17 @@
                                    :content
                                    (who:with-html-output-to-string (out)
                                      (:div :class "w3-black"
+                                           (:center "Phui")
+                                           (:center "Phconvert User Interface")
+                                           (:center "2021 - Donald Ferschweiler")
                                            (:center (:img :src "/img/clogwicon.png"))
-                                           (:center "CLOG")
+                                           (:center "Prototyped with CLOG")
                                            (:center "The Common Lisp Omnificent GUI")
                                            (:center "Tutorial 22")
                                            (:center "2021 - David Botton")))
                                    :hidden  t
-                                   :width   200
-                                   :height  200)))
+                                   :width   300
+                                   :height  210)))
     (window-center about)
     (setf (visiblep about) t)
     (set-on-window-can-size about (lambda (obj)
