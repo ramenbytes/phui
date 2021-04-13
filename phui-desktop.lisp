@@ -20,24 +20,24 @@
         string))))
 
 (defun do-ide-file-new (obj)
-  (let ((win (create-gui-window obj :title "New window"
-                                    :height 400
-                                    :width 650)))
+  (let* ((win (create-gui-window obj :title "New window"
+                                     :height 400
+                                     :width 650))
+         (id (html-id win))
+         (editor-name (alexandria:symbolicate 'editor_ (princ-to-string id))))
     (set-on-window-size win (lambda (obj)
-                              (js-execute obj (format nil "editor_~A.resize()" (html-id win)))))
+                              (js-execute obj (ps:ps* `(ps:chain ,editor-name (resize))))))
     (set-on-window-size-done win (lambda (obj)
-                                   (js-execute obj (format nil "editor_~A.resize()" (html-id win)))))
+                                   (js-execute obj (ps:ps* `(ps:chain ,editor-name (resize))))))
     (create-child win
-                  (let ((id (html-id win)))
-                    (cl-who:with-html-output-to-string (out)
-                      (:script
-                       (cl-who:str
-                        (ps:ps* (let* ((editor-name (alexandria:symbolicate 'editor_ (format nil "~a" id))))
-                                  `(progn (ps:var ,editor-name (ps:chain ace (edit ,(format nil "~a-body" id))))
-                                          (ps:chain ,editor-name (set-theme "ace/theme/xcode"))
-                                          (ps:chain ,editor-name session (set-mode "ace/mode/lisp"))
-                                          (ps:chain ,editor-name session (set-tab-size 3))
-                                          (ps:chain ,editor-name (focus))))))))))))
+                  (cl-who:with-html-output-to-string (out)
+                    (:script
+                     (cl-who:str
+                      (ps:ps* `(progn (ps:var ,editor-name (ps:chain ace (edit ,(format nil "~a-body" id))))
+                                      (ps:chain ,editor-name (set-theme "ace/theme/xcode"))
+                                      ;; (ps:chain ,editor-name session (set-mode "ace/mode/lisp"))
+                                      (ps:chain ,editor-name session (set-tab-size 3))
+                                      (ps:chain ,editor-name (focus))))))))))
 
 (defun do-ide-file-open (obj)
   (server-file-dialog obj "Open..." "./"
