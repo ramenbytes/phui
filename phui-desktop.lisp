@@ -8,10 +8,15 @@
 (defpackage #:phui
   (:use #:cl #:clog #:clog-gui)         ; For this tutorial we include clog-gui
   (:export #:phui #:shutdown))
+  (:import-from #:serapeum
+                #:dict))
 
 (in-package :phui)
 
 (py4cl:import-function "convert" :from "phui.unified_conversion")
+
+(serapeum:toggle-pretty-print-hash-table)
+
 ;;; copied from demo 3
 (defun read-file (infile)
   (with-open-file (instream infile :direction :input :if-does-not-exist nil)
