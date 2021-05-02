@@ -1,5 +1,5 @@
 ;;;; Prototyping the gui. Nothing is meant to be taken as good coding style, or permanent.
-(ql:quickload '(:py4cl2 :clog :parenscript :cl-who))
+(ql:quickload '(:clog :parenscript :cl-who :serapeum :py4cl))
 
 
 ;; One, use my prefered browser. Two, do it asynchronously.
@@ -11,6 +11,7 @@
 
 (in-package :phui)
 
+(py4cl:import-function "convert" :from "phui.unified_conversion")
 ;;; copied from demo 3
 (defun read-file (infile)
   (with-open-file (instream infile :direction :input :if-does-not-exist nil)
