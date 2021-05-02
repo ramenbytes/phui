@@ -59,7 +59,7 @@
 ;;; copied from tutorial 22
 (defun on-help-about (obj)
   (let* ((about (create-gui-window obj
-                                   :title   "About"
+                                   :title "About"
                                    :content
                                    (who:with-html-output-to-string (out)
                                      (:div :class "w3-black"
