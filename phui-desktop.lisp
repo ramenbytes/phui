@@ -110,7 +110,7 @@ redefinitions of the named function."
      (apply #',function-name args)))
 
 (defun on-new-window (body)
-  (setf (title (html-document body)) "Tutorial 22")  
+  (setf (title (html-document body)) "Phconvert User Interface")
   (clog-gui-initialize body)
   ;; This is the Ace js code editor. This cdn works for most, if fails (getting
   ;; New as a blank window,etc) you can cd clog/static-files/ and run
