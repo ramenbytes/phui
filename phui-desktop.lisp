@@ -79,6 +79,29 @@
     (set-on-window-can-size about (lambda (obj)
                                     (declare (ignore obj))()))))
 
+(defun do-convert (obj)
+  (server-file-dialog obj "Convert" (uiop:getcwd)
+                      (lambda (fname)
+                        (when fname
+                          ;; (setf (window-title (current-window obj)) fname)
+                          (let ((output-lines (serapeum:lines
+                                               (with-output-to-string (*standard-output*)
+                                                 (convert
+                                                  "/home/vir/weisslab/phui/data/0023uLRpitc_NTP_20dT_0.5GndCl.sm"
+                                                  :data_fragment (dict "description" "hi")))))
+                                (win (create-gui-window
+                                      obj :title "Output"
+                                      :content
+                                      (who:with-html-output-to-string (out)
+                                        (:div :class "w3-black"
+                                              (loop for line in output-lines
+                                                    with first? = t
+                                                    do (cond (first? (setf first? nil) (who:str line))
+                                                             (t (who:htm (:p (who:str line))))))))
+                                      :hidden  t)))
+                            (window-center win)
+                            (setf (visiblep win) t))))))
+
 (defmacro indirectly (function-name)
   "Simple macro that wraps the named function in a lambda, so that we can deal
 with a function object (the lambda) while still being able to pick up
@@ -103,6 +126,7 @@ redefinitions of the named function."
          (tmp   (create-gui-menu-item win :content "Normalize All" :on-click (indirectly normalize-all-windows)))
          (tmp   (create-gui-menu-window-select win))
          (dlg   (create-gui-menu-item menu :content "Edit File(s)" :on-click (indirectly do-ide-file-open)))
+         (dlg   (create-gui-menu-item menu :content "Convert Files" :on-click (indirectly do-convert)))
          ;; (tmp   (create-gui-menu-item dlg :content "Server File Dialog Box" :on-click 'on-dlg-file))
          (help  (create-gui-menu-drop-down menu :content "Help"))
          (tmp   (create-gui-menu-item help :content "About" :on-click (indirectly on-help-about)))
