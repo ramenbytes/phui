@@ -9,7 +9,9 @@
   (:use #:cl #:clog #:clog-gui)         ; For this tutorial we include clog-gui
   (:export #:phui #:shutdown)
   (:import-from #:serapeum
-                #:dict))
+                #:dict)
+  (:import-from #:clog-user
+                #:*body*))
 
 (in-package :phui)
 
