@@ -5,7 +5,7 @@
 ;; One, use my prefered browser. Two, do it asynchronously.
 (setf trivial-open-browser:*browser-function* (lambda (url) (uiop:launch-program (format nil "qutebrowser ~a" url))))
 
-(defpackage #:phui
+(uiop:define-package #:phui
   (:use #:cl #:clog #:clog-gui)         ; For this tutorial we include clog-gui
   (:export #:phui #:shutdown)
   (:import-from #:serapeum
@@ -141,3 +141,32 @@ redefinitions of the named function."
   "Start phui."
   (initialize #'on-new-window)
   (open-browser))
+
+;; (defclass conversion-target ()
+;;   ((path :accessor path :initarg :path)))
+
+;; (defmethod render (parent-obj (obj conversion-target))
+;;   (let* ((div (create-div parent-obj))
+;;          (form (create-form div))
+;;          (path (prog1 (create-form-element form :input :label (create-label form :content "Target path: "))
+;;                  (create-form-element form :submit :value "Convert")))
+;;          (metadata (progn (create-br form)
+;;                           (create-form-element form :input
+;;                                                :label (create-label form :content "Metadata file (optional): ")))))
+;;     (setf (value path) "/home/vir/weisslab/phui/data/022rde11_T_minus15_acc__NT_plus10_don_1.sm")
+;;     (set-on-submit form
+;;                    (lambda (obj)
+;;                      (declare (ignorable obj))
+;;                      (create-br parent-obj)
+;;                      (let ((output-lines (serapeum:lines (with-output-to-string (*standard-output*)
+;;                                                            (convert (value path)
+;;                                                                     :data_fragment (dict "description" "hi"))))))
+;;                        (place-after metadata
+;;                                     (let ((div (create-div parent-obj
+;;                                                            :class "w3-black" :content
+;;                                                            (who:with-html-output-to-string (out)
+;;                                                              (loop for line in output-lines
+;;                                                                    with first? = t
+;;                                                                    do (cond (first? (setf first? nil) (who:str line))
+;;                                                                             (t (who:htm (:p (who:str line))))))))))
+;;                                       div)))))))
