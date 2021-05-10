@@ -86,21 +86,21 @@
                       (lambda (fname)
                         (when fname
                           ;; (setf (window-title (current-window obj)) fname)
-                          (let ((output-lines (serapeum:lines
-                                               (with-output-to-string (*standard-output*)
-                                                 (convert
-                                                  "/home/vir/weisslab/phui/data/0023uLRpitc_NTP_20dT_0.5GndCl.sm"
-                                                  :data_fragment (dict "description" "hi")))))
-                                (win (create-gui-window
-                                      obj :title "Output"
-                                      :content
-                                      (who:with-html-output-to-string (out)
-                                        (:div :class "w3-black"
-                                              (loop for line in output-lines
-                                                    with first? = t
-                                                    do (cond (first? (setf first? nil) (who:str line))
-                                                             (t (who:htm (:p (who:str line))))))))
-                                      :hidden  t)))
+                          (let* ((output-lines (serapeum:lines
+                                                (with-output-to-string (*standard-output*)
+                                                  (convert
+                                                   "/home/vir/weisslab/phui/data/0023uLRpitc_NTP_20dT_0.5GndCl.sm"
+                                                   :data_fragment (dict "description" "hi")))))
+                                 (win (create-gui-window
+                                       obj :title "Output"
+                                       :content
+                                       (who:with-html-output-to-string (out)
+                                         (:div :class "w3-black"
+                                               (loop for line in output-lines
+                                                     with first? = t
+                                                     do (cond (first? (setf first? nil) (who:str line))
+                                                              (t (who:htm (:p (who:str line))))))))
+                                       :hidden  t)))
                             (window-center win)
                             (setf (visiblep win) t))))))
 
