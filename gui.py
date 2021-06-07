@@ -31,3 +31,15 @@ root.geometry('300x200')
 
 # Make it resizeable after the we've made it the specified size? Deal with later.
 # root.resizable()
+
+# button for conversion
+label = Label(root, text="<choose a file>")
+# label.pack()
+label.grid(column=0)
+
+def callback():
+    label.configure(text = "Converted!")
+
+button = Button(root, text="Convert", command=callback)
+# button.pack()
+button.grid(column=1,row=0)
