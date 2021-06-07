@@ -28,6 +28,8 @@ https://tkdocs.com/index.html
 Should help with making the ui not horrid looking.
 
 https://tkdocs.com/tutorial/styles.html
+** Collapsible panes with tkinter
+https://www.geeksforgeeks.org/collapsible-pane-in-tkinter-python/
 ** Pygubu
 Gui design tool for python. Don't think it allows interactive development of
 functionality though. That is, while it allows wysiwig gui development it does
