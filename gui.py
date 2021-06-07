@@ -41,6 +41,7 @@ target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 
 # button for conversion
 label = Label(target_frame, text="<choose a file>")
+# the padding is to provide space between the label and the following button
 label.grid(column=0,padx=30)
 
 def callback():
