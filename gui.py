@@ -22,8 +22,12 @@ def root_with_geometry(width='300',height='200'):
     root.geometry(str(width) + 'x' + str(height))
     return root
 
-# for some reason, stumpwm does not respect the resize when I eval the whole
-# buffer. Individually eval'ing each statement does the trick though. ???
 root = Tk()
 root.title('PHUI')
+# Forbidding resizing prevents stumpwm full-sizing the window. Presumably it
+# would work for other window managers, based on the docs.
+root.resizable(False,False)
 root.geometry('300x200')
+
+# Make it resizeable after the we've made it the specified size? Deal with later.
+# root.resizable()
