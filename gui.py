@@ -31,15 +31,20 @@ root.geometry('300x200')
 
 # Make it resizeable after the we've made it the specified size? Deal with later.
 # root.resizable()
+# if we resize the window, these lines let our frame resize too
+# root.columnconfigure(0, weight=1)
+# root.rowconfigure(0, weight=1)
+
+# conversion widget frame
+target_frame = Frame(root)
+target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 
 # button for conversion
-label = Label(root, text="<choose a file>")
-# label.pack()
-label.grid(column=0)
+label = Label(target_frame, text="<choose a file>")
+label.grid(column=0,padx=30)
 
 def callback():
     label.configure(text = "Converted!")
 
-button = Button(root, text="Convert", command=callback)
-# button.pack()
+button = Button(target_frame, text="Convert", command=callback)
 button.grid(column=1,row=0)
