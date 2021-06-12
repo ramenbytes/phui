@@ -27,7 +27,7 @@ root.title('PHUI')
 # Forbidding resizing prevents stumpwm full-sizing the window. Presumably it
 # would work for other window managers, based on the docs.
 root.resizable(False,False)
-root.geometry('300x200')
+root.geometry('600x400')
 
 # Make it resizeable after the we've made it the specified size? Deal with later.
 # root.resizable()
