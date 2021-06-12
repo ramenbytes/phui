@@ -41,15 +41,22 @@ target_frame = Frame(root)
 target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 
 # button for conversion
-label = Label(target_frame, text="<choose a target>")
+targetlabel = Label(target_frame, text="<choose a target>")
 # the padding is to provide space between the label and the following button
-label.grid(column=0,padx=10)
+targetlabel.grid(column=0,padx=10)
 
-def callback():
-    filename = filedialog.askopenfilename()
-    label.configure(text = filename)
+def make_callback(finder,label):
+    '''Returns a closure over finder and label. finder must be a function that
+returns a filepath, and label must be a Label object. The returned closure, when
+called, will set the label's text to the name returned by finder. '''
+    def callback():
+        targetname = finder()
+        label.configure(text = targetname)
 
-filebutton = Button(target_frame, text="Select file", command=callback)
+    return callback
+
+filebutton = Button(target_frame, text="Select a file", command=make_callback(filedialog.askopenfilename, targetlabel))
 filebutton.grid(column=1,row=0)
 
-dirbuttong = Button()
+dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,targetlabel))
+dirbutton.grid(column=2,row=0)
