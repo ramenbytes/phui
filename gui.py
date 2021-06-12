@@ -2,6 +2,7 @@
 # For gui
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 
 import yaml
 from pathlib import Path
@@ -40,12 +41,15 @@ target_frame = Frame(root)
 target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 
 # button for conversion
-label = Label(target_frame, text="<choose a file>")
+label = Label(target_frame, text="<choose a target>")
 # the padding is to provide space between the label and the following button
-label.grid(column=0,padx=30)
+label.grid(column=0,padx=10)
 
 def callback():
-    label.configure(text = "Converted!")
+    filename = filedialog.askopenfilename()
+    label.configure(text = filename)
 
-button = Button(target_frame, text="Convert", command=callback)
-button.grid(column=1,row=0)
+filebutton = Button(target_frame, text="Select file", command=callback)
+filebutton.grid(column=1,row=0)
+
+dirbuttong = Button()
