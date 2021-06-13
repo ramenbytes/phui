@@ -10,7 +10,7 @@ from pathlib import Path
 import pdb
 
 # unified conversion
-# import unified_conversion as uc
+import unified_conversion as uc
 
 def run(width='300', hight='200'):
     # Creates the top-level widget and tcl process. We see a window pop up
@@ -71,5 +71,7 @@ dirbutton = Button(target_frame, text="Select a directory", command=make_callbac
 dirbutton.grid(column=2,row=0)
 
 convertbutton = Button(target_frame, text="Convert",
-                       command=lambda:chosenfile.set("converted " + chosenfile.get() + "!"))
+                       command=lambda: uc.convert(chosenfile.get(), data_fragment={'description':'hi'}) )
 convertbutton.grid(column=3,row=0)
+
+root.mainloop()
