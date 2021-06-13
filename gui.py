@@ -73,8 +73,16 @@ dirbutton.grid(column=2,row=0)
 description = Text(target_frame,height=5)
 description.grid(row=1)
 
+def ensure_description(description):
+    '''Ensures that the description string we got is non-blank, returning it if so.
+Otherwise, errors with an explanatory message.'''
+    assert len(description.strip()) != 0, "The description cannot be blank"
+    return description
+
 convertbutton = Button(target_frame, text="Convert",
-                       command=lambda: uc.convert(chosenfile.get(), data_fragment={'description': description.get('1.0','end')}) )
+                       command=lambda: uc.convert(chosenfile.get(),
+                                                  data_fragment =
+                                                  {'description': ensure_description(description.get('1.0','end'))}) )
 convertbutton.grid(column=3,row=0)
 
 root.mainloop()
