@@ -70,8 +70,11 @@ filebutton.grid(column=1,row=0)
 dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,chosenfile))
 dirbutton.grid(column=2,row=0)
 
+description = Text(target_frame,height=5)
+description.grid(row=1)
+
 convertbutton = Button(target_frame, text="Convert",
-                       command=lambda: uc.convert(chosenfile.get(), data_fragment={'description':'hi'}) )
+                       command=lambda: uc.convert(chosenfile.get(), data_fragment={'description': description.get('1.0','end')}) )
 convertbutton.grid(column=3,row=0)
 
 root.mainloop()
