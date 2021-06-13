@@ -64,3 +64,6 @@ filebutton.grid(column=1,row=0)
 
 dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,targetlabel))
 dirbutton.grid(column=2,row=0)
+
+convertbutton = Button(target_frame, text="Convert", command=lambda:targetlabel.configure(text="Converted!"))
+convertbutton.grid(column=3,row=0)
