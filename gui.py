@@ -9,6 +9,9 @@ from pathlib import Path
 # debugging
 import pdb
 
+# unified conversion
+# import unified_conversion as uc
+
 def run(width='300', hight='200'):
     # Creates the top-level widget and tcl process. We see a window pop up
     # because of the creation of the top-level widget.
@@ -45,25 +48,28 @@ target_frame = Frame(root)
 target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 
 # button for conversion
-targetlabel = Label(target_frame, text="<choose a target>")
+chosenfile = StringVar()
+chosenfile.set("<choose a target>")
+targetlabel = Label(target_frame, textvariable=chosenfile)
 # the padding is to provide space between the label and the following button
 targetlabel.grid(column=0,padx=10)
 
-def make_callback(finder,label):
-    '''Returns a closure over finder and label. finder must be a function that
-returns a filepath, and label must be a Label object. The returned closure, when
-called, will set the label's text to the name returned by finder. '''
+def make_callback(finder,stringvar):
+    '''Returns a closure over finder and stringvar. finder must be a function that
+returns a filepath, and stringvar must be a StringVar object. The returned
+closure, when called, will set the stringvar text to the name returned by
+finder.'''
     def callback():
-        targetname = finder()
-        label.configure(text = targetname)
+        stringvar.set(finder())
 
     return callback
 
-filebutton = Button(target_frame, text="Select a file", command=make_callback(filedialog.askopenfilename, targetlabel))
+filebutton = Button(target_frame, text="Select a file", command=make_callback(filedialog.askopenfilename, chosenfile))
 filebutton.grid(column=1,row=0)
 
-dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,targetlabel))
+dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,chosenfile))
 dirbutton.grid(column=2,row=0)
 
-convertbutton = Button(target_frame, text="Convert", command=lambda:targetlabel.configure(text="Converted!"))
+convertbutton = Button(target_frame, text="Convert",
+                       command=lambda:chosenfile.set("converted " + chosenfile.get() + "!"))
 convertbutton.grid(column=3,row=0)
