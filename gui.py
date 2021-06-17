@@ -50,9 +50,9 @@ target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 # button for conversion
 chosenfile = StringVar()
 chosenfile.set("<choose a target>")
-targetentry = Entry(target_frame, textvariable=chosenfile)
+targetlabel = Label(target_frame, textvariable=chosenfile)
 # the padding is to provide space between the label and the following button
-targetentry.grid(column=0,sticky=(W,E))
+targetlabel.grid(column=0,padx=10)
 
 def make_callback(finder,stringvar):
     '''Returns a closure over finder and stringvar. finder must be a function that
