@@ -73,7 +73,7 @@ dirbutton.grid(column=2,row=0)
 descriptionlabel = Label(target_frame, text="Enter a description of the data:")
 descriptionlabel.grid(row=1,sticky=W)
 
-description = Text(target_frame,height=5)
+description = Text(target_frame,height=3)
 description.grid(row=2)
 
 def ensure_description(description):
