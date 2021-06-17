@@ -70,8 +70,11 @@ filebutton.grid(column=1,row=0)
 dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,chosenfile))
 dirbutton.grid(column=2,row=0)
 
+descriptionlabel = Label(target_frame, text="Enter a description of the data:")
+descriptionlabel.grid(row=1,sticky=W)
+
 description = Text(target_frame,height=5)
-description.grid(row=1)
+description.grid(row=2)
 
 def ensure_description(description):
     '''Ensures that the description string we got is non-blank, returning it if so.
