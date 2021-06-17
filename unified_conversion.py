@@ -51,6 +51,15 @@ loaders = {'.sm' : phc.loader.usalex_sm,
            '.set' : bh_loader,
            '.spc' : bh_loader}
 
+def convertable_p(filename):
+    '''If the filename designates a file of a convertable type, then return the
+filename. Otherwise return False.'''
+    print(filename)
+    if extension(filename) in loaders:
+        return filename
+    else:
+        return False
+
 def extension(file):
     "Returns the extension of a file path"
     return os.path.splitext(file)[1]
