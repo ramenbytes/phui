@@ -54,7 +54,6 @@ loaders = {'.sm' : phc.loader.usalex_sm,
 def convertable_p(filename):
     '''If the filename designates a file of a convertable type, then return the
 filename. Otherwise return False.'''
-    print(filename)
     if extension(filename) in loaders:
         return filename
     else:
