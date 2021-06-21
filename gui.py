@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 
+import os
 import yaml
 from pathlib import Path
 # debugging
@@ -82,10 +83,19 @@ Otherwise, errors with an explanatory message.'''
     assert len(description.strip()) != 0, "The description cannot be blank"
     return description
 
+def handle_convert():
+    convert = lambda filename: uc.convert(filename,
+                                   data_fragment = {'description': ensure_description(description.get('1.0','end'))})
+    filename = chosenfile.get()
+    if os.path.isfile(filename):
+        convert(filename)
+    elif os.path.isdir(filename):
+        dirname = filename
+        [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
+
 convertbutton = Button(target_frame, text="Convert",
-                       command=lambda: uc.convert(chosenfile.get(),
-                                                  data_fragment =
-                                                  {'description': ensure_description(description.get('1.0','end'))}) )
+                       command=handle_convert)
+
 convertbutton.grid(column=3,row=0)
 
 root.mainloop()
