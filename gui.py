@@ -46,6 +46,8 @@ root.resizable(False,False)
 
 # conversion widget frame
 target_frame = Frame(root)
+target_frame['borderwidth'] = 2
+target_frame['relief'] = 'raised'
 target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
 
 # button for conversion
