@@ -45,12 +45,12 @@ root.resizable(False,False)
 # root.rowconfigure(0, weight=1)
 
 class target:
-    def __init__(self,parent,coordinates=(0,0)):
+    def __init__(self,parent,row=0,column=0):
         # conversion widget frame
         target_frame = Frame(parent)
         target_frame['borderwidth'] = 2
         target_frame['relief'] = 'raised'
-        target_frame.grid(column=coordinates[0],row=coordinates[1],sticky=(N, S, E, W))
+        target_frame.grid(row=row,column=column,sticky=(N, S, E, W))
 
         # button for conversion
         chosenfile = StringVar()
@@ -101,7 +101,7 @@ class target:
         convertbutton.grid(column=3,row=0)
         return
 
-test = target(root,(0,0))
-test2 = target(root,(0,1))
+test = target(root,row=0,column=0)
+test2 = target(root,row=1,column=0)
 
 root.mainloop()
