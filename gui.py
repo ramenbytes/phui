@@ -45,6 +45,24 @@ root.resizable(False,False)
 # root.rowconfigure(0, weight=1)
 
 class target:
+
+    def ensure_description(self,description):
+        '''Ensures that the description string we got is non-blank, returning it if so.
+        Otherwise, errors with an explanatory message.'''
+        assert len(description.strip()) != 0, "The description cannot be blank"
+        return description
+
+    def convert(self):
+        convert = lambda filename: uc.convert(filename,
+                                              data_fragment = {'description': self.ensure_description(self.description.get('1.0','end'))})
+        filename = self.chosenfile.get()
+        if os.path.isfile(filename):
+            convert(filename)
+        elif os.path.isdir(filename):
+            dirname = filename
+            [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
+        return
+
     def __init__(self,parent,row=0,column=0):
         # conversion widget frame
         self.target_frame = Frame(parent)
@@ -78,25 +96,8 @@ class target:
         self.description = Text(self.target_frame,height=3)
         self.description.grid(row=2)
 
-        def ensure_description(description):
-            '''Ensures that the description string we got is non-blank, returning it if so.
-        Otherwise, errors with an explanatory message.'''
-            assert len(description.strip()) != 0, "The description cannot be blank"
-            return description
-
-        def handle_convert():
-            convert = lambda filename: uc.convert(filename,
-                                        data_fragment = {'description': ensure_description(self.description.get('1.0','end'))})
-            filename = self.chosenfile.get()
-            if os.path.isfile(filename):
-                convert(filename)
-            elif os.path.isdir(filename):
-                dirname = filename
-                [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
-            return
-
         self.convertbutton = Button(self.target_frame, text="Convert",
-                            command=handle_convert)
+                            command=self.convert)
 
         self.convertbutton.grid(column=3,row=0)
         return
