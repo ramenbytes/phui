@@ -65,11 +65,8 @@ finder.'''
 
     return callback
 
-filebutton = Button(target_frame, text="Select a file", command=make_callback(filedialog.askopenfilename, chosenfile))
+filebutton = Button(target_frame, text="Select a file or directory", command=make_callback(filedialog.askopenfilename, chosenfile))
 filebutton.grid(column=1,row=0)
-
-dirbutton = Button(target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory,chosenfile))
-dirbutton.grid(column=2,row=0)
 
 descriptionlabel = Label(target_frame, text="Enter a description of the data:")
 descriptionlabel.grid(row=1,sticky=W)
