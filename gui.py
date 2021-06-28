@@ -44,57 +44,64 @@ root.resizable(False,False)
 # root.columnconfigure(0, weight=1)
 # root.rowconfigure(0, weight=1)
 
-# conversion widget frame
-target_frame = Frame(root)
-target_frame['borderwidth'] = 2
-target_frame['relief'] = 'raised'
-target_frame.grid(column=0,row=0,sticky=(N, S, E, W))
+class target:
+    def __init__(self,parent,coordinates=(0,0)):
+        # conversion widget frame
+        target_frame = Frame(parent)
+        target_frame['borderwidth'] = 2
+        target_frame['relief'] = 'raised'
+        target_frame.grid(column=coordinates[0],row=coordinates[1],sticky=(N, S, E, W))
 
-# button for conversion
-chosenfile = StringVar()
-chosenfile.set("<choose a target>")
-targetlabel = Label(target_frame, textvariable=chosenfile)
-# the padding is to provide space between the label and the following button
-targetlabel.grid(column=0,padx=10)
+        # button for conversion
+        chosenfile = StringVar()
+        chosenfile.set("<choose a target>")
+        targetlabel = Label(target_frame, textvariable=chosenfile)
+        # the padding is to provide space between the label and the following button
+        targetlabel.grid(column=0,padx=10)
 
-def make_callback(finder,stringvar):
-    '''Returns a closure over finder and stringvar. finder must be a function that
-returns a filepath, and stringvar must be a StringVar object. The returned
-closure, when called, will set the stringvar text to the name returned by
-finder.'''
-    def callback():
-        stringvar.set(finder())
+        def make_callback(finder,stringvar):
+            '''Returns a closure over finder and stringvar. finder must be a function that
+        returns a filepath, and stringvar must be a StringVar object. The returned
+        closure, when called, will set the stringvar text to the name returned by
+        finder.'''
+            def callback():
+                stringvar.set(finder())
 
-    return callback
+            return callback
 
-filebutton = Button(target_frame, text="Select a file or directory", command=make_callback(filedialog.askopenfilename, chosenfile))
-filebutton.grid(column=1,row=0)
+        filebutton = Button(target_frame, text="Select a file or directory", command=make_callback(filedialog.askopenfilename, chosenfile))
+        filebutton.grid(column=1,row=0)
 
-descriptionlabel = Label(target_frame, text="Enter a description of the data:")
-descriptionlabel.grid(row=1,sticky=W)
+        descriptionlabel = Label(target_frame, text="Enter a description of the data:")
+        descriptionlabel.grid(row=1,sticky=W)
 
-description = Text(target_frame,height=3)
-description.grid(row=2)
+        description = Text(target_frame,height=3)
+        description.grid(row=2)
 
-def ensure_description(description):
-    '''Ensures that the description string we got is non-blank, returning it if so.
-Otherwise, errors with an explanatory message.'''
-    assert len(description.strip()) != 0, "The description cannot be blank"
-    return description
+        def ensure_description(description):
+            '''Ensures that the description string we got is non-blank, returning it if so.
+        Otherwise, errors with an explanatory message.'''
+            assert len(description.strip()) != 0, "The description cannot be blank"
+            return description
 
-def handle_convert():
-    convert = lambda filename: uc.convert(filename,
-                                   data_fragment = {'description': ensure_description(description.get('1.0','end'))})
-    filename = chosenfile.get()
-    if os.path.isfile(filename):
-        convert(filename)
-    elif os.path.isdir(filename):
-        dirname = filename
-        [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
+        def handle_convert():
+            convert = lambda filename: uc.convert(filename,
+                                        data_fragment = {'description': ensure_description(description.get('1.0','end'))})
+            filename = chosenfile.get()
+            if os.path.isfile(filename):
+                convert(filename)
+            elif os.path.isdir(filename):
+                dirname = filename
+                [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
+            return
 
-convertbutton = Button(target_frame, text="Convert",
-                       command=handle_convert)
+        convertbutton = Button(target_frame, text="Convert",
+                            command=handle_convert)
 
-convertbutton.grid(column=3,row=0)
+        convertbutton.grid(column=3,row=0)
+        return
+
+test = target(root,(0,0))
+test2 = target(root,(0,1))
 
 root.mainloop()
