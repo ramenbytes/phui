@@ -47,17 +47,17 @@ root.resizable(False,False)
 class target:
     def __init__(self,parent,row=0,column=0):
         # conversion widget frame
-        target_frame = Frame(parent)
-        target_frame['borderwidth'] = 2
-        target_frame['relief'] = 'raised'
-        target_frame.grid(row=row,column=column,sticky=(N, S, E, W))
+        self.target_frame = Frame(parent)
+        self.target_frame['borderwidth'] = 2
+        self.target_frame['relief'] = 'raised'
+        self.target_frame.grid(row=row,column=column,sticky=(N, S, E, W))
 
         # button for conversion
-        chosenfile = StringVar()
-        chosenfile.set("<choose a target>")
-        targetlabel = Label(target_frame, textvariable=chosenfile)
+        self.chosenfile = StringVar()
+        self.chosenfile.set("<choose a target>")
+        self.targetlabel = Label(self.target_frame, textvariable=self.chosenfile)
         # the padding is to provide space between the label and the following button
-        targetlabel.grid(column=0,padx=10)
+        self.targetlabel.grid(column=0,padx=10)
 
         def make_callback(finder,stringvar):
             '''Returns a closure over finder and stringvar. finder must be a function that
@@ -69,14 +69,14 @@ class target:
 
             return callback
 
-        filebutton = Button(target_frame, text="Select a file or directory", command=make_callback(filedialog.askopenfilename, chosenfile))
-        filebutton.grid(column=1,row=0)
+        self.filebutton = Button(self.target_frame, text="Select a file or directory", command=make_callback(filedialog.askopenfilename, self.chosenfile))
+        self.filebutton.grid(column=1,row=0)
 
-        descriptionlabel = Label(target_frame, text="Enter a description of the data:")
-        descriptionlabel.grid(row=1,sticky=W)
+        self.descriptionlabel = Label(self.target_frame, text="Enter a description of the data:")
+        self.descriptionlabel.grid(row=1,sticky=W)
 
-        description = Text(target_frame,height=3)
-        description.grid(row=2)
+        self.description = Text(self.target_frame,height=3)
+        self.description.grid(row=2)
 
         def ensure_description(description):
             '''Ensures that the description string we got is non-blank, returning it if so.
@@ -86,8 +86,8 @@ class target:
 
         def handle_convert():
             convert = lambda filename: uc.convert(filename,
-                                        data_fragment = {'description': ensure_description(description.get('1.0','end'))})
-            filename = chosenfile.get()
+                                        data_fragment = {'description': ensure_description(self.description.get('1.0','end'))})
+            filename = self.chosenfile.get()
             if os.path.isfile(filename):
                 convert(filename)
             elif os.path.isdir(filename):
@@ -95,10 +95,10 @@ class target:
                 [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
             return
 
-        convertbutton = Button(target_frame, text="Convert",
+        self.convertbutton = Button(self.target_frame, text="Convert",
                             command=handle_convert)
 
-        convertbutton.grid(column=3,row=0)
+        self.convertbutton.grid(column=3,row=0)
         return
 
 test = target(root,row=0,column=0)
