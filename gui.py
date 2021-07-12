@@ -69,7 +69,8 @@ class target:
             dirname = filename
             # TODO: this needs to be moved to a loop, so I can add error handling
             # [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
-            for x in os.listdir(dirname):
+            import tqdm
+            for x in tqdm.tqdm(os.listdir(dirname)):
                 if uc.convertable_p(x):
                     print('starting with current file')
                     convert(dirname + '/' + x)
