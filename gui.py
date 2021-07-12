@@ -75,7 +75,8 @@ class target:
         self.chosenfile.set("<choose a target>")
         self.targetlabel = Label(self.target_frame, textvariable=self.chosenfile)
         # the padding is to provide space between the label and the following button
-        self.targetlabel.grid(column=0,padx=10)
+        self.targetlabel.grid(column=0,padx=(0,1),sticky=(W,E,N,S))
+        self.targetlabel['relief'] = 'sunken'
 
         def make_callback(finder,stringvar):
             '''Returns a closure over finder and stringvar. finder must be a function that
@@ -87,19 +88,28 @@ class target:
 
             return callback
 
-        self.filebutton = Button(self.target_frame, text="Select a file or directory", command=make_callback(filedialog.askopenfilename, self.chosenfile))
+        self.filebutton = Button(self.target_frame, text="Select a target file or directory", command=make_callback(filedialog.askopenfilename, self.chosenfile))
         self.filebutton.grid(column=1,row=0)
 
+        self.chosen_metadata = StringVar()
+        self.chosen_metadata.set("<choose optional metadata file>")
+        self.metadata_label = Label(self.target_frame, textvariable=self.chosen_metadata)
+        self.metadata_label.grid(row=1,column=0, padx=(0,1), sticky=(W,E,N,S))
+        self.metadata_label['relief'] = 'sunken'
+
+        self.metadata_button = Button(self.target_frame, text="Select a metadata file", command=make_callback(filedialog.askopenfilename, self.chosenfile))
+        self.metadata_button.grid(column=1,row=1,sticky=(W,E))
+
         self.descriptionlabel = Label(self.target_frame, text="Enter a description of the data:")
-        self.descriptionlabel.grid(row=1,sticky=W)
+        self.descriptionlabel.grid(row=2,sticky=W,pady=(5,0))
 
         self.description = Text(self.target_frame,height=3)
-        self.description.grid(row=2)
+        self.description.grid(row=3,pady=(0,2),padx=(0,1))
 
         self.convertbutton = Button(self.target_frame, text="Convert",
                             command=self.convert)
 
-        self.convertbutton.grid(column=3,row=0)
+        self.convertbutton.grid(column=3,row=0,rowspan=2,sticky=(N,S))
         return
 
 test = target(root,row=0,column=0)
