@@ -56,8 +56,11 @@ class target:
         # TODO: now that we want to support metadata files, this is too
         # simplistic. We need to 'parse' the gui data into arguments for
         # conversion, and handle missing data.
-        convert = lambda filename: uc.convert(filename,
-                                              data_fragment = {'description': self.ensure_description(self.description.get('1.0','end'))})
+
+        # Plan: break all this logic into a nested function that handles the conversion? Do we even need one?
+        data_fragment = {'description': self.ensure_description(self.description.get('1.0','end'))}
+        convert = lambda filename: uc.convert(filename, data_fragment = data_fragment)
+
         filename = self.chosenfile.get()
         metadata_file = self.chosen_metadata.get()
 
