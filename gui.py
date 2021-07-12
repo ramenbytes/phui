@@ -53,6 +53,9 @@ class target:
         return description
 
     def convert(self):
+        # TODO: now that we want to support metadata files, this is too
+        # simplistic. We need to 'parse' the gui data into arguments for
+        # conversion, and handle missing data.
         convert = lambda filename: uc.convert(filename,
                                               data_fragment = {'description': self.ensure_description(self.description.get('1.0','end'))})
         filename = self.chosenfile.get()
