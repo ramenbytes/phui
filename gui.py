@@ -67,9 +67,12 @@ class target:
             print('done with current file')
         elif os.path.isdir(filename):
             dirname = filename
-            # TODO: this needs to be moved to a loop, so I can add error handling
-            # [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
             import tqdm
+            # For batch conversion, we shouldn't require metadata, and just let
+            # the conversion routines pick up the apropriately named files in
+            # the directory. We should still allow the option though, perhaps
+            # applying it as a "global option"? Local files override the
+            # globals?
             for x in tqdm.tqdm(os.listdir(dirname)):
                 if uc.convertable_p(x):
                     print('starting with current file')
