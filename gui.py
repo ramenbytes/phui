@@ -59,10 +59,19 @@ class target:
         metadata_file = self.chosen_metadata.get()
 
         if os.path.isfile(filename):
+            print('starting with current file')
             convert(filename)
+            print('done with current file')
         elif os.path.isdir(filename):
             dirname = filename
-            [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
+            # TODO: this needs to be moved to a loop, so I can add error handling
+            # [convert(dirname + '/' + x) for x in os.listdir(dirname) if uc.convertable_p(x)]
+            for x in os.listdir(dirname):
+                if uc.convertable_p(x):
+                    print('starting with current file')
+                    convert(dirname + '/' + x)
+                    print('done with current file')
+
         return
 
     def __init__(self,parent,row=0,column=0):
