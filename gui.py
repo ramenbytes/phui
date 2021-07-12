@@ -56,6 +56,8 @@ class target:
         convert = lambda filename: uc.convert(filename,
                                               data_fragment = {'description': self.ensure_description(self.description.get('1.0','end'))})
         filename = self.chosenfile.get()
+        metadata_file = self.chosen_metadata.get()
+
         if os.path.isfile(filename):
             convert(filename)
         elif os.path.isdir(filename):
