@@ -106,8 +106,11 @@ class target:
 
             return callback
 
-        self.filebutton = Button(self.target_frame, text="Select a target file or directory", command=make_callback(filedialog.askopenfilename, self.chosenfile))
-        self.filebutton.grid(column=1,row=0)
+        self.filebutton = Button(self.target_frame, text="Select a file" , command=make_callback(filedialog.askopenfilename, self.chosenfile))
+        self.filebutton.grid(column=1,row=0,sticky=(W,E))
+
+        self.dirbutton = Button(self.target_frame, text="Select a directory", command=make_callback(filedialog.askdirectory, self.chosenfile))
+        self.dirbutton.grid(column=2,row=0)
 
         self.chosen_metadata = StringVar()
         self.chosen_metadata.set("<choose optional metadata file>")
@@ -115,8 +118,8 @@ class target:
         self.metadata_label.grid(row=1,column=0, padx=(0,1), sticky=(W,E,N,S))
         self.metadata_label['relief'] = 'sunken'
 
-        self.metadata_button = Button(self.target_frame, text="Select a metadata file", command=make_callback(filedialog.askopenfilename, self.chosen_metadata))
-        self.metadata_button.grid(column=1,row=1,sticky=(W,E))
+        self.metadata_button = Button(self.target_frame, text="Select metadata file", command=make_callback(filedialog.askopenfilename, self.chosen_metadata))
+        self.metadata_button.grid(column=1, columnspan=2, row=1,sticky=(W,E))
 
         self.descriptionlabel = Label(self.target_frame, text="Enter a description of the data:")
         self.descriptionlabel.grid(row=2,sticky=W,pady=(5,0))
