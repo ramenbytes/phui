@@ -111,7 +111,7 @@ class target:
         self.metadata_label.grid(row=1,column=0, padx=(0,1), sticky=(W,E,N,S))
         self.metadata_label['relief'] = 'sunken'
 
-        self.metadata_button = Button(self.target_frame, text="Select a metadata file", command=make_callback(filedialog.askopenfilename, self.chosenfile))
+        self.metadata_button = Button(self.target_frame, text="Select a metadata file", command=make_callback(filedialog.askopenfilename, self.chosen_metadata))
         self.metadata_button.grid(column=1,row=1,sticky=(W,E))
 
         self.descriptionlabel = Label(self.target_frame, text="Enter a description of the data:")
