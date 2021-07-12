@@ -76,6 +76,8 @@ class target:
             # the directory. We should still allow the option though, perhaps
             # applying it as a "global option"? Local files override the
             # globals?
+            #
+            # for more info on this library: https://stackoverflow.com/questions/3160699/python-progress-bar
             for x in tqdm.tqdm(os.listdir(dirname)):
                 if uc.convertable_p(x):
                     print('starting with current file')
