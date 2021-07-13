@@ -65,7 +65,6 @@ class target:
         metadata_file = self.chosen_metadata.get()
 
         if os.path.isfile(filename):
-            print('starting with current file')
             convert(filename)
             print('done with current file')
         elif os.path.isdir(filename):
@@ -81,7 +80,6 @@ class target:
             # for x in tqdm.tqdm(os.listdir(dirname)):
             for x in os.listdir(dirname):
                 if uc.convertable_p(x):
-                    print('starting with current file')
                     convert(dirname + '/' + x)
                     print('done with current file')
 
