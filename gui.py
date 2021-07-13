@@ -65,8 +65,9 @@ class target:
         metadata_file = self.chosen_metadata.get()
 
         if os.path.isfile(filename):
+            print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
             convert(filename)
-            print('done with current file')
+            print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         elif os.path.isdir(filename):
             dirname = filename
             # For batch conversion, we shouldn't require metadata, and just let
@@ -80,9 +81,9 @@ class target:
             # for x in tqdm.tqdm(os.listdir(dirname)):
             for x in os.listdir(dirname):
                 if uc.convertable_p(x):
+                    print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
                     convert(dirname + '/' + x)
-                    print('done with current file')
-
+                    print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         return
 
     def __init__(self,parent,row=0,column=0):
