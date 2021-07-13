@@ -70,7 +70,6 @@ class target:
             print('done with current file')
         elif os.path.isdir(filename):
             dirname = filename
-            import tqdm
             # For batch conversion, we shouldn't require metadata, and just let
             # the conversion routines pick up the apropriately named files in
             # the directory. We should still allow the option though, perhaps
@@ -78,7 +77,9 @@ class target:
             # globals?
             #
             # for more info on this library: https://stackoverflow.com/questions/3160699/python-progress-bar
-            for x in tqdm.tqdm(os.listdir(dirname)):
+            # import tqdm
+            # for x in tqdm.tqdm(os.listdir(dirname)):
+            for x in os.listdir(dirname):
                 if uc.convertable_p(x):
                     print('starting with current file')
                     convert(dirname + '/' + x)
