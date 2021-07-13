@@ -58,11 +58,19 @@ class target:
         # conversion, and handle missing data.
 
         # Plan: break all this logic into a nested function that handles the conversion? Do we even need one?
-        data_fragment = {'description': self.ensure_description(self.description.get('1.0','end'))}
-        convert = lambda filename: uc.convert(filename, data_fragment = data_fragment)
 
-        filename = self.chosenfile.get()
-        metadata_file = self.chosen_metadata.get()
+        filename = self.chosenfile.get() # we take whatever they give us
+        kwargs = dict() # initialize to a dictionary for later operations
+
+        # right now, this does not handle batch conversions any differently than single conversions, which is bad.
+        if self.chosen_metadata.get() != self.metadata_label_default:
+            kwargs["yml_file"] = self.chosen_metadata.get()
+
+        if len(self.description.get('1.0','end').strip()) != 0:
+            kwargs["data_fragment"] = {'description': self.ensure_description(self.description.get('1.0','end'))}
+
+        # convert = lambda filename: uc.convert(filename, data_fragment = data_fragment, **kwargs)
+        convert = lambda filename: uc.convert(filename, **kwargs)
 
         if os.path.isfile(filename):
             print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
@@ -118,7 +126,9 @@ class target:
         self.dirbutton.grid(column=2,row=0)
 
         self.chosen_metadata = StringVar()
-        self.chosen_metadata.set("<choose optional metadata file>")
+        self.metadata_label_default = "<choose optional metadata file>"
+        # this is both our canary and our default display string... how can we change this?
+        self.chosen_metadata.set(self.metadata_label_default)
         self.metadata_label = Label(self.target_frame, textvariable=self.chosen_metadata)
         self.metadata_label.grid(row=1,column=0, padx=(0,1), sticky=(W,E,N,S))
         self.metadata_label['relief'] = 'sunken'
