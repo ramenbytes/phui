@@ -102,7 +102,7 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
 
         If yml_file is provided, it is assumed to be a file containing a
         fragment of the Photon-HDF5 data hierarchy in the form of yaml. The
-        contents will be loader, and the resulting data destructively merged
+        contents will be loaded, and the resulting data destructively merged
         into the experimental data in the same manner that data_fragment is
         handled. To mitigate the danger of arbitrary code execution, pyaml's
         SafeLoader is used by default for loading the yaml file. If you wish to
