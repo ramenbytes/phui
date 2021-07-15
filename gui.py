@@ -149,6 +149,5 @@ class target:
         return
 
 test = target(root,row=0,column=0)
-test2 = target(root,row=1,column=0)
 
 root.mainloop()
