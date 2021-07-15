@@ -148,6 +148,23 @@ class target:
 
         return
 
-test = target(root,row=0,column=0)
+root = Tk()
+root.title('PHUI')
+# Forbidding resizing prevents stumpwm full-sizing the window. Presumably it
+# would work for other window managers, based on the docs.
+root.resizable(False,False)
+
+# /Not/ setting this permits tkinter to pick the best size for the window, such
+# that all widgets fit. It will /also/ resize when a widget gets bigger, say
+# from the filename growing bigger in the label. Overall, generally a win.
+# root.geometry('600x400')
+
+# Make it resizeable after the we've made it the specified size? Deal with later.
+# root.resizable()
+# if we resize the window, these lines let our frame resize too
+# root.columnconfigure(0, weight=1)
+# root.rowconfigure(0, weight=1)
+
+# test = target(root,row=0,column=0)
 
 root.mainloop()
