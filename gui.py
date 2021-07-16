@@ -77,6 +77,11 @@ class target:
                     print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         return
 
+    def delete(self):
+        # FIXME: If the target is the last one in the frame, then the parent
+        # frame isn't resized upon deletion. What gives?
+        return self.target_frame.destroy()
+
     def __init__(self,parent,row=0,column=0):
         # conversion widget frame
         self.target_frame = Frame(parent)
@@ -119,6 +124,10 @@ class target:
         self.metadata_button = Button(self.target_frame, text="Select metadata file", command=make_callback(filedialog.askopenfilename, self.chosen_metadata))
         self.metadata_button.grid(column=1, columnspan=2, row=1,sticky=(W,E))
 
+        self.delete_button = Button(self.target_frame, text="Remove target",
+                                    command=lambda: self.delete())
+        self.delete_button.grid(column=3,row=0,rowspan=2,sticky=(N,W,E,S))
+
         self.descriptionlabel = Label(self.target_frame, text="Enter a description of the data:")
         self.descriptionlabel.grid(row=2,sticky=W,pady=(5,0))
 
@@ -127,7 +136,7 @@ class target:
 
         self.convertbutton = Button(self.target_frame, text="Convert",
                             command=self.convert)
-        self.convertbutton.grid(column=1,row=2,rowspan=2,columnspan=2, sticky=(N,S,E,W))
+        self.convertbutton.grid(column=1,row=2,rowspan=2,columnspan=3, sticky=(N,S,E,W))
 
         return
 
