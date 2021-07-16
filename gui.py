@@ -127,7 +127,7 @@ class target:
 
         self.convertbutton = Button(self.target_frame, text="Convert",
                             command=self.convert)
-        self.convertbutton.grid(column=3,row=0,rowspan=2,sticky=(N,S))
+        self.convertbutton.grid(column=1,row=2,rowspan=2,columnspan=2, sticky=(N,S,E,W))
 
         return
 
