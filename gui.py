@@ -153,4 +153,7 @@ add_button = Button(root,command=add_target,text= "Add a conversion target")
 add_button['borderwidth'] = 3
 add_button.grid(sticky=(N,S,E,W))
 
+# Provide one target on startup. If they want more, they have the button.
+add_target()
+
 root.mainloop()
