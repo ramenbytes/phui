@@ -137,7 +137,19 @@ root.title('PHUI')
 # would work for other window managers, based on the docs.
 root.resizable(False,False)
 
+# here we make the frame that will hold all our conversion targets, and make it
+# possible to add more
+targets_frame = Frame(root)
+targets_frame.grid()
+# as a thought, we might have to deal with repacking the row numbers if we
+# remove target entries
+tests = []
 
-# test = target(root,row=0,column=0)
+def add_target():
+    tests.append(target(targets_frame,row=len(tests),column=0))
+    return
+
+add_button = Button(root,command=add_target,text= "Add a conversion target")
+add_button.grid(sticky=(N,S,E,W),pady=5)
 
 root.mainloop()
