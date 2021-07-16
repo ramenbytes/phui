@@ -97,7 +97,7 @@ class target:
     def __init__(self,parent,row=0,column=0):
         # conversion widget frame
         self.target_frame = Frame(parent)
-        self.target_frame['borderwidth'] = 2
+        self.target_frame['borderwidth'] = 3
         self.target_frame['relief'] = 'raised'
         self.target_frame.grid(row=row,column=column,sticky=(N, S, E, W))
 
