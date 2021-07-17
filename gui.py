@@ -55,28 +55,40 @@ class target:
         # convert = lambda filename: uc.convert(filename, data_fragment = data_fragment, **kwargs)
         convert = lambda filename: uc.convert(filename, **kwargs)
 
-        if os.path.isfile(filename):
-            print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
-            convert(filename)
-            print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-        elif os.path.isdir(filename):
-            dirname = filename
-            # For batch conversion, we shouldn't require metadata, and just let
-            # the conversion routines pick up the apropriately named files in
-            # the directory. We should still allow the option though, perhaps
-            # applying it as a "global option"? Local files override the
-            # globals?
-            #
-            # for more info on this library: https://stackoverflow.com/questions/3160699/python-progress-bar
-            # import tqdm
-            # for x in tqdm.tqdm(os.listdir(dirname)):
-            for x in os.listdir(dirname):
-                if uc.convertable_p(x):
-                    print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
-                    convert(dirname + '/' + x)
-                    print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-        else:
-            raise ValueError('The target is not a valid file or directory!')
+        try:
+            if os.path.isfile(filename):
+                print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
+                convert(filename)
+                print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+                self.status.set(self.status_prefix + "Converted")
+                self.statuslabel.configure(bg='green')
+            elif os.path.isdir(filename):
+                dirname = filename
+                # For batch conversion, we shouldn't require metadata, and just let
+                # the conversion routines pick up the apropriately named files in
+                # the directory. We should still allow the option though, perhaps
+                # applying it as a "global option"? Local files override the
+                # globals?
+                #
+                # for more info on this library: https://stackoverflow.com/questions/3160699/python-progress-bar
+                # import tqdm
+                # for x in tqdm.tqdm(os.listdir(dirname)):
+                for x in os.listdir(dirname):
+                    if uc.convertable_p(x):
+                        print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
+                        convert(dirname + '/' + x)
+                        self.status.set(self.status_prefix + "Converted")
+                        self.statuslabel.configure(bg='green')
+                        print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+            else:
+                raise ValueError('The target is not a valid file or directory!')
+
+        # FIXME: This should be way more fine grained and helpful! I wonder what
+        # sort of errors won't result in a failed conversion...
+        except Exception:
+            self.statuslabel.configure(bg='red')
+            self.status.set('Failed Conversion')
+
         return
 
     def delete(self):
@@ -135,6 +147,17 @@ class target:
 
         self.description = Text(self.target_frame,height=3)
         self.description.grid(row=3,pady=(0,2),padx=(0,1))
+
+        # we'll use this to indicate successful conversion
+        # changing the background color can be done this way:
+        # https://stackoverflow.com/questions/13588908/dynamically-change-widget-background-color-in-tkinter
+        self.status = StringVar()
+        # self.status_prefix = "Status: "
+        self.status_prefix = ""
+        self.status.set(self.status_prefix + "Unconverted")
+        self.statuslabel = Label(self.target_frame, textvariable=self.status)
+        self.statuslabel.grid(row=4, columnspan=4, sticky=(N,S,E,W))
+        self.statuslabel.configure(bg = '#808080') # Set to a dark grey at first
 
         self.convertbutton = Button(self.target_frame, text="Convert",
                             command=self.convert)
