@@ -125,7 +125,7 @@ class target:
         self.metadata_button.grid(column=1, columnspan=2, row=1,sticky=(W,E))
 
         self.delete_button = Button(self.target_frame, text="Remove target",
-                                    command=lambda: self.delete())
+                                    command=lambda: remove_target(self))
         self.delete_button.grid(column=3,row=0,rowspan=2,sticky=(N,W,E,S))
 
         self.descriptionlabel = Label(self.target_frame, text="Enter a description of the data:")
@@ -155,8 +155,13 @@ targets_frame.grid()
 tests = []
 
 def add_target():
-    tests.append(target(targets_frame,row=len(tests),column=0))
-    return
+    return tests.append(target(targets_frame,row=len(tests),column=0))
+
+def remove_target(target):
+    # remove it from the gui
+    target.delete()
+    # remove it from our list of targets
+    return tests.remove(target)
 
 add_button = Button(root,command=add_target,text= "Add a conversion target")
 add_button['borderwidth'] = 3
