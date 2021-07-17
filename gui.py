@@ -75,6 +75,8 @@ class target:
                     print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
                     convert(dirname + '/' + x)
                     print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        else:
+            raise ValueError('The target is not a valid file or directory!')
         return
 
     def delete(self):
