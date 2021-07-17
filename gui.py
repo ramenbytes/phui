@@ -138,7 +138,6 @@ class target:
 
         self.convertbutton = Button(self.target_frame, text="Convert",
                             command=self.convert)
-        self.convertbutton['borderwidth'] = 3
         self.convertbutton.grid(column=1,row=2,rowspan=2,columnspan=3, sticky=(N,S,E,W))
 
         return
