@@ -3,6 +3,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter import messagebox
 
 import os
 import yaml
@@ -88,6 +89,8 @@ class target:
         except BaseException as e:
             self.statuslabel.configure(bg='red')
             self.status.set('Failed Conversion')
+            # just directly show the user our exception message
+            messagebox.showinfo(message=e)
 
         return
 
