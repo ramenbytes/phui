@@ -85,7 +85,7 @@ class target:
 
         # FIXME: This should be way more fine grained and helpful! I wonder what
         # sort of errors won't result in a failed conversion...
-        except Exception as e:
+        except BaseException as e:
             self.statuslabel.configure(bg='red')
             self.status.set('Failed Conversion')
 
