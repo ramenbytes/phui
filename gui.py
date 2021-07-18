@@ -90,7 +90,7 @@ class target:
             self.statuslabel.configure(bg='red')
             self.status.set('Failed Conversion')
             # just directly show the user our exception message
-            messagebox.showinfo(message=e)
+            messagebox.showerror(message=e)
 
         return
 
