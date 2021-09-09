@@ -97,6 +97,10 @@ much as things can be bootstrapped in python...
 ** Goal(s)
 *** Find Minimal Working Conversion Requirements
 * Inbox
+** TODO Build PHUI using Github actions
+They have macOS systems I can run it on! Also, should help with the whole "Arch
+ain't Ubuntu" bit.
+https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
 ** PROJ Point 'n Shoot Conversion
 Pass data file and possibly metadata file to function and BLAM, it's converted.
 *** Inbox
