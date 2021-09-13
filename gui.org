@@ -132,4 +132,13 @@ keep their own defaults files.
 [2021-02-19 Fri 18:46] Doesn't seem necessary anymore, since the high-level
 interface phconvert.loader + the save function takes care of this. I could be
 wrong though.
+*** STRT Bundle App for Non-techs
+Using \textit{pyinstaller}:
+#+begin_src bash
+ pyinstaller --add-data /home/vir/weisslab/phconvert/phconvert/specs/photon-hdf5_specs.json:phconvert/specs/ --add-data /home/vir/weisslab/phconvert/phconvert/v04/specs/photon-hdf5_specs.json:phconvert/v04/specs/ gui.py
+#+end_src
+We need to explicitly include the json files because pyinstaller doesn't pick
+them up otherwise. The above command will create a directory containing an
+executable and everything needed for it to run. Also possible to create a single
+file executable with everything packaged into that.
 * Notes
