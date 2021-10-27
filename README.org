@@ -1,0 +1,5 @@
+#+TITLE: Readme
+
+* This software is currently unstable and alpha-status and is not fit for any use case
+It is intended to be a GUI for the phconvert python library, but is independent
+of and is not affiliated nor endorsed by phconvert or its maintainers.
