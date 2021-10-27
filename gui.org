@@ -141,4 +141,7 @@ We need to explicitly include the json files because pyinstaller doesn't pick
 them up otherwise. The above command will create a directory containing an
 executable and everything needed for it to run. Also possible to create a single
 file executable with everything packaged into that.
+**** TODO Fix CI error in phconvert
+There appears to be some bitrot? All builds fail now.
+
 * Notes
