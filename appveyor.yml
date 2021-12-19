@@ -53,7 +53,7 @@ build_script:
   - dir
   - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
-  - pyinstaller --add-data phconvert/phconvert/specs/photon-hdf5_specs.json:phconvert/specs/ --add-data phconvert/phconvert/v04/specs/photon-hdf5_specs.json:phconvert/v04/specs/ gui.py
+  - pyinstaller --add-data phconvert/phconvert/specs/photon-hdf5_specs.json;phconvert/specs/ --add-data phconvert/phconvert/v04/specs/photon-hdf5_specs.json;phconvert/v04/specs/ gui.py
 
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
