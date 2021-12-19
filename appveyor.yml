@@ -47,6 +47,12 @@ install:
 #   - pip install .
 #   - python setup.py clean --all
 
+build_script:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - dir
+  - git clone https://github.com/Photon-HDF5/phconvert phconvert
+  - dir
+
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
 #   - dir
