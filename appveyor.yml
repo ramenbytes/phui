@@ -52,7 +52,7 @@ build_script:
   - dir
   - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
-  - pyinstaller --add-data phconvert/phconvert/specs/photon-hdf5_specs.json;phconvert/specs/ --add-data phconvert/phconvert/v04/specs/photon-hdf5_specs.json;phconvert/v04/specs/ gui.py
+  - pyinstaller --debug all --add-data phconvert/phconvert/specs/photon-hdf5_specs.json;phconvert/specs/ --add-data phconvert/phconvert/v04/specs/photon-hdf5_specs.json;phconvert/v04/specs/ gui.py
   - ps: Compress-Archive dist dist.zip
 
 # before_test:
