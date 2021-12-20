@@ -1,4 +1,3 @@
-build: false
 
 environment:
   matrix:
@@ -54,6 +53,7 @@ build_script:
   - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
   - pyinstaller --add-data phconvert/phconvert/specs/photon-hdf5_specs.json;phconvert/specs/ --add-data phconvert/phconvert/v04/specs/photon-hdf5_specs.json;phconvert/v04/specs/ gui.py
+  - ps: Compress-Archive dist dist.zip
 
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
@@ -98,3 +98,20 @@ build_script:
 #   - path: dist\*
 #   - path: notebooks\*-out.ipynb
 #   - path: notebooks\*.hdf5
+
+artifacts:
+  - path: dist.zip
+    name: dist
+
+deploy:
+  release: ahh-dont-look-$(PYTHON_VERSION)-$(APPVEYOR_REPO_COMMIT)
+  description: 'Executables for others to test'
+  provider: GitHub
+  auth_token:
+    secure: z+LVern0v7e0nQ2sg0JVc1IT27md9G+7ikI0FiyrxHaW3rMs9cy/ZdfyKj2vpwOX # your encrypted token from GitHub
+  artifact: dist            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    # APPVEYOR_REPO_TAG: true        # deploy on tag push only
