@@ -39,6 +39,7 @@ install:
 #   - path
   - python -m pip install --upgrade pip
   - pip install pyinstaller
+  - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 #   - ps: 'if($env:PYTHON_VERSION -eq "2.7"){pip install pathlib}'
 #   - python --version
 #   - cd %APPVEYOR_BUILD_FOLDER%
@@ -50,9 +51,9 @@ install:
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - dir
-  - git clone https://github.com/Photon-HDF5/phconvert phconvert
+  # - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
-  - pyinstaller --paths phconvert/phconvert/ --debug all --add-data phconvert/phconvert/specs/photon-hdf5_specs.json;phconvert/specs/ --add-data phconvert/phconvert/v04/specs/photon-hdf5_specs.json;phconvert/v04/specs/ gui.py
+  - pyinstaller --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
   - ps: Compress-Archive dist dist.zip
 
 # before_test:
