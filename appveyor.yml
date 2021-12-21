@@ -53,7 +53,7 @@ build_script:
   - dir
   # - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
-  - pyinstaller --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
+  - pyinstaller --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
   - ps: Compress-Archive dist dist.zip
 
 # before_test:
