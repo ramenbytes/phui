@@ -105,7 +105,7 @@ artifacts:
     name: dist
 
 deploy:
-  release: ahh-dont-look-$(PYTHON_VERSION)-$(APPVEYOR_REPO_COMMIT)
+  release: ahh-dont-look-$(PYTHON_VERSION)-$(APPVEYOR_BUILD_VERSION)
   description: 'Executables for others to test'
   provider: GitHub
   auth_token:
