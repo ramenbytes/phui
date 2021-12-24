@@ -53,7 +53,7 @@ before_build:
 
 build_script:
   - dir
-  - pyinstaller --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
+  - pyinstaller --hidden-import importlib --debug all --collect-data phconvert gui.py
 
 after_build:
   - 7z a phui-python%PYTHON_VERSION%.zip dist
