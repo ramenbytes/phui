@@ -17,7 +17,8 @@ init:
   - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
 
 install:
-  - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+  # - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+  - ps: $Env:Path = "$Env:miniconda;$Env:miniconda\\Scripts;$Env:Path"
   - echo %PATH%
   - conda --version
   - conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
