@@ -48,10 +48,14 @@ install:
 #   - pip install .
 #   - python setup.py clean --all
 
-build_script:
+before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
+
+build_script:
   - dir
   - pyinstaller --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
+
+after_build:
   - 7z a phui-python%PYTHON_VERSION%.zip dist
 
 # before_test:
