@@ -17,9 +17,8 @@ init:
   - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
 
 install:
-  # - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
   - ps: $Env:Path = "$Env:miniconda;$Env:miniconda\\Scripts;$Env:Path"
-  - echo %PATH%
+  - ps: echo $Env:Path
   - conda --version
   - conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
   - conda update -q conda
@@ -35,14 +34,14 @@ for:
       only:
         - image: Visual Studio 2015
     before_build:
-      - cd %APPVEYOR_BUILD_FOLDER%
+      - ps: cd $Env:appveyor_build_folder
 
 build_script:
   - dir
   - pyinstaller --hidden-import importlib --debug all --collect-data phconvert gui.py
 
 after_build:
-  - 7z a phui-python%PYTHON_VERSION%.zip dist
+  - ps: 7z a phui-python$Env:python_version.zip dist
 
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
