@@ -23,14 +23,14 @@ install:
       else
       { $Env:Path = "${Env:miniconda}:${Env:miniconda\Scripts}:${Env:Path}" }
   - ps: echo $Env:Path
-  - conda --version
-  - conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
-  - conda update -q conda
-  - conda install -q conda-build
-  - conda info -a
+  - ps: conda --version
+  - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
+  - ps: conda update -q conda
+  - ps: conda install -q conda-build
+  - ps: conda info -a
   - ps: python -m pip install --upgrade pip
   - ps: pip install pyinstaller
-  - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
+  - ps: pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
 before_build:
   - ps: cd $Env:appveyor_build_folder
