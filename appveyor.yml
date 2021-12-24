@@ -17,7 +17,11 @@ init:
   - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
 
 install:
-  - ps: $Env:Path = "$Env:miniconda;$Env:miniconda\Scripts;$Env:Path"
+  - ps: |
+      if ($Env:appveyor_build_worker_image -eq "Visual Studio 2019")
+      { $Env:Path = "$Env:miniconda;$Env:miniconda\Scripts;$Env:Path"}
+      else
+      { $Env:Path = "${Env:miniconda}:${Env:miniconda\Scripts}:${Env:Path}" }
   - ps: echo $Env:Path
   - conda --version
   - conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
