@@ -53,8 +53,8 @@ build_script:
   - dir
   # - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
-  - pyinstaller --distpath phui-python%PYTHON_VERSION% --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
-  - 7z a phui-python%PYTHON_VERSION%.zip phui-python%PYTHON_VERSION%
+  - pyinstaller --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
+  - 7z a phui-python%PYTHON_VERSION%.zip dist
 
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
