@@ -49,8 +49,13 @@ install:
 #   - pip install .
 #   - python setup.py clean --all
 
-before_build:
-  - cd %APPVEYOR_BUILD_FOLDER%
+for:
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2015
+    before_build:
+      - cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:
   - dir
