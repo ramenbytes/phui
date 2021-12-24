@@ -30,7 +30,7 @@ install:
   - ps: conda info -a
   - ps: python -m pip install --upgrade pip
   - ps: pip install pyinstaller
-  - ps: pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
+  - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
 before_build:
   - ps: cd $Env:appveyor_build_folder
