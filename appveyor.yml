@@ -53,8 +53,8 @@ build_script:
   - dir
   # - git clone https://github.com/Photon-HDF5/phconvert phconvert
   - dir
-  - pyinstaller --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
-  - ps: Compress-Archive dist dist.zip
+  - pyinstaller --distpath phui-python$(PYTHON_VERSION) --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
+  - 7z a phui-python$(PYTHON_VERSION).zip phui-python$(PYTHON_VERSION)
 
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
@@ -101,16 +101,16 @@ build_script:
 #   - path: notebooks\*.hdf5
 
 artifacts:
-  - path: dist.zip
-    name: dist
+  - path: phui*.zip
 
 deploy:
-  release: ahh-dont-look-$(PYTHON_VERSION)-$(APPVEYOR_BUILD_VERSION)
+  release: ahh-dont-look-$(APPVEYOR_BUILD_VERSION)
   description: 'Executables for others to test'
   provider: GitHub
   auth_token:
     secure: z+LVern0v7e0nQ2sg0JVc1IT27md9G+7ikI0FiyrxHaW3rMs9cy/ZdfyKj2vpwOX # your encrypted token from GitHub
-  artifact: dist            # upload all NuGet packages to release assets
+    artifacts:
+      - path: '*.zip'
   draft: false
   prerelease: false
   on:
