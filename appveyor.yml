@@ -28,13 +28,8 @@ install:
   - pip install pyinstaller
   - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
-for:
-  -
-    matrix:
-      only:
-        - image: Visual Studio 2015
-    before_build:
-      - ps: cd $Env:appveyor_build_folder
+before_build:
+  - ps: cd $Env:appveyor_build_folder
 
 build_script:
   - dir
