@@ -103,6 +103,8 @@ build_script:
 artifacts:
   - path: phui*.zip
 
+skip_tags: true
+
 deploy:
   release: ahh-dont-look-$(APPVEYOR_BUILD_VERSION)
   description: 'Executables for others to test'
