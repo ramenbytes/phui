@@ -17,15 +17,15 @@ init:
   - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
 
 install:
-  - ps: $Env:Path = "$Env:miniconda;$Env:miniconda\\Scripts;$Env:Path"
+  - ps: $Env:Path = "$Env:miniconda;$Env:miniconda\Scripts;$Env:Path"
   - ps: echo $Env:Path
-  - ps: conda --version
+  - conda --version
   - conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
   - conda update -q conda
   - conda install -q conda-build
   - conda info -a
-  - python -m pip install --upgrade pip
-  - pip install pyinstaller
+  - ps: python -m pip install --upgrade pip
+  - ps: pip install pyinstaller
   - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
 before_build:
