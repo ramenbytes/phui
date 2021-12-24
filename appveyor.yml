@@ -51,8 +51,6 @@ install:
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
   - dir
-  # - git clone https://github.com/Photon-HDF5/phconvert phconvert
-  - dir
   - pyinstaller --hidden-import importlib --paths phconvert/phconvert/ --debug all --collect-data phconvert gui.py
   - 7z a phui-python%PYTHON_VERSION%.zip dist
 
