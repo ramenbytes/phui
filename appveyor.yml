@@ -1,4 +1,4 @@
-image: Ubuntu
+image: Visual Studio 2019
 
 environment:
   matrix:
@@ -31,6 +31,15 @@ install:
                               "hash" = "ca7492d456c319d15682b2d3845112a631365f293d38d1f62872c33a2e57e430"}
                     "3.8" = @{"url" = "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-MacOSX-x86_64.sh"
                               "hash" = "93e514e01142866629175f5a9e2e1d0bac8bc705f61d1ed1da3c010b7225683a"}}
+        }
+
+        # Start setting up miniconda
+        if ($isWindows){
+        # For windows it's already installed, we just need to move it to our
+        # "standardized" location. To do that, construct the name of the
+        # location appveyor has installed it to using the python version, and
+        # remove the "." from the version.
+        Move-Item -Path ("C:\Python$Env:PYTHON_VERSION-x64" -replace "\.") -Destination $Env:HOME\miniconda
         }
 
         # start downloading files
