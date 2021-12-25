@@ -15,7 +15,6 @@ environment:
 
 init:
   - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
-  - ps: if ($isMac) { Write-Output "this is a mac!"} else { Write-Output "not a mac!" }
 
 install:
   # this should set the path correctly for both windows & unix-like platforms
