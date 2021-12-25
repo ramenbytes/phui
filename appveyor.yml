@@ -106,7 +106,7 @@ install:
   - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
 before_build:
-  - ps: cd $Env:appveyor_build_folder
+  - ps: cd $Env:APPVEYOR_BUILD_FOLDER
 
 build_script:
   - dir
