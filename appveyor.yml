@@ -44,6 +44,7 @@ install:
 
         # sanity check...
         Get-ChildItem -Path $Env:HOME
+        Get-ChildItem -Path C:\
       }
 
       # start downloading files
