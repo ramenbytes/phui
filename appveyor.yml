@@ -39,7 +39,8 @@ install:
         # "standardized" location. To do that, construct the name of the
         # location appveyor has installed it to using the python version, and
         # remove the "." from the version.
-        Move-Item -Path ("C:\Python$Env:PYTHON_VERSION-x64" -replace "\.") -Destination $Env:HOME\miniconda
+        $current_location = "C:\Python$Env:PYTHON_VERSION-x64" -replace "\."
+        Move-Item -Path $current_location -Destination $Env:HOME\miniconda
 
         # just to see if we were successful...
         Write-Output $LastExitCode
