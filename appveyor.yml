@@ -96,7 +96,12 @@ install:
   - ps: conda update -q conda
   - ps: conda install -q conda-build
   - ps: conda info -a
-  - ps: python -m pip install --upgrade pip
+  - ps: |
+      if ($isWindows) {
+      python -m pip install --upgrade pip
+      } else {
+      conda install -c miniconda pip
+      }
   - ps: pip install pyinstaller
   - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
