@@ -34,6 +34,12 @@ install:
           } else {
           Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers["mac"][$Env:PYTHON_VERSION]
           }
+
+          # make sure we have the file downloaded...
+          dir
+
+          # attempt to install miniconda in the home folder
+          bash ./miniconda-installer.sh -b -p $Env:HOME/miniconda
         }
 
   # this should set the path correctly for both windows & unix-like platforms
