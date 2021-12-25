@@ -14,7 +14,7 @@ environment:
 
 
 init:
-  - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
+  - ps: echo "$Env:PYTHON $Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
 
 install:
   # ensure that miniconda is installed on linux and mac machines
@@ -39,8 +39,8 @@ install:
   # this should set the path correctly for both windows & unix-like platforms
   - ps: |
       if ($isWindows) { $sep = ";" } else { $sep = ":" }
-      $Env:Path = "$Env:miniconda${sep}$Env:miniconda\Scripts${sep}$Env:Path"
-  - ps: echo $Env:Path
+      $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA\Scripts${sep}$Env:PATH"
+  - ps: echo $Env:PATH
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
   - ps: conda update -q conda
@@ -58,7 +58,7 @@ build_script:
   - pyinstaller --hidden-import importlib --debug all --collect-data phconvert gui.py
 
 after_build:
-  - ps: 7z a phui-python$Env:python_version.zip dist
+  - ps: 7z a phui-python$Env:PYTHON_VERSION.zip dist
 
 # before_test:
 #   - cd %APPVEYOR_BUILD_FOLDER%\notebooks\data
