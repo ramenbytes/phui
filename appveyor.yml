@@ -23,12 +23,14 @@ install:
         "linux" = @{"3.7" = @{"url" = "https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-Linux-x86_64.sh"
                               "hash" = "a1a7285dea0edc430b2bc7951d89bb30a2a1b32026d2a7b02aacaaa95cf69c7c"}
                     "3.8" = @{"url" = "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh"
-                              "hash" = "935d72deb16e42739d69644977290395561b7a6db059b316958d97939e9bdf3d"}}
+                              "hash" = "935d72deb16e42739d69644977290395561b7a6db059b316958d97939e9bdf3d"}
+                   }
 
         "mac"   = @{"3.7" = @{"url" = "https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-MacOSX-x86_64.sh"
                               "hash" = "ca7492d456c319d15682b2d3845112a631365f293d38d1f62872c33a2e57e430"}
                     "3.8" = @{"url" = "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-MacOSX-x86_64.sh"
-                              "hash" = "93e514e01142866629175f5a9e2e1d0bac8bc705f61d1ed1da3c010b7225683a"}}
+                              "hash" = "93e514e01142866629175f5a9e2e1d0bac8bc705f61d1ed1da3c010b7225683a"}
+                   }
         }
 
       # Start setting up miniconda
