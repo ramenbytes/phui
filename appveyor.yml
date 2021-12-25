@@ -18,10 +18,8 @@ init:
 
 install:
   - ps: |
-      if ($isWindows)
-      { $Env:Path = "$Env:miniconda;$Env:miniconda\Scripts;$Env:Path"}
-      else
-      { $Env:Path = "${Env:miniconda}:${Env:miniconda\Scripts}:${Env:Path}" }
+      if ($isWindows) {$sep = ";"} else {$sep = ":"}
+      $Env:Path = "$Env:miniconda${sep}$Env:miniconda\Scripts${sep}$Env:Path"
   - ps: echo $Env:Path
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
