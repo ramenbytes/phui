@@ -35,16 +35,29 @@ install:
 
         if (-not $isWindows){
           if($isLinux){
-          Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers["linux"][$Env:PYTHON_VERSION]["url"]
+
+          $platform = "linux"
+          Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers[$platform][$Env:PYTHON_VERSION]["url"]
+
           } else {
-          Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers["mac"][$Env:PYTHON_VERSION]["url"]
+
+          $platform = "mac"
+          Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers[$platform][$Env:PYTHON_VERSION]["url"]
+
           }
 
           # make sure we have the file downloaded...
           dir
 
           # attempt to install miniconda in the home folder
-          bash ./miniconda-installer.sh -b -p $Env:HOME/miniconda
+          $installer_hash = (Get-FileHash -Algorithm SHA256 miniconda-installer.sh).Hash
+          $expected_hash = $conda_installers[$platform][$Env:PYTHON_VERSION]["hash"]
+          if($installer_hash -eq $expected_hash)
+          {
+            bash ./miniconda-installer.sh -b -p $Env:HOME/miniconda
+          } else {
+          Write-Output "Mismatched hash! Spooky stuff is afoot!" "Expected: $expected_hash" "Actual: $installer_hash"
+          }
         }
 
   # this should set the path correctly for both windows & unix-like platforms
