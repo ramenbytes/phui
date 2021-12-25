@@ -40,6 +40,9 @@ install:
           # location appveyor has installed it to using the python version, and
           # remove the "." from the version.
           Move-Item -Path ("C:\Python$Env:PYTHON_VERSION-x64" -replace "\.") -Destination $Env:HOME\miniconda
+
+          # just to see if we were successful...
+          Write-Output $LastExitCode
         }
 
         # start downloading files
