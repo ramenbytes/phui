@@ -43,6 +43,7 @@ install:
         Move-Item -Path $current_location -Destination $Env:HOME\miniconda
 
         # sanity check...
+        Write-Output $Env:HOME
         Get-ChildItem -Path $Env:HOME
         Get-ChildItem -Path C:\
       }
