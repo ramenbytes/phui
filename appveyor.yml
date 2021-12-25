@@ -77,9 +77,18 @@ install:
 
   # this should set the path correctly for both windows & unix-like platforms
   - ps: |
-      if ($isWindows) { $sep = ";" } else { $sep = ":" }
+      # deal with different path separators and different conda executable
+      # locations per platform
+      if ($isWindows) {
+        $sep = ";"
+        $bin = "\Scripts"
+      } else {
+        $sep = ":"
+        $bin = "/bin"}
+
+      # I /think/ the "/" won't be a problem on windows? We'll see.
       $Env:MINICONDA = "$Env:HOME/miniconda"
-      $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA/Scripts${sep}$Env:PATH"
+      $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA$bin${sep}$Env:PATH"
   - ps: Get-ChildItem -Path $Env:MINICONDA
   - ps: echo $Env:PATH
   - ps: conda --version
