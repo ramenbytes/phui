@@ -78,6 +78,7 @@ install:
       if ($isWindows) { $sep = ";" } else { $sep = ":" }
       $Env:MINICONDA = "$Env:HOME/miniconda"
       $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA/Scripts${sep}$Env:PATH"
+  - ps: Get-ChildItem -Path $Env:MINICONDA
   - ps: echo $Env:PATH
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
