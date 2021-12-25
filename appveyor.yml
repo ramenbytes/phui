@@ -33,6 +33,7 @@ install:
                               "hash" = "93e514e01142866629175f5a9e2e1d0bac8bc705f61d1ed1da3c010b7225683a"}}
         }
 
+        # start downloading files
         if (-not $isWindows){
           if($isLinux){
 
@@ -46,15 +47,16 @@ install:
 
           }
 
-          # make sure we have the file downloaded...
-          dir
-
-          # attempt to install miniconda in the home folder
+          # get hashes for verification
           $installer_hash = (Get-FileHash -Algorithm SHA256 miniconda-installer.sh).Hash
           $expected_hash = $conda_installers[$platform][$Env:PYTHON_VERSION]["hash"]
+
+          # if the hash is good, install
           if($installer_hash -eq $expected_hash)
           {
             bash ./miniconda-installer.sh -b -p $Env:HOME/miniconda
+            # remove installer script now that we're done
+            rm miniconda-installer.sh
           } else {
           Write-Output "Mismatched hash! Spooky stuff is afoot!" "Expected: $expected_hash" "Actual: $installer_hash"
           }
