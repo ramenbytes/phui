@@ -18,7 +18,7 @@ init:
 
 install:
   - ps: |
-      if ($Env:appveyor_build_worker_image -eq "Visual Studio 2019")
+      if ($isWindows)
       { $Env:Path = "$Env:miniconda;$Env:miniconda\Scripts;$Env:Path"}
       else
       { $Env:Path = "${Env:miniconda}:${Env:miniconda\Scripts}:${Env:Path}" }
