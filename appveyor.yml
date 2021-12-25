@@ -1,4 +1,4 @@
-image: Visual Studio 2019
+image: Ubuntu
 
 environment:
   matrix:
@@ -17,6 +17,25 @@ init:
   - ps: echo "$Env:python $Env:python_version $Env:python_arch $Env:miniconda"
 
 install:
+  # ensure that miniconda is installed on linux and mac machines
+  - ps: |
+      $conda_installers = @{
+
+        "linux" = @{"3.7" = "https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-Linux-x86_64.sh"
+                    "3.8" = "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh"}
+
+        "mac"   = @{"3.7" = "https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-MacOSX-x86_64.sh"
+                    "3.8" = "https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-MacOSX-x86_64.sh"}
+        }
+
+        if (-not $isWindows){
+          if($isLinux){
+          Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers["linux"][$Env:PYTHON_VERSION]
+          } else {
+          Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers["mac"][$Env:PYTHON_VERSION]
+          }
+        }
+
   # this should set the path correctly for both windows & unix-like platforms
   - ps: |
       if ($isWindows) { $sep = ";" } else { $sep = ":" }
