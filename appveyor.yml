@@ -35,12 +35,14 @@ install:
 
       # Start setting up miniconda
       if ($isWindows){
+        $Env:HOME = $Env:USERPROFILE
+
         # For windows it's already installed, we just need to move it to our
         # "standardized" location. To do that, construct the name of the
         # location appveyor has installed it to using the python version, and
         # remove the "." from the version.
         $current_location = "C:\Python$Env:PYTHON_VERSION-x64" -replace "\."
-        Move-Item -Path $current_location -Destination $Env:HOME
+        Move-Item -Path $current_location -Destination $Env:HOME\miniconda
 
         # sanity check...
         Write-Output $Env:HOME
