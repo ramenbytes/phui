@@ -10,26 +10,13 @@ environment:
 
 
 init:
-  - ps: echo "$Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
-  # Initialize a flag indicating the platform right from the start, so that we
-  # don't mess around anything more than basic checks and dispatches later.
   - ps: |
-      if ($isWindows) {
-
-      $platform = "windows"
-
-      } elseif ($isLinux) {
-
-      $platform = "linux"
-
-      } else {
-
-      $platform = "mac"
-
+      # Windows doesn't have HOME set, so make our own
+      if ($isWindows){
+        $Env:HOME = $Env:USERPROFILE
       }
-
-install:
   - ps: |
+      # Mac and Linux don't come with miniconda installed, so we need to deal with that.
       # First off, we need to know where to install miniconda from. Making a
       # hashtable seems like the most declarative and flexible way.
 
@@ -49,6 +36,25 @@ install:
                    }
         }
 
+  - ps: |
+      # Originally we set the $platform flag down in the if statement
+      # responsible for conda installation, but that required adding an extra
+      # branch for when we're on a mac and duplicating some code. Pulling it out
+      # here keeps the two things we want (initialize a platform flag, and
+      # install conda) cleanly separated.
+      if ($isWindows) {
+
+      $platform = "windows"
+
+      } elseif ($isLinux) {
+
+      $platform = "linux"
+
+      } else {
+
+      $platform = "mac"
+
+      }
   - ps: |
       # When on windows, simply move the pre-existing miniconda into the "home" folder
       # under the name "miniconda". On unix(-like) systems, which currently don't have
@@ -94,7 +100,8 @@ install:
         $bin = "\Scripts"
       } else {
         $sep = ":"
-        $bin = "/bin"}
+        $bin = "/bin"
+      }
 
       # Now we can set the path and miniconda variables for all three platforms.
       # Note that windows doesn't have a problem with the "/" in the miniconda
@@ -102,9 +109,13 @@ install:
       # instead. I don't recall which specific system had the problem though.
       # Probably both, since "\" is a special character in many unix shells, if
       # I recall correctly.
+
       $Env:MINICONDA = "$Env:HOME/miniconda"
       $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA$bin${sep}$Env:PATH"
-  - ps: Get-ChildItem -Path $Env:MINICONDA
+
+  - ps: echo "$((Get-Command python).Source) $Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
+
+install:
   - ps: echo $Env:PATH
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
