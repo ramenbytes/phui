@@ -113,7 +113,11 @@ init:
       $Env:MINICONDA = "$Env:HOME/miniconda"
       $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA$bin${sep}$Env:PATH"
 
-  - ps: echo "$((Get-Command python).Source) $Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
+  - ps: |
+      echo "Python interpreter: $((Get-Command python).Source)" `
+      "Python version: $Env:PYTHON_VERSION" `
+      "Python architecture: $Env:PYTHON_ARCH" `
+      "Miniconda path: $Env:MINICONDA"
 
 install:
   - ps: echo $Env:PATH
