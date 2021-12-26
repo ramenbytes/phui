@@ -13,11 +13,29 @@ environment:
 
 init:
   - ps: echo "$Env:PYTHON $Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
+  # Initialize a flag indicating the platform right from the start, so that we
+  # don't mess around anything more than basic checks and dispatches later.
+  - ps: |
+      if ($isWindows) {
+
+      $platform = "windows"
+
+      } elseif ($isLinux) {
+
+      $platform = "linux"
+
+      } else {
+
+      $platform = "mac"
+
+      }
 
 install:
-  # ensure that miniconda is installed on linux and mac machines
   - ps: |
-      # urls and hashes from https://docs.conda.io/en/latest/miniconda.html
+      # First off, we need to know where to install miniconda from. Making a
+      # hashtable seems like the most declarative and flexible way.
+
+      # Urls and file hashes from https://docs.conda.io/en/latest/miniconda.html
       $conda_installers = @{
 
         "linux" = @{"3.7" = @{"url" = "https://repo.anaconda.com/miniconda/Miniconda3-py37_4.10.3-Linux-x86_64.sh"
@@ -33,10 +51,12 @@ install:
                    }
         }
 
-      # Start setting up miniconda
+  - ps: |
+      # When on windows, simply move the pre-existing miniconda into the "home" folder
+      # under the name "miniconda". On unix(-like) systems, which currently don't have
+      # miniconda preinstalled, fetch and install it under $HOME/miniconda
       if ($isWindows){
         $Env:HOME = $Env:USERPROFILE
-        $platform = "windows"
 
         # For windows it's already installed, we just need to move it to our
         # "standardized" location. To do that, construct the name of the
@@ -44,17 +64,10 @@ install:
         # remove the "." from the version.
         $current_location = "C:\Miniconda$Env:PYTHON_VERSION-x64" -replace "\."
         Move-Item -Path $current_location -Destination $Env:HOME\miniconda
-      } elseif ($isLinux) {
-
-        $platform = "linux"
-        Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers[$platform][$Env:PYTHON_VERSION]["url"]
 
       } else {
 
-        $platform = "mac"
         Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers[$platform][$Env:PYTHON_VERSION]["url"]
-
-      }
 
         # get hashes for verification
         $installer_hash = (Get-FileHash -Algorithm SHA256 miniconda-installer.sh).Hash
@@ -63,18 +76,21 @@ install:
         # if the hash is good, install
         if($installer_hash -eq $expected_hash)
         {
-          bash ./miniconda-installer.sh -b -p $Env:HOME/miniconda
-          # remove installer script now that we're done
-          rm miniconda-installer.sh
+        bash ./miniconda-installer.sh -b -p $Env:HOME/miniconda
+        # remove installer script now that we're done
+        rm miniconda-installer.sh
         } else {
         Write-Output "Mismatched hash! Spooky stuff is afoot!" "Expected: $expected_hash" "Actual: $installer_hash"
         throw "bad hash!"
+        }
       }
-
-  # this should set the path correctly for both windows & unix-like platforms
   - ps: |
-      # deal with different path separators and different conda executable
-      # locations per platform
+      # Now that we've ensured that miniconda is installed, we need to make sure
+      # that the stuff we need from it (conda, and maybe python?) are in our
+      # path variables.
+
+      # First, deal with differences in path separators and conda's bin folder
+      # location for windows and unix(-like) systems.
       if ($isWindows) {
         $sep = ";"
         $bin = "\Scripts"
@@ -82,7 +98,12 @@ install:
         $sep = ":"
         $bin = "/bin"}
 
-      # I /think/ the "/" won't be a problem on windows? We'll see.
+      # Now we can set the path and miniconda variables for all three platforms.
+      # Note that windows doesn't have a problem with the "/" in the miniconda
+      # var, the unix(-like) systems have issues with "\" if we use that
+      # instead. I don't recall which specific system had the problem though.
+      # Probably both, since "\" is a special character in many unix shells, if
+      # I recall correctly.
       $Env:MINICONDA = "$Env:HOME/miniconda"
       $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA$bin${sep}$Env:PATH"
   - ps: Get-ChildItem -Path $Env:MINICONDA
@@ -93,12 +114,16 @@ install:
   - ps: conda install -q conda-build
   - ps: conda info -a
   - ps: |
+      # On windows pip is already installed, but it isn't on mac and linux.
       if ($isWindows) {
       python -m pip install --upgrade pip
       } else {
       conda install -c miniconda pip
       }
   - ps: pip install pyinstaller
+    # The following command is not written in powershell because of some
+    # unresolved errors regarding that. I wonder if they are because of the @
+    # symbol.
   - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
 
 before_build:
