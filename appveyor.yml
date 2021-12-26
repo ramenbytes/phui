@@ -109,7 +109,7 @@ before_build:
   - ps: cd $Env:APPVEYOR_BUILD_FOLDER
 
 build_script:
-  - dir
+  - ps: Get-ChildItem -Path (Get-Location)
   - pyinstaller --hidden-import importlib --debug all --collect-data phconvert gui.py
 
 after_build:
