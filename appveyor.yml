@@ -36,6 +36,7 @@ install:
       # Start setting up miniconda
       if ($isWindows){
         $Env:HOME = $Env:USERPROFILE
+        $platform = "windows"
 
         # For windows it's already installed, we just need to move it to our
         # "standardized" location. To do that, construct the name of the
@@ -43,21 +44,17 @@ install:
         # remove the "." from the version.
         $current_location = "C:\Miniconda$Env:PYTHON_VERSION-x64" -replace "\."
         Move-Item -Path $current_location -Destination $Env:HOME\miniconda
-      }
-
-      # start downloading files
-      if (-not $isWindows){
-        if($isLinux){
+      } elseif ($isLinux) {
 
         $platform = "linux"
         Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers[$platform][$Env:PYTHON_VERSION]["url"]
 
-        } else {
+      } else {
 
         $platform = "mac"
         Invoke-WebRequest -OutFile miniconda-installer.sh $conda_installers[$platform][$Env:PYTHON_VERSION]["url"]
 
-        }
+      }
 
         # get hashes for verification
         $installer_hash = (Get-FileHash -Algorithm SHA256 miniconda-installer.sh).Hash
@@ -72,7 +69,6 @@ install:
         } else {
         Write-Output "Mismatched hash! Spooky stuff is afoot!" "Expected: $expected_hash" "Actual: $installer_hash"
         throw "bad hash!"
-        }
       }
 
   # this should set the path correctly for both windows & unix-like platforms
