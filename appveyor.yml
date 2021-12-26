@@ -10,7 +10,7 @@ environment:
 
 
 init:
-  - ps: echo "$Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
+  - ps: echo "$((Get-Command python).Source) $Env:PYTHON_VERSION $Env:PYTHON_ARCH $Env:MINICONDA"
   # Initialize a flag indicating the platform right from the start, so that we
   # don't mess around anything more than basic checks and dispatches later.
   - ps: |
