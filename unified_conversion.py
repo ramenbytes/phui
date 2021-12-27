@@ -153,9 +153,10 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
         # now that we have a successfull conversion, move our temp file to the
         # final destination
         os.rename(tmp_name, output)
-    finally:
-        # always delete the tmp file
+    except:
+        # delete the temp file when it isn't moved after a successful conversion
         os.remove(tmp_name)
+        raise
 
     return
 
