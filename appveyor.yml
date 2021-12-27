@@ -1,7 +1,9 @@
 image:
   - Visual Studio 2019
   - Ubuntu
-  - macos
+  # Currently we're having issues with mac's security policies, so until we get
+  # that sorted don't build on mac.
+  #- macos
 
 environment:
   matrix:
