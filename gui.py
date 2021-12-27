@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # For gui
-print("starting imports!")
 
 from tkinter import *
 from tkinter import ttk
@@ -8,17 +7,14 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 import os
-print("importing yaml!")
 import yaml
 from pathlib import Path
 # debugging
 import pdb
 
-print("importing unified_conversion!")
 # unified conversion
 import unified_conversion as uc
 
-print("done importing!")
 def run(width='300', hight='200'):
     # Creates the top-level widget and tcl process. We see a window pop up
     # because of the creation of the top-level widget.
