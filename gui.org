@@ -87,6 +87,12 @@ It would be real nice if all mandatory fields were coalesced into one spot, even
 better if they are programmatically introspectable. Right now, I need to hunt
 down what is and is not mandatory across all project docs and sources. Some
 stuff appears to conflict...
+** Issues with python 3.10
+PyTables appears to currently have trouble installing on 3.10. On my dev
+machine, I just installed from github like the bloke in the issue mentioned.
+Keep this in mind if/when we add 3.10 support for phui.
+
+https://github.com/PyTables/PyTables/issues/909
 * Direction
 On second thought, I think it may make more sense to develop the logic and then
 form the gui around that. This is opposed to the gui-first attitude I've had so
