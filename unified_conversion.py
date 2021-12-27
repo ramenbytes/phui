@@ -20,6 +20,7 @@ import os
 import yaml
 import phconvert as phc
 
+import tempfile
 # with open(os.path.expanduser('~/weisslab/phui/dumped.yml'), mode='r') as f:
 #     # unsafe allows arbitrary code execution, meaning creation of numpy types
 #     # can happen. Since we save a numpy float, this is desired here. Still, a hack.
@@ -141,7 +142,21 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
         recursive_merge(data_fragment, data)
 
     ## FIXME: phconvert does not close hdf5 file on error! They aren't using a with-statement...
-    phc.hdf5.save_photon_hdf5(data, h5_fname=output, overwrite=True, close=True)
+    try:
+        (tmp_handle, tmp_name) = tempfile.mkstemp(prefix=filename(output) + "_temp",
+                                              suffix=".hdf5",
+                                              dir=os.path.dirname(output))
+        # we only want the name, phconvert will do the opening and closing.
+        os.close(tmp_handle)
+
+        phc.hdf5.save_photon_hdf5(data, h5_fname=tmp_name, overwrite=True, close=True)
+        # now that we have a successfull conversion, move our temp file to the
+        # final destination
+        os.rename(tmp_name, output)
+    finally:
+        # always delete the tmp file
+        os.remove(tmp_name)
+
     return
 
 def recursive_merge(source_dict, destination_dict):
