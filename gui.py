@@ -75,13 +75,20 @@ class target:
                 # for more info on this library: https://stackoverflow.com/questions/3160699/python-progress-bar
                 # import tqdm
                 # for x in tqdm.tqdm(os.listdir(dirname)):
+                print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current directory<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n')
+
                 for x in os.listdir(dirname):
                     if uc.convertable_p(x):
                         print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
+
                         convert(dirname + '/' + x)
-                        self.status.set(self.status_prefix + "Converted")
-                        self.statuslabel.configure(bg='green')
+
                         print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
+                self.status.set(self.status_prefix + "Converted")
+                self.statuslabel.configure(bg='green')
+
+                print('\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current directory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             else:
                 raise ValueError('The target is not a valid file or directory!')
 
