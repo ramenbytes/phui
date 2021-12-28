@@ -113,6 +113,12 @@ class target:
                     # Need to track this so that we can report on how many were converted
                     num_converted = 0
 
+                    self.status.set(self.status_prefix + "Pending")
+                    self.statuslabel.configure(bg='#808080')
+                    self.statuslabel.update()
+                    # pause for the user to see our message...
+                    time.sleep(1)
+
                     for x in unconverted_files:
 
                         try:
