@@ -130,16 +130,19 @@ class target:
 
                         print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
-                    if 0 < num_converted < len(unconverted_files):
-                        status = "Converted " + str(num_converted) + " out of " + str(len(unconverted_files)) \
-                            + " unconverted files"
-                        status_color = 'yellow'
-                    elif num_converted == 0:
-                        status = "No files converted"
+                    status = "Converted " + str(num_converted) + " out of " + str(len(unconverted_files)) \
+                        + " unconverted files. " + str(len(files_to_skip)) + \
+                        " files already converted before this attempt."
+
+                    if num_converted == len(unconverted_files):
+                        status_color = 'green'
+                    elif num_converted + len(files_to_skip) == 0:
+                        # absolutely no files in the directory have been converted
                         status_color = 'red'
                     else:
-                        status = "Converted"
-                        status_color = 'green'
+                        # Some have been converted. Maybe in this run, maybe in
+                        # a previous one.
+                        status_color = 'yellow'
 
                     self.status.set(self.status_prefix + status)
                     self.statuslabel.configure(bg=status_color)
