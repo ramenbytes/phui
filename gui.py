@@ -57,6 +57,7 @@ class target:
         # convert = lambda filename: uc.convert(filename, data_fragment = data_fragment, **kwargs)
         convert = lambda filename: uc.convert(filename, **kwargs)
 
+        # this try-except block is to catch any unhandled exceptions and show them to the user
         try:
             if os.path.isfile(filename):
                 print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
@@ -113,7 +114,6 @@ class target:
                     num_converted = 0
 
                     for x in unconverted_files:
-                        print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
 
                         try:
                             convert(dirname + '/' + x)
@@ -128,13 +128,12 @@ class target:
                             # parsing/serialization/etc.
                             print(fail_flag + x + " REASON: " + repr(e), file=progress_log)
 
-                        print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-
                     status = "Converted " + str(num_converted) + " out of " + str(len(unconverted_files)) \
                         + " unconverted files. " + str(len(files_to_skip)) + \
                         " files already converted before this attempt."
 
                     if num_converted == len(unconverted_files):
+                        # All files in the directory have been converted!
                         status_color = 'green'
                     elif num_converted + len(files_to_skip) == 0:
                         # absolutely no files in the directory have been converted
@@ -144,10 +143,10 @@ class target:
                         # a previous one.
                         status_color = 'yellow'
 
+                    # Alert the user to the (un)fortunate state of affairs
                     self.status.set(self.status_prefix + status)
                     self.statuslabel.configure(bg=status_color)
 
-                print('\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current directory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             else:
                 raise ValueError('The target is not a valid file or directory!')
 
