@@ -79,12 +79,27 @@ class target:
 
                 # maybe later we let people specify this file
                 progress_file = dirname + "/phui_conversion_progress.log"
+
+                # we'll use this variable to store the names of files we've
+                # already converted, and don't need to waste time processing
+                # again.
+                files_to_skip = []
+
                 # check to see if we already have a progress file
                 if os.path.exists(progress_file):
-                    print("Hello data my old friend...")
+                    with open(progress_file, mode='r') as progress_log:
+                        # this works so long as we /only/ store sucessful files
+                        # in the log. We should also keep track of failures,
+                        # along with the reason. It'd be nice if we had an
+                        # s-expression parser.... Or some trivial (de)serialization
+                        # procedure...
+                        files_to_skip = [line.strip() for line in progress_log.readlines()]
 
                 with open(progress_file, mode='a+') as progress_log:
-                    for x in os.listdir(dirname):
+
+                    unconverted_files = [file for file in os.listdir(dirname) if file not in files_to_skip]
+
+                    for x in unconverted_files:
                         if uc.convertable_p(x):
                             print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
 
