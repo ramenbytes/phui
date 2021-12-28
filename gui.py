@@ -93,7 +93,11 @@ class target:
                 # file's conversion failed. *sad trombone*
                 fail_flag = "FAILURE: "
 
-                # check to see if we already have a progress file
+                # Check to see if we already have a progress file. Maybe we
+                # later move this block under the conversion's with statement,
+                # and instead of checking for file existence just blow through
+                # it looking for lines? Hmm... not sure if that makes sense to
+                # choose over the current method.
                 if os.path.exists(progress_file):
                     with open(progress_file, mode='r') as progress_log:
                         # This line-based solution feels crude. Structured data
@@ -110,9 +114,16 @@ class target:
                         if uc.convertable_p(x):
                             print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
 
-                            convert(dirname + '/' + x)
-                            # upon success, print the filename (relative to our directory) to the progress log
-                            print(success_flag + x, file=progress_log)
+                            try:
+                                convert(dirname + '/' + x)
+                                # upon success, print the filename (relative to our directory) to the progress log
+                                print(success_flag + x, file=progress_log)
+
+                            except BaseException as e:
+                                # I really think structured data would be
+                                # nicer... Saves us from explicitly dealing with
+                                # parsing/serialization/etc.
+                                print(fail_flag + x + " REASON: " + repr(e), file=progress_log)
 
                             print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
