@@ -149,6 +149,7 @@ class target:
                     else:
                         # Some have been converted. Maybe in this run, maybe in
                         # a previous one.
+                        status += " Progress log: " + progress_file
                         status_color = 'yellow'
 
                     # Alert the user to the (un)fortunate state of affairs
