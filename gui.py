@@ -85,17 +85,24 @@ class target:
                 # again.
                 files_to_skip = []
 
+                # seeing this flag at the start of a log file line means that
+                # the conversion was successful
+                success_flag = "SUCCESS: "
+
+                # If this flag is at the start of a log file line, then that
+                # file's conversion failed. *sad trombone*
+                fail_flag = "FAILURE: "
+
                 # check to see if we already have a progress file
                 if os.path.exists(progress_file):
                     with open(progress_file, mode='r') as progress_log:
-                        # this works so long as we /only/ store sucessful files
-                        # in the log. We should also keep track of failures,
-                        # along with the reason. It'd be nice if we had an
-                        # s-expression parser.... Or some trivial (de)serialization
-                        # procedure...
-                        files_to_skip = [line.strip() for line in progress_log.readlines()]
+                        # This line-based solution feels crude. Structured data
+                        # might be better/more robust
+                        files_to_skip = [line[len(success_flag):].strip()
+                                         for line in progress_log.readlines()
+                                         if line[:len(success_flag)] == success_flag]
 
-                with open(progress_file, mode='a+') as progress_log:
+                with open(progress_file, mode='a') as progress_log:
 
                     unconverted_files = [file for file in os.listdir(dirname) if file not in files_to_skip]
 
@@ -105,7 +112,7 @@ class target:
 
                             convert(dirname + '/' + x)
                             # upon success, print the filename (relative to our directory) to the progress log
-                            print(x, file=progress_log)
+                            print(success_flag + x, file=progress_log)
 
                             print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
