@@ -77,9 +77,11 @@ class target:
                 # for x in tqdm.tqdm(os.listdir(dirname)):
                 print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current directory<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n')
 
-                for x in os.listdir(dirname):
-                    if uc.convertable_p(x):
-                        print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
+                # maybe later we let people specify this file
+                progress_file = dirname + "/phui_conversion_progress.log"
+                # check to see if we already have a progress file
+                if os.path.exists(progress_file):
+                    print("Hello data my old friend...")
 
                         convert(dirname + '/' + x)
 
