@@ -109,26 +109,40 @@ class target:
                 with open(progress_file, mode='a') as progress_log:
 
                     unconverted_files = [file for file in os.listdir(dirname) if file not in files_to_skip]
+                    # Need to track this so that we can report on how many were converted
+                    num_converted = 0
 
                     for x in unconverted_files:
-                        if uc.convertable_p(x):
-                            print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
+                        print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
 
-                            try:
-                                convert(dirname + '/' + x)
-                                # upon success, print the filename (relative to our directory) to the progress log
-                                print(success_flag + x, file=progress_log)
+                        try:
+                            convert(dirname + '/' + x)
+                            # upon success, print the filename (relative to our directory) to the progress log
+                            print(success_flag + x, file=progress_log)
 
-                            except BaseException as e:
-                                # I really think structured data would be
-                                # nicer... Saves us from explicitly dealing with
-                                # parsing/serialization/etc.
-                                print(fail_flag + x + " REASON: " + repr(e), file=progress_log)
+                            # another one bites the dust!
+                            num_converted += 1
+                        except BaseException as e:
+                            # I really think structured data would be
+                            # nicer... Saves us from explicitly dealing with
+                            # parsing/serialization/etc.
+                            print(fail_flag + x + " REASON: " + repr(e), file=progress_log)
 
-                            print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+                        print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
-                    self.status.set(self.status_prefix + "Converted")
-                    self.statuslabel.configure(bg='green')
+                    if 0 < num_converted < len(unconverted_files):
+                        status = "Converted " + str(num_converted) + " out of " + str(len(unconverted_files)) \
+                            + " unconverted files"
+                        status_color = 'yellow'
+                    elif num_converted == 0:
+                        status = "No files converted"
+                        status_color = 'red'
+                    else:
+                        status = "Converted"
+                        status_color = 'green'
+
+                    self.status.set(self.status_prefix + status)
+                    self.statuslabel.configure(bg=status_color)
 
                 print('\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current directory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             else:
