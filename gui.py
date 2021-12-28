@@ -83,12 +83,19 @@ class target:
                 if os.path.exists(progress_file):
                     print("Hello data my old friend...")
 
-                        convert(dirname + '/' + x)
+                with open(progress_file, mode='a+') as progress_log:
+                    for x in os.listdir(dirname):
+                        if uc.convertable_p(x):
+                            print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
 
-                        print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+                            convert(dirname + '/' + x)
+                            # upon success, print the filename (relative to our directory) to the progress log
+                            print(x, file=progress_log)
 
-                self.status.set(self.status_prefix + "Converted")
-                self.statuslabel.configure(bg='green')
+                            print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
+                    self.status.set(self.status_prefix + "Converted")
+                    self.statuslabel.configure(bg='green')
 
                 print('\n\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current directory>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             else:
