@@ -61,12 +61,18 @@ class target:
 
         # this try-except block is to catch any unhandled exceptions and show them to the user
         try:
+            # Thinking it might be beneficial to split things into two different
+            # classes? A directory target and a file target? That way we can
+            # take advantage of dispatching? Would that make the implementation
+            # of actions messier? Specifically, would I need to deal with a
+            # bunch of inheritance crap?
             if os.path.isfile(filename):
-                print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current file<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n')
+
                 convert(filename)
-                print('\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<done with current file>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
                 self.status.set(self.status_prefix + "Converted")
                 self.statuslabel.configure(bg='green')
+
             elif os.path.isdir(filename):
                 dirname = filename
                 # For batch conversion, we shouldn't require metadata, and just let
@@ -78,7 +84,6 @@ class target:
                 # for more info on this library: https://stackoverflow.com/questions/3160699/python-progress-bar
                 # import tqdm
                 # for x in tqdm.tqdm(os.listdir(dirname)):
-                print('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>starting current directory<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n')
 
                 # maybe later we let people specify this file
                 progress_file = dirname + "/phui_conversion_progress.log"
@@ -104,7 +109,17 @@ class target:
                 if os.path.exists(progress_file):
                     with open(progress_file, mode='r') as progress_log:
                         # This line-based solution feels crude. Structured data
-                        # might be better/more robust
+                        # might be better/more robust.
+                        #
+                        # Also, we should include
+                        # the progress log in the list of files to skip.
+                        # Otherwise it'll never be possible to have a fully
+                        # converted directory.
+                        #
+                        # Also also, it might make more sense to only included
+                        # files that we think are convertable based off
+                        # extension. Theoretically we /might/ miss some if they
+                        # are named funny though.
                         files_to_skip = [line[len(success_flag):].strip()
                                          for line in progress_log.readlines()
                                          if line[:len(success_flag)] == success_flag]
@@ -115,6 +130,17 @@ class target:
                     # Need to track this so that we can report on how many were converted
                     num_converted = 0
 
+                    # Instead of all this junk where I'm mixing the commands
+                    # that do stuff with the commands that update gui state,
+                    # would it be possible to just derive the gui state from the
+                    # application state? Make the gui a "portal" into the
+                    # application data structures so to speak? Seems like it is
+                    # invoking ideas similar to reactive programming, Kenny's
+                    # Cells comes to mind... McCLIM's presentations too. Would a
+                    # lack of multithreading make it difficult to emulate those
+                    # things? Would probably need to redirect all "watched"
+                    # things through structures/objects that you could attach
+                    # methods to.
                     self.status.set(self.status_prefix + "Pending")
                     self.statuslabel.configure(bg='#808080')
                     self.statuslabel.update()
@@ -235,7 +261,7 @@ class target:
         self.status.set(self.status_prefix + "Unconverted")
         self.statuslabel = Label(self.target_frame, textvariable=self.status)
         self.statuslabel.grid(row=4, columnspan=4, sticky=(N,S,E,W))
-        self.statuslabel.configure(bg = '#808080') # Set to a dark grey at first
+        self.statuslabel.configure(bg='#808080') # Set to a dark grey at first
 
         self.convertbutton = Button(self.target_frame, text="Convert",
                             command=self.convert)
@@ -258,7 +284,7 @@ targets_frame.grid()
 tests = []
 
 def add_target():
-    return tests.append(target(targets_frame,row=len(tests),column=0))
+    return tests.append(target(targets_frame, row=len(tests), column=0))
 
 def remove_target(target):
     # remove it from the gui
@@ -266,9 +292,9 @@ def remove_target(target):
     # remove it from our list of targets
     return tests.remove(target)
 
-add_button = Button(root,command=add_target,text= "Add a conversion target")
+add_button = Button(root, command=add_target, text="Add a conversion target")
 add_button['borderwidth'] = 3
-add_button.grid(sticky=(N,S,E,W))
+add_button.grid(sticky=(N, S, E,W))
 
 # Provide one target on startup. If they want more, they have the button.
 add_target()
