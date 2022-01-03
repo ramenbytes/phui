@@ -40,3 +40,20 @@ from phconvert.metadata import official_fields_specs
 # loader functions from phc.loader, it looks like we are already populating
 # /setup with default values. So, we'll definitely want to show those fields to
 # the user for editing. But, we won't show the photon_data field.
+
+def set_leaf(root, path, value):
+    '''Given root, possibly nested dict, and the list of keys (the 'path') needed to
+access value, will follow the path, creating any missing nested dictionaries,
+until it reaches the proper depth and can insert the value. If the value at the
+specified path already exists, it is overwritten.
+
+Example:
+    set_leaf(dict(), ['photon_data', 'detectors'], "hi!")
+
+    => {'photon_data':{'detectors':'hi!'}}
+
+    '''
+    path_length = len(path)
+
+
+    return 42
