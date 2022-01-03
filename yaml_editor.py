@@ -6,7 +6,6 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 from phconvert.metadata import official_fields_specs
-from phconvert.v04.metadata import official_fields_specs as v04_official_fields_specs
 
 # ok, how do I show users all the options? Also, how to do I automate the
 # translation of the specs to a tree, for later use? What I'd like to be able to
