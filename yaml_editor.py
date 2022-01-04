@@ -46,10 +46,11 @@ from phconvert.metadata import official_fields_specs
 # https://stackoverflow.com/questions/28225552/is-there-a-recursive-version-of-the-dict-get-built-in/52260663#52260663
 
 def set_leaf(root, keys, value):
-    '''Given root, possibly nested dict, and the list of keys (the 'path') needed to
-access value, will follow that path, creating any missing nested dictionaries,
-until it reaches the proper depth and can insert the value. If the value at the
-specified path already exists, it is overwritten. Returns the updated dictionary.
+    '''Given root, a possibly nested dict, and the list of keys (the 'path') needed
+to access value, will follow that path, creating any missing nested
+dictionaries, until it reaches the proper depth and can insert the value. If the
+value at the specified path already exists, it is overwritten. Returns the
+updated dictionary.
 
 Example:
     set_leaf(dict(), ['photon_data', 'detectors'], "hi!")
