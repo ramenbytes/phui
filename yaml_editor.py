@@ -7,6 +7,8 @@ from tkinter import messagebox
 
 from phconvert.metadata import official_fields_specs
 
+import functools
+
 # ok, how do I show users all the options? Also, how to do I automate the
 # translation of the specs to a tree, for later use? What I'd like to be able to
 # do is to more or less just say
