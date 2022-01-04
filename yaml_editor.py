@@ -64,3 +64,12 @@ provided, returns the root path.
         path = '/'
 
     return path
+
+def pathkeys(path):
+    '''Takes a Photon-HDF5 path and returns a list of corresponding keys for the
+data dictionary used during conversion. If the root path is provided, an empty
+list is returned.'''
+
+    assert path[0] == '/', "Invalid path. Must be absolute (starts from '/')"
+
+    return str.split(path[1:])
