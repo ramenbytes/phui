@@ -7,8 +7,6 @@ from tkinter import messagebox
 
 from phconvert.metadata import official_fields_specs
 
-import functools
-
 # ok, how do I show users all the options? Also, how to do I automate the
 # translation of the specs to a tree, for later use? What I'd like to be able to
 # do is to more or less just say
@@ -47,55 +45,22 @@ import functools
 # need that later... This should be helpful:
 # https://stackoverflow.com/questions/28225552/is-there-a-recursive-version-of-the-dict-get-built-in/52260663#52260663
 
-def get_leaf(root, *keys):
-    '''Performs nested access on root using keys'''
-    access = lambda x, y: x[y]
-    return functools.reduce(access, keys, root)
+def keypath(*keys):
+    '''Takes the keys for an entry in the data dictionary used during conversion and
+returns the Photon-HDF5 path corresponding to those keys. If no keys are
+provided, returns the root path.
 
-def set_leaf(root, keys, value):
-    '''Given root, a possibly nested dict, and the list of keys (the 'path') needed
-to access value, will follow that path, creating any missing nested
-dictionaries, until it reaches the proper depth and can insert the value. If the
-value at the specified path already exists, it is overwritten. Returns the
-updated dictionary.
+    Examples:
+        keypath() => '/'
 
-Example:
-    set_leaf(dict(), ['photon_data', 'detectors'], "hi!")
-
-    => {'photon_data':{'detectors':'hi!'}}
-
+        keypath('photon_data') => '/photon_data'
     '''
-    leaf_index = len(keys) - 1
+    path = ''
 
-    # this points to the current dictionary we are trying to create/set a key
-    # in.
-    current_node = root
+    if keys:
+        for key in keys:
+            path += '/' + key
+    else:
+        path = '/'
 
-    for nth in range(leaf_index + 1):
-        if nth == leaf_index:
-            # for this case, we've reached the end of our path and need to insert the leaf value
-            if type(current_node) == list:
-                print(keys, current_node)
-            current_node[keys[nth]] = value
-        else:
-            # We still have more keys to go, so create a nested dictionary,
-            # stomping on the current non-dict value if necessary.
-
-            # get the current value, defaulting to a dict if it doesn't exist.
-            next_node = current_node.get(keys[nth], dict())
-            if type(next_node) != dict:
-                # we need to stomp on the current value, since we want it to be
-                # a dictionary now.
-                next_node = dict()
-
-            # insert it in the dictionary we're current inside
-            current_node[keys[nth]] = next_node
-            # and set things up to descend into this new dictionary on the next iteration
-            current_node = next_node
-
-    return root
-
-def get_leaf(root, *keys):
-    '''Performs nested access on root using keys'''
-    access = lambda x, y: x[y]
-    return functools.reduce(access, keys, root)
+    return path
