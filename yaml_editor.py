@@ -76,3 +76,8 @@ Example:
            current_node = next_node
 
     return root
+
+def get_leaf(root, *keys):
+    '''Performs nested access on root using keys'''
+    access = lambda x, y: x[y]
+    return functools.reduce(access, keys, root)
