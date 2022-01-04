@@ -41,11 +41,15 @@ from phconvert.metadata import official_fields_specs
 # /setup with default values. So, we'll definitely want to show those fields to
 # the user for editing. But, we won't show the photon_data field.
 
-def set_leaf(root, path, value):
+# Don't want to spin up a nested access function right now. Though we will
+# need that later... This should be helpful:
+# https://stackoverflow.com/questions/28225552/is-there-a-recursive-version-of-the-dict-get-built-in/52260663#52260663
+
+def set_leaf(root, keys, value):
     '''Given root, possibly nested dict, and the list of keys (the 'path') needed to
-access value, will follow the path, creating any missing nested dictionaries,
+access value, will follow that path, creating any missing nested dictionaries,
 until it reaches the proper depth and can insert the value. If the value at the
-specified path already exists, it is overwritten.
+specified path already exists, it is overwritten. Returns the updated dictionary.
 
 Example:
     set_leaf(dict(), ['photon_data', 'detectors'], "hi!")
@@ -53,7 +57,22 @@ Example:
     => {'photon_data':{'detectors':'hi!'}}
 
     '''
-    path_length = len(path)
+    path_length = len(keys)
 
+    # this points to the current dictionary we are trying to create/set a key
+    # in.
+    current_node = root
 
-    return 42
+    for nth in range(path_length):
+       if nth+1 == path_length:
+           # for this case, we've reached the end of our path and need to insert the leaf value
+           current_node[keys[nth]] = value
+       else:
+           # We still have more keys to go, so create a nested dictionary
+           next_node = dict()
+           # insert it in the dictionary we're current inside
+           current_node[keys[nth]] = next_node
+           # and set things up to descend into this new dictionary on the next iteration
+           current_node = next_node
+
+    return root
