@@ -96,11 +96,11 @@ class target:
 
                 # seeing this flag at the start of a log file line means that
                 # the conversion was successful
-                success_flag = "SUCCESS: "
+                success_flag = "SUCCESS:"
 
                 # If this flag is at the start of a log file line, then that
                 # file's conversion failed. *sad trombone*
-                fail_flag = "FAILURE: "
+                fail_flag = "FAILURE:"
 
                 # Check to see if we already have a progress file. Maybe we
                 # later move this block under the conversion's with statement,
@@ -165,7 +165,7 @@ class target:
                         try:
                             convert(dirname + '/' + x)
                             # upon success, print the filename (relative to our directory) to the progress log
-                            print(success_flag + x, file=progress_log)
+                            print(success_flag, x, file=progress_log)
 
                             # another one bites the dust!
                             num_converted += 1
@@ -173,7 +173,7 @@ class target:
                             # I really think structured data would be
                             # nicer... Saves us from explicitly dealing with
                             # parsing/serialization/etc.
-                            print(fail_flag + x + " REASON: " + repr(e), file=progress_log)
+                            print(fail_flag, x, "REASON:", repr(e), file=progress_log)
 
                     status = "Converted " + str(num_converted) + " out of " + str(len(unconverted_files)) \
                         + " unconverted files. " + str(len(files_to_skip)) + \
