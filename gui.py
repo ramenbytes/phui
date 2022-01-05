@@ -90,8 +90,9 @@ class target:
 
                 # we'll use this variable to store the names of files we've
                 # already converted, and don't need to waste time processing
-                # again.
-                files_to_skip = []
+                # again. We want to make sure that we don't try converting the
+                # progress file since that makes little sense.
+                files_to_skip = [progress_file]
 
                 # seeing this flag at the start of a log file line means that
                 # the conversion was successful
@@ -120,13 +121,25 @@ class target:
                         # files that we think are convertable based off
                         # extension. Theoretically we /might/ miss some if they
                         # are named funny though.
-                        files_to_skip = [line[len(success_flag):].strip()
-                                         for line in progress_log.readlines()
-                                         if line[:len(success_flag)] == success_flag]
+                        files_to_skip += [entry[1]
+                                          for entry in map(str.split, progress_log.readlines())
+                                          if entry[0] == success_flag]
 
                 with open(progress_file, mode='a') as progress_log:
 
-                    unconverted_files = [file for file in os.listdir(dirname) if file not in files_to_skip]
+                    unconverted_files = [file for file in os.listdir(dirname)
+                                         # we only try to convert files that
+                                         # aren't already converted, or are an
+                                         # unconvertable filetype. Our progress
+                                         # log is excluded too, for obvious
+                                         # reasons. Though, a progress log in a
+                                         # convertable format could be
+                                         # interesting purely in its own right.
+                                         # Converting the progress log...
+                                         # There's a nice metacircular feeling
+                                         # to that.
+                                         if (file not in files_to_skip
+                                             and uc.convertable_p(dirname + '/' + file))]
                     # Need to track this so that we can report on how many were converted
                     num_converted = 0
 
