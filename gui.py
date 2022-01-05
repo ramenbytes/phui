@@ -124,6 +124,8 @@ class target:
                         files_to_skip += [entry[1]
                                           for entry in map(str.split, progress_log.readlines())
                                           if entry[0] == success_flag]
+                        # remove duplicates
+                        files_to_skip = list(set(files_to_skip))
 
                 with open(progress_file, mode='a') as progress_log:
 
