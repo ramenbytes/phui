@@ -177,7 +177,7 @@ class target:
 
                     status = "Converted " + str(num_converted) + " out of " + str(len(unconverted_files)) \
                         + " unconverted files. " + str(len(files_to_skip)) + \
-                        " files already converted before this attempt."
+                        " file(s) already converted before this attempt."
 
                     if num_converted == len(unconverted_files):
                         # All files in the directory have been converted!
