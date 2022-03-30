@@ -27,22 +27,25 @@ import tempfile
 #     snarf = yaml.unsafe_load(f)
 
 def compose(g, f):
-    "Simple composition of monadic functions."
+    '''Returns a one-argument function that applies f to the argument, then applies
+g to that result and returns g's result.'''
     return lambda x: g(f(x))
 
 def first_only(function):
-    '''Returns a new function that will index the returned value of the original
-function by 0, and return the result.'''
+    '''Returns a new, one argument function. When called, it will first apply the
+    original function to the argument then extract the first element of that
+    return value and return that. '''
     return compose(lambda x: x[0] ,function)
 
 # these functions don't return a single dictionary, and for now we only want the
-# first item of the returned tuple
+# first item of the returned tuple, which /is/ a single dictionary.
 pq_loader = first_only(phc.loader.nsalex_pq)
 bh_loader = first_only(phc.loader.nsalex_bh)
 
 loaders = {'.sm' : phc.loader.usalex_sm,
            # TODO: Deal with (and expose?) the second, unmentioned dict that is
-           # returned for picoquant files
+           # returned for picoquant files. It is currently unclear whether the
+           # extra data would be of any use when converting to Photon-HDF5.
            '.ht3' : pq_loader,
            '.ptu' : pq_loader,
            '.pt3' : pq_loader,
@@ -52,9 +55,15 @@ loaders = {'.sm' : phc.loader.usalex_sm,
            '.set' : bh_loader,
            '.spc' : bh_loader}
 
+# FIXME: This function isn't very smart. It goes off the name of the file only
+# right now. Could we make it smarter? Somehow check if the file really is the
+# indicated file type.
 def convertable_p(filename):
     '''If the filename designates a file of a convertable type, then return the
-filename. Otherwise return False.'''
+filename. Otherwise return False. Note that this function does not check
+anything other than the /name/ of the file! You could take a PDF file, give it
+the right file extension (say .sm), and this function will tell you it's A-OK to
+try converting it!'''
     if extension(filename) in loaders:
         return filename
     else:
@@ -64,7 +73,9 @@ def extension(file):
     "Returns the extension of a file path"
     return os.path.splitext(file)[1]
 
-# TODO: confirm which files didn't successfully convert without adding a description
+# TODO: confirm which files didn't successfully convert without adding a
+# description. This should be put in the documentation for the repository so
+# that new users know what's happening when they try out the test files.
 def load (file):
     '''General interface for loading the data from supported filetypes. Returns
     a dictionary containing the file data which may be passed to
@@ -81,9 +92,10 @@ def filename(file):
 #
 # See here for details on depreciation of yaml.load()
 # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
+# TODO: Document this variable for users to choose their safety level themselves.
 yaml_loader = yaml.SafeLoader
 
-# for some reason, the "trace" test file does not successfully load with the
+# FIXME: for some reason, the "trace" test file does not successfully load with the
 # high-level loaders. Says there is is a missing laser repetition rate in the
 # metadata. Edge case to deal with later?
 
@@ -159,6 +171,34 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
         raise
 
     return
+
+### Recursive merges are important for enabling user-specified YAML files to
+### co-exist with metadata entered into the GUI by the user. It is also
+### important if we wish to support YAML templates in the future.
+###
+### For the first instance, loading YAML files that the user specified can yield
+### fragments of the Photon-HDF5 file structure. Each group is represented by a
+### dictionary, so nested groups will be a dictionary within a dictionary
+### (withing a dictionary....). Now, the user may not provide all the values for
+### a group within the YAML file. That is, there could be "holes" in the
+### Photon-HDF5 file structure that the user intends to fill in with the GUI. If
+### the user fills in metadata in the GUI, then we will get another fragment of
+### the file structure from that. What we need to be able to do is perform an OR
+### operation between these two fragments, so that they are combined and the
+### data entered through the GUI fills in all the "holes" in the data from the
+### YAML file. But, what about conflicts? What if the user specifies something
+### in the GUI that is also specified in the YAML file? In my opinion, it makes
+### the most sense for the user's choice in the GUI to take precedence over what
+### is in the YAML file. That provides the user a low-friction way of
+### over-riding the values in the YAML file, which I thinks more sense then
+### providing a high-friction way for the user to over-ride values provided in
+### the GUI. In order to make all this happen, to OR together two fragments of
+### Photon-HDF5 in dictionary form, we need to be able to merge two dictionaries
+### in a special way. Given two dictionaries, we need to add all the
+### dictionaries from one to the other, over-riding the receiving dictionary's
+### entries when there is a conflict. However, if the conflict is between two
+### entries which each hold dictionaries, then we want to merge those
+### dictionaries as well, with the same override rules as before.
 
 def recursive_merge(source_dict, destination_dict):
     '''
