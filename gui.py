@@ -43,6 +43,32 @@ class target:
         # TODO: now that we want to support metadata files, this is too
         # simplistic. We need to 'parse' the gui data into arguments for
         # conversion, and handle missing data.
+        #
+        # Coming back to this 6 months later, I'm not entirely certain what I
+        # meant by the above comment. Maybe I should comment my comments.
+        # Anyhow, digging around in the commit history, I think it had to do
+        # with how we need to deal with different sources of data, in different
+        # "formats", and their unification.
+        #
+        # In particular, we have data that comes from the experimental data
+        # files, such as photon-counting data. We have data that comes from the
+        # GUI, like descriptions. And, we have data that comes from any provided
+        # metadata files. Also, the convert function takes several arguments to
+        # guide conversion. So, I think that what I meant by "parsing" is that
+        # we need to process the data stored in the GUI's interface, in things
+        # such as checkboxes/textfields/whatever, and transform that into
+        # formats suitable for merging with data from other sources such as the
+        # metadata file and from there transform the data into a proper argument
+        # list being passed to uc.convert().
+        #
+        # As far as missing data, I think I just meant that we need to
+        # gracefully operate in the face of incomplete data, perhaps by
+        # notifying the user. Whatever we do, we should have some explicity
+        # specified/expressed method for dealing with it, not the current
+        # cross-your-fingers-and-let-other-peoples-code-catch errors. I'm not
+        # sure, maybe I meant something else. I'm pretty sure I had in mind some
+        # way of letting the user deal with the missing data problems through
+        # the GUI.
 
         # Plan: break all this logic into a nested function that handles the conversion? Do we even need one?
 
