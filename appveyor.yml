@@ -143,7 +143,7 @@ install:
     # The following command is not written in powershell because of some
     # unresolved errors regarding that. I wonder if they are because of the @
     # symbol.
-  - pip install git+git://github.com/ramenbytes/phconvert@close-files-on-error
+  - pip install git+https://github.com/ramenbytes/phconvert@close-files-on-error
 
 before_build:
   - ps: cd $Env:APPVEYOR_BUILD_FOLDER
