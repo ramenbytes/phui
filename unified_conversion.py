@@ -115,7 +115,9 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
 
         If yml_file is provided, it is assumed to be a file containing a
         fragment of the Photon-HDF5 data hierarchy in the form of yaml. The
-        contents will be loaded, and the resulting data destructively merged
+        exception to this rule is the "/photon_data/measurement_specs" group,
+        which may be specified as top-level item like in the example yml files.
+        The contents will be loaded, and the resulting data destructively merged
         into the experimental data in the same manner that data_fragment is
         handled. To mitigate the danger of arbitrary code execution, pyaml's
         SafeLoader is used by default for loading the yaml file. If you wish to
@@ -146,7 +148,20 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
     if yml_file:
         with open(yml_file, mode='r') as f:
             yml_data = yaml.load(f, Loader=yaml_loader)
+            # 26-June-2022: So it turns out that the yml files don't actually
+            # mirror photon-hdf5 perfectly. In particular, the measurement_specs
+            # group is sometimes specified at the top level. To my knowledge
+            # this is the only instance of this, but I'm not hopeful.
+            #
+            # TODO: For now, we handle the one case we know of. At some point we
+            # need to nail down a solid scheme to either handle all of the cases
+            # or just tell the user that they will need to format their yml
+            # files like the photon-hdf5.
+            #
+            # Fixup the yml data's hierarchy
+            yml_data["photon_data"] = {"measurement_specs" : yml_data.pop("measurement_specs", dict())}
             # use the yaml file data to augment/overwrite info in the experimental data
+            breakpoint()
             recursive_merge(yml_data, data)
 
     # use the provided fragment to overwrite/fill in fields
