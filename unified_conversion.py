@@ -161,7 +161,6 @@ def convert(input, *args, output=False, data_fragment=False, yml_file=False):
             # Fixup the yml data's hierarchy
             yml_data["photon_data"] = {"measurement_specs" : yml_data.pop("measurement_specs", dict())}
             # use the yaml file data to augment/overwrite info in the experimental data
-            breakpoint()
             recursive_merge(yml_data, data)
 
     # use the provided fragment to overwrite/fill in fields
