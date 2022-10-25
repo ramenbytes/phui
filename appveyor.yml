@@ -209,7 +209,7 @@ deploy:
   description: 'Executables for others to test'
   provider: GitHub
   auth_token:
-    secure: YMsEJWj+SpxfeADb93JJSDp/HpmU7QrY3JvUG/n4AYuC7hBKVlUa69mgjvln1vw/  # your encrypted token from GitHub
+    secure: g+3pPS7lTIxUcvzrRb4wjizoHWlW+RmlkQaIKUcH9427O98Vwhv7nuIiTHqFMjxd # your encrypted token from GitHub
     artifacts:
       - path: '*.zip'
   draft: false
