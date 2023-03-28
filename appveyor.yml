@@ -129,6 +129,7 @@ install:
   - ps: echo $Env:PATH
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
+  - ps: ping 8.8.8.8
   - ps: ping https://repo.anaconda.com/pkgs/main/win-64/current_repodata.json
   - ps: conda update -q conda
   - ps: conda install -q conda-build
