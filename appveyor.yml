@@ -17,6 +17,8 @@ environment:
 
 
 init:
+  # appveyor's incantation to spin up RDP at this point in the build
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
       # Windows doesn't have HOME set, so make our own
       if ($isWindows){
