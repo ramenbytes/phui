@@ -6,6 +6,8 @@ image:
   #- macos
 
 environment:
+  APPVEYOR_RDP_PASSWORD:
+    secure: RmjK01+J+b8y96uxcNCv19N0Rn9TFNjCqPs4t4O9wW43cLmUOHBnVYBzdWoApaUK2weBPSyfHsZ8QkkFiQYhxA==
   matrix:
     - PYTHON_VERSION: "3.7"
       PYTHON_ARCH: "64"
