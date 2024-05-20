@@ -21,7 +21,7 @@ init:
   - ps:
       if ($isWindows){
       # $blockRdp = $true;
-      iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+      # iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
   - ps: |
       # Windows doesn't have HOME set, so make our own
