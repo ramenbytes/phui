@@ -24,7 +24,7 @@ init:
   - ps: |
       if ($isWindows){
       $blockRdp = $true;
-      iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+      # iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
   - ps: |
       # Windows doesn't have HOME set, so make our own
@@ -140,6 +140,7 @@ install:
   - ps: echo $Env:PATH
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: conda update -q conda
   - ps: conda install -q conda-build
   - ps: conda info -a
