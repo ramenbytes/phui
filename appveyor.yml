@@ -18,10 +18,12 @@ environment:
 
 init:
   # appveyor's incantation to spin up RDP at this point in the build. Block build finish until I'm done.
+
+  # multi-line powershell entries require the pipe character! "|" for those
+  # playing along at home. Also 4 extra spaces of indentation. That's right, spaces.
   - ps: |
       if ($isWindows){
-      # $blockRdp = $true;
-      # iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+      $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
   - ps: |
       # Windows doesn't have HOME set, so make our own
