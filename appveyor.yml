@@ -114,9 +114,11 @@ init:
       if ($isWindows) {
         $sep = ";"
         $bin = "\Scripts"
+        $libs = "\Library\bin"
       } else {
         $sep = ":"
         $bin = "/bin"
+        $libs = ""
       }
 
       # Now we can set the path and miniconda variables for all three platforms.
@@ -127,7 +129,7 @@ init:
       # I recall correctly.
 
       $Env:MINICONDA = "$Env:HOME/miniconda"
-      $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA$bin${sep}$Env:PATH"
+      $Env:PATH = "$Env:MINICONDA${sep}$Env:MINICONDA$bin${sep}$Env:MINICONDA$libs${sep}$Env:PATH"
 
   - ps: |
       echo "Python interpreter: $((Get-Command python).Source)" `
@@ -140,7 +142,7 @@ install:
   - ps: echo $Env:PATH
   - ps: conda --version
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: conda update -q conda
   - ps: conda install -q conda-build
   - ps: conda info -a
