@@ -144,6 +144,7 @@ install:
   - ps: conda config --set always_yes yes --set changeps1 no --set auto_update_conda false
   # - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: conda update -q conda
+  - ps: conda install -q tqdm
   - ps: conda install -q conda-build
   - ps: conda info -a
   - ps: |
